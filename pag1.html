@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AUTOSTYLES</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabaseClient.js"></script>
+
+
+
+</head>
+
+<body>
+
+  <!-- Header будет подгружен сюда -->
+  <div id="header-placeholder"></div>
+
+
+
+  <main>
+    <section class="welcome">
+      <div class="welcome__content">
+        <h1 class="welcome__title">
+          Ваш автомобиль заслуживает лучшего: <span class="welcome__highlight">AUTOSTYLES</span>
+        </h1>
+        <p class="welcome__subtitle">
+          **Элитный детейлинг** для безупречного вида и максимальной защиты. Мы сохраняем ценность вашего автомобиля.
+        </p>
+        <a href="about.html" class="welcome__button">Подробнее о нас</a>
+      </div>
+    </section>
+
+
+    <section class="statistics">
+      <div class="statistics__container">
+        <div class="stats-block">
+
+          <div class="stat-item">
+            <div class="stat-number" data-target="15">0</div>
+            <div class="stat-label">лет на рынке</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-number" data-target="40">0</div>
+            <div class="stat-label">сотрудников</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-number" data-target="5">0</div>
+            <div class="stat-label">филиалов</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-number" data-target="50">0</div>
+            <div class="stat-label">услуг (+)</div>
+          </div>
+
+        </div>
+
+        <h1 class="service-heading">Наши услуги</h1>
+      </div>
+    </section>
+
+
+
+
+
+
+    <!-- услуги -->
+    <div class="product_container">
+
+      <div class="product-card">
+        <img
+          src="https://avatars.mds.yandex.net/i?id=8824d2d0f579c4648f0f395f24bbc2c4a32c1835-12884912-images-thumbs&n=13"
+          alt="Оклейка пленкой" class="product-image">
+        <div class="product-overlay">
+          <h2 class="product-title"><a href="okleyka.html">Оклейка пленкой</a></h2>
+          <ul class="product-description">
+            <li><a href="okleyka.html#vinylWrapService">Оклейка виниловой пленкой</a></li>
+            <li><a href="okleyka.html#decorativeWrap">Оклейка декоративных элементов</a></li>
+            <li><a href="okleyka.html#antiGravWrap">Оклейка антигравийной пленкой</a></li>
+            <li><a href="okleyka.html#windshieldWrap">Бронирование лобового стекла</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img
+          src="https://avatars.mds.yandex.net/i?id=41edcba30ec1ccf63bd6a24c0e84dcbf3be9e196-4283943-images-thumbs&n=13"
+          alt="Полировка автомобиля" class="product-image">
+        <div class="product-overlay">
+          <h2 class="product-title"><a href="polirovka.html">Полировка автомобиля</a></h2>
+          <ul class="product-description">
+            <li><a href="polirovka.html#bodyPolishing">Полировка кузова</a></li>
+            <li><a href="polirovka.html#headlightPolishing">Полировка фар</a></li>
+            <li><a href="polirovka.html#wheelPolishing">Полировка колесных дисков</a></li>
+            <li><a href="polirovka.html#glassPolishing">Полировка стекол</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img
+          src="https://avatars.mds.yandex.net/i?id=5d20005d7f1eca4725eed6e48216c23e726e9f50-5314608-images-thumbs&n=13"
+          alt="Детейлинг уход" class="product-image">
+        <div class="product-overlay">
+          <h2 class="product-title"><a href="uhod.html">Детейлинг уход</a></h2>
+          <ul class="product-description">
+            <li><a href="uhod.html#bodyWash">Мойка кузова</a></li>
+            <li><a href="uhod.html#interiorCleaning">Чистка салона</a></li>
+            <li><a href="uhod.html#leatherCare">Уход за кожаным салоном</a></li>
+            <li><a href="uhod.html#carpetSeatProtection">Очистка и защита ковров и сидений</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img
+          src="https://avatars.mds.yandex.net/i?id=ca2e637ce246e7bd7235f403bb29a5b2171495c3-5334387-images-thumbs&n=13"
+          alt="Керамические покрытия" class="product-image">
+        <div class="product-overlay">
+          <h2 class="product-title"><a href="ceramic.html">Керамические покрытия</a></h2>
+          <ul class="product-description">
+            <li><a href="ceramic.html#ceramicBody">Керамическое покрытие кузова</a></li>
+            <li><a href="ceramic.html#ceramicGlass">Керамическое покрытие стекол</a></li>
+            <li><a href="ceramic.html#ceramicWheels">Керамическое покрытие колес</a></li>
+            <li><a href="ceramic.html#nanoInterior">Нанопокрытие для салона</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="https://i.pinimg.com/736x/f7/d3/a3/f7d3a3a45091fd5046228c039dc04d45.jpg" alt="Малярные работы"
+          class="product-image">
+        <div class="product-overlay">
+          <h2 class="product-title"><a href="molyar.html">Малярные работы</a></h2>
+          <ul class="product-description">
+            <li><a href="molyar.html#bodyPaint">Покраска кузова</a></li>
+            <li><a href="molyar.html#bumperPaint">Покраска бамперов</a></li>
+            <li><a href="molyar.html#wheelRepairPaint">Ремонт и покраска колес</a></li>
+            <li><a href="molyar.html#interiorRepairPaint">Ремонт и покраска элементов интерьера</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="https://i.pinimg.com/736x/56/7f/05/567f0547b3014ae5d175735fd4d83d0b.jpg" alt="Перетяжка салона"
+          class="product-image">
+        <div class="product-overlay">
+          <h2 class="product-title"><a href="salon.html">Перетяжка салона</a></h2>
+          <ul class="product-description">
+            <li><a href="salon.html#seatUpholstery">Перетяжка сидений</a></li>
+            <li><a href="salon.html#steeringUpholstery">Перетяжка руля</a></li>
+            <li><a href="salon.html#doorPanelUpholstery">Перетяжка дверных панелей</a></li>
+            <li><a href="salon.html#roofUpholstery">Перетяжка потолка</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="https://i.pinimg.com/736x/a1/8b/30/a18b30ba55d42ea5b453cbea5f31b1ef.jpg" alt="" class="product-image">
+        <div class="product-overlay">
+          <h2 class="product-title"><a href="osnash.html">Дооснащение</a></h2>
+          <ul class="product-description">
+            <li><a href="osnash.html#multimediaSystems">Звёздное небо</a></li>
+            <li><a href="osnash.html#rearViewCamera">Ламинация карбоном</a></li>
+            <li><a href="osnash.html#parktronics">Установка Android-мультимедиа</a></li>
+            <li><a href="osnash.html#seatHeating">Выдвижные пороги</a></li>
+            <li><a href="osnash.html#soundproof">Шумоизоляция автомобиля</a></li>
+            <li><a href="osnash.html#doorClosers">Установка доводчиков дверей</a></li>
+            <li><a href="osnash.html#accessories">Аксессуары для автомобиля</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    <section class="form-section" id="zapis">
+      <div class="form-gl">
+        <div class="form-container">
+          <div class="form-content">
+            <h1 class="form-title">Запишитесь на Детейлинг. Ваш автомобиль это оценит!</h1>
+            <p class="form-description">Оставьте свой номер, и наш специалист свяжется с вами в течение 15 минут,
+              чтобы подробно проконсультировать, рассчитать стоимость и выбрать удобное время.</p>
+
+            <!-- Добавил класс "form" форме и класс "full-width" элементам, которые должны быть широкими -->
+            <form action="#" method="POST" class="form">
+
+              <!-- Имя (1 колонка на ПК) -->
+              <div class="form-group">
+                <label for="name" class="form-label">Ваше имя*</label>
+                <input type="text" id="name" name="name" placeholder="Например, Александр" required class="form-input">
+              </div>
+
+              <!-- Телефон (2 колонка на ПК) -->
+              <div class="form-group">
+                <label for="phone" class="form-label">Номер телефона*</label>
+                <input type="tel" id="phone" name="phone" placeholder="+996 (___) __-__-__" required class="form-input">
+              </div>
+
+              <!-- Услуга (Полная ширина) -->
+              <div class="form-group full-width">
+                <label for="service" class="form-label">Выберите интересующую услугу*</label>
+                <select id="service" name="service" required class="form-select">
+                  <option value="" disabled selected>— Выберите услугу из списка —</option>
+                  <option value="wrap">Оклейка пленкой</option>
+                  <option value="polishing">Полировка автомобиля</option>
+                  <option value="detailing_care">Детейлинг уход</option>
+                  <option value="ceramic_coatings">Керамические покрытия</option>
+                  <option value="paint_work">Малярные работы</option>
+                  <option value="interior_upholstery">Перетяжка салона</option>
+                  <option value="retrofit">Дооснащение</option>
+                </select>
+              </div>
+
+              <!-- Детали (Полная ширина) -->
+              <div class="form-group full-width">
+                <label for="message" class="form-label">Детали запроса (Марка/Модель авто, год, пожелания)</label>
+                <textarea id="message" name="message"
+                  placeholder="Например: BMW X5, 2022 г. Интересует полная оклейка в матовую пленку."
+                  class="form-textarea"></textarea>
+              </div>
+
+              <!-- Согласие (Полная ширина) -->
+              <div class="form-group checkbox-group full-width">
+                <input type="checkbox" id="consent" name="consent" required class="form-checkbox">
+                <label for="consent" class="form-label">Я согласен(а) на обработку персональных данных и
+                  ознакомлен(а) с
+                  <a href="/policy" class="policy-link" target="_blank">Политикой конфиденциальности</a>*</label>
+              </div>
+
+              <!-- Кнопка (Полная ширина) -->
+              <button type="submit" class="form-submit full-width">Получить консультацию и расчет</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    </section>
+  </main>
+
+
+
+
+  <div id="footer-placeholder"></div>
+
+
+ 
+  <script src="js/header.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+
+</html>
