@@ -1,0 +1,957 @@
+/* Секция приветствия */
+main {
+  background-color: #1a1818;
+}
+
+main {
+  background-color: #313338;
+}
+
+.welcome {
+  /* Устанавливает ширину 100% и высоту 100% от высоты области просмотра */
+  width: 100%;
+  height: 100vh;
+  /* Устанавливает фоновое изображение, без повторений, центрирует, и покрывает всю область */
+  background: url('https://brooklandsdetailing.ru/storage/2024/08/22/c5f269afdd9bf08d108c83a6166fe55b230bc16a.jpg') no-repeat center center/cover;
+  /* Включает Flexbox */
+  display: flex;
+  /* Выравнивание по левому краю (сдвигаем контент влево) */
+  justify-content: flex-start;
+  /* Центрирование по вертикали */
+  align-items: center;
+  /* Общий цвет текста */
+  color: white;
+  position: relative;
+  overflow: hidden;
+  /* Добавляем отступ слева для смещения контента от края */
+  padding-left: 10%;
+  box-sizing: border-box;
+  /* Важно, чтобы padding не увеличивал общую ширину */
+}
+
+/* Оверлей (темный фон) - Исправлено */
+.welcome::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.welcome__content {
+  position: relative;
+  z-index: 2;
+  /* Контент поверх оверлея */
+  /* Ограничиваем максимальную ширину контента */
+  max-width: 550px;
+  padding: 20px;
+  margin: 0;
+  /* Удаляем центрирующий маржин */
+  box-sizing: border-box;
+  /* Выравнивание текста по левому краю для всех дочерних элементов */
+  text-align: left;
+}
+
+.welcome__title {
+  font-size: 48px;
+  margin-bottom: 20px;
+  line-height: 1.1;
+}
+
+.welcome__highlight {
+  color: #00a6ff;
+}
+
+.welcome__subtitle {
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.welcome__button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0088ff;
+  padding: 15px 30px;
+  border-radius: 50px;
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s, color 0.3s;
+  border: 2px solid transparent;
+}
+
+.welcome__button:hover {
+  background-color: #030303;
+  border-color: #00ff9d;
+  color: #fff;
+}
+
+
+
+
+
+
+/* --- 1. Секция "Статистика" --- */
+
+.statistics {
+  background-color: #313338;
+  /* Темный фон */
+  padding: 40px 0 60px 0;
+  /* Вертикальные отступы */
+}
+
+.statistics__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* --- 2. Блок Статистики (.stats-block) --- */
+
+.stats-block {
+  display: grid;
+  /* 4 колонки, адаптируется при уменьшении экрана */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+/* Элемент статистики */
+.stat-item {
+  text-align: center;
+  padding: 25px 15px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Анимация наведения */
+.stat-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Число статистики */
+.stat-number {
+  font-size: 38px;
+  font-weight: 800;
+  color: #aeb4c5;
+  /* Приглушенный цвет до начала счета */
+  margin-bottom: 5px;
+  line-height: 1.2;
+  /* Плавный переход цвета при завершении счета */
+  transition: color 0.5s ease-out;
+}
+
+/* Класс, который добавляется JS после завершения счета */
+.stat-number.is-counted {
+  color: #3498db;
+  /* Яркий акцентный цвет */
+}
+
+/* Подпись статистики */
+.stat-label {
+  font-size: 18px;
+  color: #5d6d7e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --- 3. Заголовок (.service-heading) --- */
+
+.service-heading {
+  font-size: 2.5em;
+  font-weight: 700;
+  color: #2c3e50;
+  text-align: center;
+  margin: 40px 0 20px 0;
+  padding: 15px 30px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: all 0.4s ease-in-out;
+}
+
+.service-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 4px;
+  background-color: #3498db;
+  border-radius: 2px;
+  transition: width 0.4s ease-in-out;
+}
+
+.service-heading:hover {
+  color: #3498db;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
+}
+
+.service-heading:hover::after {
+  width: 100px;
+}
+
+
+
+
+
+
+
+
+
+.product_container {
+  position: relative;
+  display: grid;
+  /* АВТОМАТИЧЕСКАЯ СЕТКА: от 1 до 3 колонок, минимальная ширина 300px */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin: 1em auto;
+  /* Устанавливаем максимальную ширину для центрирования на больших экранах */
+  max-width: 1300px;
+  padding: 0 15px;
+  /* Добавим небольшой отступ по бокам для мобильных */
+  border-radius: 10px;
+}
+
+.product-card {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.766);
+
+  /* НАЧАЛЬНОЕ СОСТОЯНИЕ (для анимации) */
+  opacity: 0;
+  transform: translateY(50px);
+
+  /* Анимация (0.6 секунды) */
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* КОНЕЧНОЕ СОСТОЯНИЕ (когда класс .is-visible добавлен) */
+.product-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.product-image {
+  margin-bottom: 10rem;
+  width: 100%;
+  /* На мобильных чуть ниже */
+  height: 30em;
+  object-fit: cover;
+  display: block;
+}
+
+/* НОВЫЙ ОВЕРЛЕЙ — плашка внизу */
+.product-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(41, 41, 41, 0.696);
+  backdrop-filter: blur(8px);
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: 2;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+
+.product-title {
+  margin: 0 0 12px 0;
+  display: block;
+  text-align: left;
+
+  /* Улучшенная стилизация */
+  color: #333333;
+  /* Темный цвет текста */
+  font-size: 24px;
+  /* Размер шрифта для заголовка продукта */
+  font-weight: 700;
+  /* Жирный шрифт */
+  padding: 8px 15px;
+  /* Внутренние отступы, чтобы тень и фон не прилегали к тексту */
+
+  /* --- Стилизация, которую вы просили --- */
+
+  /* Небольшое скругление для мягкого вида */
+  border-radius: 6px;
+
+  /* Фон для контраста с тенью (опционально, можно удалить) */
+  background-color: #f7f7f700;
+
+  /* Элегантная тень */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
+    /* Мягкая тень для легкого подъема */
+    inset 0 0 5px rgba(255, 255, 255, 0.5);
+  /* Легкое внутреннее свечение */
+
+  /* Плавный переход для эффекта при наведении (опционально) */
+  transition: all 0.3s ease;
+}
+
+/* Опциональное состояние при наведении для привлечения внимания */
+.product-title:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  /* Тень становится более выраженной */
+  transform: translateY(-1px);
+  /* Легкий подъем */
+}
+
+/* ИСПРАВЛЕНО: Цвет изменен на светлый (белый), чтобы его было видно */
+.product-title a {
+  color: #fcfcfcbd;
+  /* СВЕТЛЫЙ ЦВЕТ */
+  text-decoration: none;
+  font-size: 1.9rem;
+  /* Чуть крупнее */
+  font-weight: 700;
+  line-height: 1.2;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  /* Тень для читаемости */
+}
+
+
+/* Список услуг */
+.product-description {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+}
+
+.product-description li {
+  margin-bottom: 10px;
+}
+
+.product-description li:last-child {
+  margin-bottom: 0;
+}
+
+.product-description li a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 400;
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.3s ease;
+}
+
+.product-description li a:hover {
+  color: #00aaff;
+}
+
+/* Анимация линии при наведении */
+.product-description li a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #00aaff;
+  transition: width 0.4s ease;
+}
+
+.product-description li a:hover::after {
+  width: 100%;
+}
+
+
+
+
+
+/* --- Секция формы --- */
+.form-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.form-gl {
+  width: 100%;
+  max-width: 700px;
+  /* Максимальная ширина для читаемости */
+}
+
+.form-container {
+  background: #1a1a1a;
+  border-radius: 16px;
+  border: 1px solid #444;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+
+  /* Анимация появления */
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  animation: fadeIn 0.8s 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.form-content {
+  padding: 2rem;
+}
+
+/* --- Заголовки и текст --- */
+.form-title {
+  font-size: 1.75rem;
+  /* 28px */
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #fff;
+  line-height: 1.3;
+  /* Анимация градиента для текста */
+  background: linear-gradient(90deg, #007aff, #9b59b6, #007aff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textGradient 5s linear infinite;
+}
+
+@keyframes textGradient {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.form-description {
+  font-size: 0.95rem;
+  /* 15px */
+  text-align: center;
+  color: #a0a0a0;
+  margin-bottom: 2.5rem;
+}
+
+/* --- Группы полей --- */
+.form {
+  display: grid;
+  grid-template-columns: 1fr;
+  /* 1 колонка по умолчанию */
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  /* 14px */
+  font-weight: 500;
+  color: #a0a0a0;
+}
+
+/* --- Поля ввода, select, textarea --- */
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  /* 16px */
+  font-family: 'Inter', sans-serif;
+  color: #f0f0f0;
+  background-color: #2c2c2e;
+  border: 1px solid #444;
+  border-radius: 10px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #777;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: #007aff;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3);
+  transform: scale(1.01);
+}
+
+/* --- Стилизация Select --- */
+.form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23a0a0a0' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 16px;
+}
+
+.form-select option {
+  background: #1a1a1a;
+  color: #f0f0f0;
+}
+
+.form-select option[disabled] {
+  color: #777;
+}
+
+/* --- Textarea --- */
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* --- Чекбокс --- */
+.checkbox-group {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  /* Выравнивание по верху */
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.form-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.25em;
+  height: 1.25em;
+  background-color: #2c2c2e;
+  border: 1px solid #444;
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 0.2em;
+  /* Небольшой отступ сверху для выравнивания */
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  position: relative;
+}
+
+.form-checkbox:checked {
+  background-color: #007aff;
+  border-color: #007aff;
+}
+
+/* Галочка для чекбокса */
+.form-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: translate(-50%, -60%) rotate(45deg);
+}
+
+.checkbox-group .form-label {
+  font-size: 0.8rem;
+  /* 13px */
+  line-height: 1.5;
+}
+
+.policy-link {
+  color: #007aff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.policy-link:hover {
+  text-decoration: underline;
+}
+
+:root {
+  --primary-blue: #007aff;
+  --primary-blue-dark: #0056b3;
+  --bg-dark-gradient: linear-gradient(145deg, #232526 0%, #414345 100%);
+  --bg-card: #1a1a1a;
+  --text-light: #f0f0f0;
+  --text-secondary: #a0a0a0;
+  --border-color: #444;
+  --input-bg: #2c2c2e;
+  --success-color: #34c759;
+  --error-color: #ff3b30;
+}
+
+/* --- Кнопка отправки (Новые стили и анимации) --- */
+.form-submit {
+  position: relative;
+  /* Для псевдоэлементов и свечения */
+  overflow: hidden;
+  /* Обрезаем градиент */
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  /* Чуть крупнее */
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(90deg, var(--primary-blue), #5e307c, #007aff);
+  /* Широкий градиент */
+  background-size: 300% 100%;
+  /* Увеличиваем размер для анимации */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 1rem;
+  transition: all 0.4s ease;
+  /* Плавный переход для всех свойств */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  /* Начальная тень */
+
+  /* Анимация градиента */
+  animation: gradientShift 8s ease infinite alternate;
+  /* Медленный, плавный сдвиг */
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.form-submit:hover {
+  background-position: 100% 50%;
+  /* Сдвигаем градиент быстрее при наведении */
+  transform: translateY(-3px) scale(1.01);
+  /* Небольшой подъем и увеличение */
+  box-shadow: 0 8px 20px rgba(0, 122, 255, 0.4);
+  /* Усиленная тень и свечение */
+}
+
+.form-submit:active {
+  transform: translateY(0);
+  /* Возврат на место при клике */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  background-position: 0% 50%;
+  /* Сбрасываем градиент */
+}
+
+/* Дополнительное свечение/эффект при наведении (можно использовать, если нужно) */
+.form-submit::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  transition: transform 0.8s ease-out;
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+  z-index: 1;
+  /* Чтобы свечение было над фоном кнопки */
+}
+
+.form-submit:hover::before {
+  transform: rotate(360deg) scale(1);
+  opacity: 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ✅ 2. Медиазапрос для альбомной ориентации */
+@media screen and (orientation: landscape) {
+
+  /* Выравнивание статистики в альбомной ориентации */
+  .stats-block {
+    justify-content: space-around;
+  }
+
+  /* ИСПРАВЛЕНО: Добавлен . к селектору */
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .service-item {
+    padding: 20px;
+  }
+
+  .service-title {
+    font-size: 26px;
+  }
+
+  .service-list li {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  /* Услуги в альбомной ориентации (2 колонки) */
+  .product_container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px;
+    background-color: rgba(55, 56, 55, 0.9);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    will-change: transform;
+  }
+
+  /* Уменьшение высоты изображения в альбомной ориентации */
+  .product-image {
+    margin: 0 auto;
+    height: 150px;
+  }
+
+  .form-content {
+    padding: 3rem;
+  }
+
+  .form-title {
+    font-size: 2rem;
+    /* 32px */
+  }
+
+  .form-description {
+    font-size: 1rem;
+    /* 16px */
+  }
+
+  /* Включаем сетку для 2-х колонок */
+  .form {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 1.5rem;
+  }
+
+  /* Поля, которые должны занимать всю ширину */
+  .form-group.full-width,
+  .checkbox-group.full-width,
+  .form-submit.full-width {
+    grid-column: 1 / -1;
+    /* Растянуть на все колонки */
+  }
+
+  /* Явно указываем для кнопки, т.к. она не .form-group */
+  .form-submit {
+    grid-column: 1 / -1;
+  }
+}
+
+
+/* ✅ 3. Медиазапрос для планшетов */
+@media screen and (min-width: 768px) {
+
+  /* Форма */
+  .form-container {
+    padding: 1.5rem;
+  }
+
+  .form-title {
+    font-size: 1.5rem;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    padding: 0.6rem;
+  }
+
+  /* Приветственный блок */
+  .welcome__title {
+    font-size: 40px;
+  }
+
+  .welcome__subtitle {
+    font-size: 18px;
+  }
+
+  /* Статистика */
+  .stats-block {
+    flex-direction: row;
+    gap: 30px;
+    justify-content: space-around;
+    /* Выравнивание статистики */
+  }
+
+  .stat-item {
+    padding: 20px;
+  }
+
+  .stat-number {
+    font-size: 32px;
+  }
+
+  /* Сетка услуг */
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .service-item {
+    padding: 20px;
+  }
+
+  .service-title {
+    font-size: 26px;
+  }
+
+  .service-list li {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  /* Услуги (меняется на 2 колонки для планшетов) */
+  .product_container {
+    /* ИСПРАВЛЕНО: Убран повторяющийся блок .product-container */
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Уменьшение высоты изображения для планшетов */
+  .product-image {
+    margin: 0 auto;
+    height: 222px;
+  }
+
+  /* По умолчанию скрыта */
+  .home-button {
+    display: none;
+  }
+
+  .form-content {
+    padding: 3rem;
+  }
+
+  .form-title {
+    font-size: 2rem;
+    /* 32px */
+  }
+
+  .form-description {
+    font-size: 1rem;
+    /* 16px */
+  }
+
+  /* Включаем сетку для 2-х колонок */
+  .form {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 1.5rem;
+  }
+
+  /* Поля, которые должны занимать всю ширину */
+  .form-group.full-width,
+  .checkbox-group.full-width,
+  .form-submit.full-width {
+    grid-column: 1 / -1;
+    /* Растянуть на все колонки */
+  }
+
+  /* Явно указываем для кнопки, т.к. она не .form-group */
+  .form-submit {
+    grid-column: 1 / -1;
+  }
+}
+
+
+/* ✅ 4. Медиазапрос для десктопов */
+@media screen and (min-width: 1024px) {
+
+  /* Статистика */
+  .statistics__container {
+    max-width: 1400px;
+    /* ИСПРАВЛЕНО: Проставлен px */
+    padding: 10px 30px;
+  }
+
+  .stats-block {
+    padding: 20px;
+    gap: 40px;
+    justify-content: space-between;
+    /* Выравнивание статистики */
+  }
+
+  .stat-number {
+    font-size: 40px;
+  }
+
+
+
+
+  /* 1. Скрываем описание услуг по умолчанию на десктопе */
+  .product-card .product-description {
+    /* НАЧАЛЬНОЕ СОСТОЯНИЕ: Полностью прозрачно */
+    opacity: 0;
+    /* Сдвигаем вниз на 20px */
+    transform: translateY(20px);
+    /* Плавный переход для анимации */
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+    /* Устанавливаем положение, чтобы не влияло на высоту карточки */
+    position: relative;
+
+
+  }
+
+
+
+  /* 3. КОНЕЧНОЕ СОСТОЯНИЕ: При наведении на product-card */
+  .product-card:hover .product-description {
+    /* Показываем */
+    opacity: 1;
+    /* Поднимаем на место */
+    transform: translateY(0);
+  }
+
+  /* ******************************************************************* */
+  /* ДОПОЛНИТЕЛЬНО: Убираем отступ сверху у заголовка, чтобы он оставался на месте,
+     когда описание скрыто, и не "прыгал" при появлении описания */
+  .product-card .product-title {
+    margin-bottom: 0;
+    /* Убираем отступ снизу */
+  }
+
+
+  .product-card .product-overlay {
+    transform: translateY(100%);
+    transition: transform 0.5s ease-out;
+    margin: 0 auto;
+  }
+
+  .product-card:hover .product-overlay {
+    transform: translateY(0);
+    margin: 0 auto;
+  }
+
+  .product-image {
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+  }
+}
