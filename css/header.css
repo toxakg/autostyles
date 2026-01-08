@@ -1,0 +1,822 @@
+/* Сброс стилей и базовые настройки */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+body {
+  min-height: 100vh;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  /* Шрифт Roboto */
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  /* можно 100–900 */
+  font-style: normal;
+}
+
+
+/* Универсальное правило для всех FA иконок */
+i[class^="fa"],
+i[class*=" fa-"] {
+  font-size: 30px;
+}
+
+.desktop-header {
+  display: none;
+}
+
+/* Базовый хедер */
+/* --- Стили для мобильной шапки --- */
+
+.header-mobile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  /* правильная ширина под мобильные экраны */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: rgba(0, 0, 0, 0.875);
+  z-index: 1000;
+  box-shadow: none;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+
+/* Состояние шапки при прокрутке (когда добавляется класс .scrolled) */
+.header-mobile.scrolled {
+  background-color: #faf4f4;
+  /* Темный фон, как ты и хотел */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  /* Добавляем тень */
+}
+
+
+
+.logo img {
+  width: 90px;
+  /* мобильный */
+  height: auto;
+}
+
+.logo img:hover {
+  transform: scale(1.1);
+  /* эффект при наведении */
+}
+
+
+
+
+/* Контейнер для социальных сетей */
+.socials {
+  display: flex;
+  /* Выравнивает значки в одну линию */
+  gap: 15px;
+  /* Добавляет расстояние между значками */
+}
+
+/* Стили для каждой отдельной иконки-ссылки */
+.social-icon {
+  font-size: 24px;
+  /* Размер значка */
+  color: #333;
+  /* Базовый цвет значков (например, темно-серый) */
+  text-decoration: none;
+  /* Убираем подчеркивание */
+  transition: color 0.3s ease;
+  /* Плавный переход для эффекта наведения */
+
+}
+
+/* Эффект при наведении (hover) */
+.social-icon:hover {
+  /* Можно использовать фирменные цвета для лучшей узнаваемости */
+  color: #007bb6;
+  /* Пример: синий для общего эффекта */
+}
+
+/* Специальные цвета при наведении (по желанию) */
+.fa-whatsapp:hover {
+  color: #25D366;
+  /* Зеленый для WhatsApp */
+}
+
+.fa-instagram:hover {
+  /* Градиент сложно сделать, но можно использовать фиолетовый */
+  color: #C13584;
+  /* Фиолетово-розовый для Instagram */
+}
+
+.fa-telegram:hover {
+  color: #0088CC;
+  /* Голубой для Telegram */
+}
+
+/* Базовое правило: Скрываем элемент .city по умолчанию (для мобильных) */
+.city {
+  display: none;
+}
+
+.nav {
+  display: none;
+}
+
+
+.phone {
+  display: none;
+}
+
+
+.contact-btn {
+  display: none;
+}
+
+
+/* Бургер-кнопка */
+.menu-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 32px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10000;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Эффект наведения */
+.menu-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* Полоски */
+.menu-toggle .bar {
+  margin: 5px 0;
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: #0c79e6;
+  border-radius: 2px;
+  transition: all 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+/* Активное состояние (крестик) */
+.menu-toggle.is-active .bar:nth-child(1) {
+  transform: rotate(45deg) translate(7px, 7px);
+  background-color: #ff3300;
+  /* яркий цвет при открытии */
+}
+
+.menu-toggle.is-active .bar:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-50%);
+}
+
+.menu-toggle.is-active .bar:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+  background-color: #ff4c00;
+  /* яркий цвет при открытии */
+}
+
+/* Дополнительно: тень при наведении */
+.menu-toggle:hover .bar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* ------------------------------------------------------------- */
+/* 3. СТИЛИ ДЛЯ МОБИЛЬНЫХ ЭКРАНОВ */
+/* ------------------------------------------------------------- */
+
+@media (max-width: 767px) {
+
+  /* 3.1. Показываем бургер-кнопку на мобильных */
+  .menu-toggle {
+    display: block;
+    /* Показываем только на мобильных */
+  }
+
+  /* 3.2. ОСНОВНОЙ КОНТЕЙНЕР МЕНЮ (ПОЛНЫЙ ЭКРАН) */
+  .mobile-nav {
+    /* ... Ваш оригинальный код для меню ... */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    color: #fff;
+    z-index: 9999;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+
+    /* Улучшенная логика скрытия/показа: используем трансформацию */
+    transform: translateX(100%);
+    /* Скрываем за пределами экрана справа */
+    transition: transform 0.4s ease-out;
+  }
+
+  /* Показываем меню, когда JS добавляет класс active */
+  .mobile-nav.active {
+    transform: translateX(0);
+    /* Выдвигаем меню на экран */
+  }
+}
+
+/* ⚠️ Делаем кнопку "X" видимой */
+.close-menu-btn {
+  display: block;
+  /* Убедитесь, что она всегда видна, когда меню активно */
+  /* ... остальные стили кнопки "X" ... */
+}
+
+/* ------------------------------------------------------------- */
+/* 2.4. ВЕРХНИЕ ЭЛЕМЕНТЫ (Кабинет, Телефон, Кнопка) */
+/* ------------------------------------------------------------- */
+
+.close-menu-btn {
+
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 30px;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+/*
+ * Стили для пункта "Личный кабинет" в мобильном меню.
+ * Предполагается, что фон самого меню — темный.
+*/
+
+.mobile-menu__login {
+  display: flex;
+  align-items: center;
+
+  /* Растягиваем на всю ширину меню */
+  width: 100%;
+  box-sizing: border-box;
+  /* Чтобы padding не ломал ширину */
+
+  /* Увеличиваем отступы для удобного нажатия пальцем */
+  padding: 16px 20px;
+
+  /* Стили текста и иконки */
+  color: #f0f0f0;
+  /* Светлый текст для темного фона меню */
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+
+  /* Убираем фон и рамку по умолчанию */
+  background-color: transparent;
+  border-radius: 8px;
+  /* Небольшое скругление для эстетики */
+
+  /* Плавный переход для эффекта при нажатии */
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Иконка внутри ссылки */
+.mobile-menu__login i {
+  margin-right: 12px;
+  /* Немного увеличим отступ от текста */
+  font-size: 20px;
+  /* Оптимальный размер для мобильного меню */
+  width: 24px;
+  /* Фиксируем ширину для ровного выравнивания текста */
+  text-align: center;
+}
+
+/* * Эффект при наведении (для десктопа, если меню там тоже доступно)
+ * и при нажатии (важно для мобильных устройств) 
+*/
+.mobile-menu__login:hover,
+.mobile-menu__login:active {
+  background-color: rgba(255, 255, 255, 0.1);
+  /* Полупрозрачный фон при нажатии */
+  color: #fff;
+  /* Делаем текст ярче */
+}
+
+.contact-block {
+  display: flex;
+  gap: 10px;
+  /* чтобы на мобилках телефон переносился */
+}
+
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border: 1px solid #f1f1f1;
+  border-radius: 50px;
+  /* pill shape */
+  color: #fff;
+  background-color: transparent;
+  text-decoration: none;
+  font-size: 15px;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+
+.phone-link {
+  display: inline-flex;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+
+.phone-link i {
+  margin-right: 6px;
+  font-size: 15px;
+}
+
+
+
+/* ------------------------------------------------------------- */
+/* 2.5. СТИЛИ АККОРДЕОНА */
+/* ------------------------------------------------------------- */
+.accordion-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* Убираем flex-wrap, чтобы подменю было отдельно */
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.menu-link.main-title {
+  /* link - это заголовок аккордеона */
+  width: calc(100% - 30px);
+  /* Место для иконки "+" */
+  display: block;
+  padding: 15px 0;
+  font-size: 20px;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Иконка "плюс" */
+.toggle-icon {
+  /* Позиционируем абсолютно в .menu-item */
+  position: absolute;
+  right: 0;
+  font-size: 24px;
+  font-weight: 300;
+  cursor: pointer;
+  line-height: 50px;
+}
+
+/* Вложенное подменю (скрыто по умолчанию) */
+.submenu {
+  list-style: none;
+  padding: 0 0 10px 10px;
+  margin: 0;
+  width: 100%;
+  /* Занимает всю ширину */
+  display: none;
+  /* СКРЫТО по умолчанию, будет открываться через JS */
+}
+
+.submenu a {
+  display: block;
+  padding: 8px 0;
+  color: #aaa;
+  /* Более тусклый цвет для подпунктов */
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.menu-location {
+  padding: 15px;
+  border-top: 1px solid #ccc;
+  /* разделитель от меню */
+}
+
+.location-info {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.location-info .city {
+  font-weight: bold;
+  display: block;
+}
+
+.location-info .address {
+  display: block;
+  color: #555;
+}
+
+.map-button {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  background-color: #5E5CE6;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.map-button:hover {
+  background-color: #4945b9;
+}
+
+/* ============================= */
+/* Мобильный landscape (телефон горизонтально) */
+@media (max-width: 767px) and (orientation: landscape) {
+  .header-mobile {
+    display: flex; /* остаётся мобильный хедер */
+  }
+  .header-desktop {
+    display: none;
+  }
+}
+
+/* ============================= */
+/* Планшет портрет */
+@media (min-width: 768px) and (max-width: 1023px) and (orientation: portrait) {
+  .header-mobile {
+    display: flex; /* можно оставить мобильный */
+  }
+  .header-desktop {
+    display: none;
+  }
+}
+
+/* ============================= */
+/* Планшет landscape */
+@media (min-width: 768px) and (max-width: 1023px) and (orientation: landscape) {
+  .header-mobile {
+    display: none;
+  }
+  .header-desktop {
+    display: flex;
+  }
+}
+
+/* ============================= */
+/* ПК */
+@media (min-width: 1024px) {
+  .header-mobile {
+    display: none;
+    /* скрываем мобильный хедер */
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    /* Шрифт Roboto */
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    /* можно 100–900 */
+    font-style: normal;
+  }
+
+
+  /* Универсальное правило для всех FA иконок */
+  i[class^="fa"],
+  i[class*=" fa-"] {
+    font-size: 30px;
+  }
+
+
+  .desktop-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    /* чтобы контент внутри выровнять */
+    align-items: center;
+    justify-content: space-between;
+    opacity: 1;
+    background-color: transparent;
+    color: #fff;
+    box-shadow: none;
+    /* изначально без тени */
+    z-index: 9000;
+
+    transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .desktop-header.scrolled {
+    background-color: rgba(30, 30, 30, 0.8);
+    /* тёмный с 80% непрозрачностью */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    /* добавит эффект стекла */
+  }
+
+
+
+  .desktop-header__container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    /* = 80px */
+  }
+
+
+
+  .desktop-header__logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  /* Сам логотип */
+  .desktop-header__logo img {
+    height: 45px;
+    /* идеальный размер для десктопа */
+    width: auto;
+    /* сохраняет пропорции */
+    display: block;
+    /* убирает возможные нижние отступы */
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+
+  /* Эффект при наведении */
+  .desktop-header__logo img:hover {
+    transform: scale(1.2);
+  }
+
+  /* --- Основное меню --- */
+  .desktop-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    /* Увеличили расстояние между пунктами */
+    list-style: none;
+    margin: 0 10px;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  /* --- Пункт основного меню --- */
+  .desktop-menu__item {
+    position: relative;
+    /* Необходимо для позиционирования подменю */
+  }
+
+  /* --- Ссылка основного меню --- */
+  .desktop-menu__item>a {
+    position: relative;
+    /* Для позиционирования псевдо-элементов */
+    display: flex;
+    /* Для выравнивания текста и стрелки */
+    align-items: center;
+    gap: 8px;
+    /* Расстояние между текстом и стрелкой */
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 15px 0;
+    transition: color 0.3s ease;
+  }
+
+  /* Эффект при наведении на ссылку основного меню */
+  .desktop-menu__item>a:hover {
+    color: #ffd700;
+    /* Более насыщенный золотой цвет */
+  }
+
+  /* Создаем стрелочку-индикатор для подменю */
+  .desktop-menu__item>a::after {
+    content: '▼';
+    display: inline-block;
+    font-size: 0.6em;
+    color: #d0ff00;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  /* Поворачиваем стрелочку при наведении */
+  .desktop-menu__item:hover>a::after {
+    transform: rotate(180deg);
+  }
+
+
+  /* --- Подменю (выпадающий список) --- */
+  .desktop-submenu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    /* Центрируем подменю относительно пункта */
+    transform: translateX(-50%);
+    /* Точное центрирование */
+
+    background: #2c2c2c;
+    /* Темный фон для контраста */
+    border-radius: 12px;
+    /* Более скругленные углы */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    /* Мягкая и глубокая тень */
+    border: 1px solid #444;
+    /* Тонкая рамка для завершенности */
+    padding: 10px;
+    min-width: 260px;
+    /* Немного шире для длинных названий */
+
+    /* Прячем меню и готовим к анимации */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(10px);
+    /* Начальное положение для анимации */
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+
+    /* Используем flex для удобного управления элементами */
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    /* Небольшой отступ между ссылками */
+  }
+
+  /* --- Ссылки внутри подменю --- */
+  .desktop-submenu a {
+    /* Исправлен селектор (было .desktop-submenu li a) */
+    display: block;
+    padding: 12px 20px;
+    color: #f0f0f0;
+    /* Светлый цвет текста для читаемости */
+    text-decoration: none;
+    font-size: 15px;
+    transition: background-color 0.25s ease, color 0.25s ease;
+    white-space: nowrap;
+    border-radius: 8px;
+    /* Скругляем углы у активного элемента */
+  }
+
+  /* Эффект при наведении на ссылку в подменю */
+  .desktop-submenu a:hover {
+    background-color: #00ff4c;
+    color: #1a1a1a;
+    /* Темный цвет текста при наведении */
+  }
+
+  /* --- Показываем подменю при наведении на родительский элемент --- */
+  .desktop-menu__item:hover>.desktop-submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    /* Возвращаем в финальное положение */
+  }
+
+
+  .desktop-header__right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  /* Контейнер соцсетей внутри хедера */
+  .desktop-header__socials {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  /* Общий стиль иконок */
+  .desktop-header__social-icon {
+    font-size: 22px;
+    color: #fff;
+    /* Белые иконки, чтобы сочетались с фоном хедера */
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  /* Ховер-эффекты по брендовым цветам */
+  .desktop-header__social-icon .fa-whatsapp:hover {
+    color: #25D366;
+  }
+
+  .desktop-header__social-icon .fa-instagram:hover {
+    color: #C13584;
+  }
+
+  .desktop-header__social-icon .fa-telegram:hover {
+    color: #0088CC;
+  }
+
+  .desktop-header__social-icon:hover {
+    transform: scale(1.3);
+  }
+
+
+  .desktop-header__login {
+    /* Логика отображения и центрирования */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Основной дизайн: Более темная и сдержанная цветовая палитра */
+    background-color: #1b2339;
+    /* Очень темно-синий/почти черный */
+    color: #e0e0e0;
+    /* Приглушенный белый/светло-серый */
+    padding: 10px 18px;
+    border-radius: 25px;
+
+    /* Границы и тени для глубины */
+    border: 2px solid #3c4a6b;
+    /* Темный, но заметный бордюр */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5),
+      /* Классическая тень для глубины */
+      inset 0 0 5px rgba(255, 255, 255, 0.05);
+    /* Легкое внутреннее свечение */
+
+    /* Общие настройки */
+    text-decoration: none;
+    font-weight: 600;
+    /* Немного менее жирный, для сдержанности */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .desktop-header__login i {
+    margin-right: 0;
+    font-size: 1.25rem;
+  }
+
+  /* --- */
+
+  /* Состояние при наведении (Hover) - Элегантное Свечение */
+  .desktop-header__login:hover {
+    background-color: #2c3a5b;
+    /* Немного светлее, чтобы обозначить наведение */
+    color: #ffffff;
+    /* Чистый белый */
+
+    /* Эффект свечения: Сдержанное, холодное, внутреннее и внешнее свечение */
+    box-shadow: 0 0 10px #4d94ff,
+      /* Голубоватое/холодное свечение */
+      0 6px 12px rgba(0, 0, 0, 0.6);
+    /* Более выраженная тень "подъема" */
+
+    transform: translateY(-1px);
+    /* Очень легкий подъем */
+    border-color: #4d94ff;
+    /* Изменение цвета бордюра под цвет свечения */
+  }
+
+  /* --- */
+
+  /* Состояние при нажатии (Active) */
+  .desktop-header__login:active {
+    background-color: #101524;
+    /* Снова темнее, чтобы "вжаться" */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7),
+      /* Кнопка "вжимается" */
+      inset 0 0 5px rgba(0, 0, 0, 0.8);
+    transform: translateY(0);
+    border-color: #3c4a6b;
+    /* Возвращаем основной бордюр */
+  }
+
+
+}

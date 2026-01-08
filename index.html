@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AUTOSTYLES</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabaseClient.js"></script>
+
+
+
+</head>
+
+<body>
+
+  <!-- Header будет подгружен сюда -->
+  <div id="header-placeholder"></div>
+
+
+
+  <main>
+    <section class="welcome">
+      <div class="welcome__content">
+        <h1 class="welcome__title">
+          Премиальный детейлинг автомобилей <span class="welcome__highlight">AUTOSTYLES</span>
+        </h1>
+        <p class="welcome__subtitle">
+          Мы делаем профессиональный детейлинг, который видно сразу и ценят со временем
+        </p>
+        <a href="about.html" class="welcome__button">Подробнее о нас</a>
+      </div>
+    </section>
+
+
+    <section class="statistics">
+      <div class="statistics__container">
+        <div class="stats-block">
+
+          <div class="stat-item">
+            <div class="stat-number" data-target="15">0</div>
+            <div class="stat-label">лет на рынке</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-number" data-target="40">0</div>
+            <div class="stat-label">сотрудников</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-number" data-target="5">0</div>
+            <div class="stat-label">филиалов</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-number" data-target="50">0</div>
+            <div class="stat-label">услуг (+)</div>
+          </div>
+
+        </div>
+
+        <h1 class="service-heading">Наши услуги</h1>
+      </div>
+    </section>
+
+
+
+
+
+
+    <!-- услуги -->
+    <div class="product_container">
+
+      <div class="product-card">
+        <img
+          src="https://avatars.mds.yandex.net/i?id=8824d2d0f579c4648f0f395f24bbc2c4a32c1835-12884912-images-thumbs&n=13"
+          alt="Оклейка пленкой" class="product-image">
+        <div class="product-overlay">
+          <h2 class="product-title"><a href="okleyka.html">Оклейка пленкой</a></h2>
+          <ul class="product-description">
+            <li><a href="okleyka.html#vinylWrapService">Оклейка виниловой пленкой</a></li>
+            <li><a href="okleyka.html#decorativeWrap">Оклейка декоративных элементов</a></li>
+            <li><a href="okleyka.html#antiGravWrap">Оклейка антигравийной пленкой</a></li>
+            <li><a href="okleyka.html#windshieldWrap">Бронирование лобового стекла</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img
+          src="https://avatars.mds.yandex.net/i?id=41edcba30ec1ccf63bd6a24c0e84dcbf3be9e196-4283943-images-thumbs&n=13"
+          alt="Полировка автомобиля" class="product-image">
+        <div class="product-overlay">
+          <h2 class="product-title"><a href="polirovka.html">Полировка автомобиля</a></h2>
+          <ul class="product-description">
+            <li><a href="polirovka.html#bodyPolishing">Полировка кузова</a></li>
+            <li><a href="polirovka.html#headlightPolishing">Полировка фар</a></li>
+            <li><a href="polirovka.html#wheelPolishing">Полировка колесных дисков</a></li>
+            <li><a href="polirovka.html#glassPolishing">Полировка стекол</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img
+          src="https://avatars.mds.yandex.net/i?id=5d20005d7f1eca4725eed6e48216c23e726e9f50-5314608-images-thumbs&n=13"
+          alt="Детейлинг уход" class="product-image">
+        <div class="product-overlay">
+          <h2 class="product-title"><a href="uhod.html">Детейлинг уход</a></h2>
+          <ul class="product-description">
+            <li><a href="uhod.html#bodyWash">Мойка кузова</a></li>
+            <li><a href="uhod.html#interiorCleaning">Чистка салона</a></li>
+            <li><a href="uhod.html#leatherCare">Уход за кожаным салоном</a></li>
+            <li><a href="uhod.html#carpetSeatProtection">Очистка и защита ковров и сидений</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img
+          src="https://avatars.mds.yandex.net/i?id=ca2e637ce246e7bd7235f403bb29a5b2171495c3-5334387-images-thumbs&n=13"
+          alt="Керамические покрытия" class="product-image">
+        <div class="product-overlay">
+          <h2 class="product-title"><a href="ceramic.html">Керамические покрытия</a></h2>
+          <ul class="product-description">
+            <li><a href="ceramic.html#ceramicBody">Керамическое покрытие кузова</a></li>
+            <li><a href="ceramic.html#ceramicGlass">Керамическое покрытие стекол</a></li>
+            <li><a href="ceramic.html#ceramicWheels">Керамическое покрытие колес</a></li>
+            <li><a href="ceramic.html#nanoInterior">Нанопокрытие для салона</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="https://i.pinimg.com/736x/f7/d3/a3/f7d3a3a45091fd5046228c039dc04d45.jpg" alt="Малярные работы"
+          class="product-image">
+        <div class="product-overlay">
+          <h2 class="product-title"><a href="molyar.html">Малярные работы</a></h2>
+          <ul class="product-description">
+            <li><a href="molyar.html#bodyPaint">Покраска кузова</a></li>
+            <li><a href="molyar.html#bumperPaint">Покраска бамперов</a></li>
+            <li><a href="molyar.html#wheelRepairPaint">Ремонт и покраска колес</a></li>
+            <li><a href="molyar.html#interiorRepairPaint">Ремонт и покраска элементов интерьера</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="https://i.pinimg.com/736x/56/7f/05/567f0547b3014ae5d175735fd4d83d0b.jpg" alt="Перетяжка салона"
+          class="product-image">
+        <div class="product-overlay">
+          <h2 class="product-title"><a href="salon.html">Перетяжка салона</a></h2>
+          <ul class="product-description">
+            <li><a href="salon.html#seatUpholstery">Перетяжка сидений</a></li>
+            <li><a href="salon.html#steeringUpholstery">Перетяжка руля</a></li>
+            <li><a href="salon.html#doorPanelUpholstery">Перетяжка дверных панелей</a></li>
+            <li><a href="salon.html#roofUpholstery">Перетяжка потолка</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="https://i.pinimg.com/736x/a1/8b/30/a18b30ba55d42ea5b453cbea5f31b1ef.jpg" alt="" class="product-image">
+        <div class="product-overlay">
+          <h2 class="product-title"><a href="osnash.html">Дооснащение</a></h2>
+          <ul class="product-description">
+            <li><a href="osnash.html#multimediaSystems">Звёздное небо</a></li>
+            <li><a href="osnash.html#rearViewCamera">Ламинация карбоном</a></li>
+            <li><a href="osnash.html#parktronics">Установка Android-мультимедиа</a></li>
+            <li><a href="osnash.html#seatHeating">Выдвижные пороги</a></li>
+            <li><a href="osnash.html#soundproof">Шумоизоляция автомобиля</a></li>
+            <li><a href="osnash.html#doorClosers">Установка доводчиков дверей</a></li>
+            <li><a href="osnash.html#accessories">Аксессуары для автомобиля</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <section class="portfolio">
+      <div class="container_portfolio">
+
+        <header class="section_header">
+          <h2>Наши работы</h2>
+          <p>Реальные автомобили. Реальные результаты. Без фотошопа.</p>
+        </header>
+
+        <!-- Счетчик работ -->
+        <div class="counter">
+          <span id="workCount">Показано 7 из 7 работ</span>
+        </div>
+
+        <!-- Фильтры -->
+        <div class="filters">
+          <div class="filters-container" id="filtersContainer">
+            <button class="filter active" data-filter="all" id="all_portfolio">Все работы</button>
+            <button class="filter" data-filter="film">Оклейка</button>
+            <button class="filter" data-filter="polishing">Полировка</button>
+            <button class="filter" data-filter="cleaning">Детейлинг уход</button>
+            <button class="filter" data-filter="ceramics">Керамика</button>
+            <button class="filter" data-filter="paint">Малярные работы</button>
+            <button class="filter" data-filter="interior">Перетяжка салона</button>
+            <button class="filter" data-filter="upgrade">Дооснащение</button>
+          </div>
+          <div class="filter-center-indicator"></div>
+        </div>
+
+        <!-- Сетка карточек -->
+        <div class="grid">
+
+
+
+          <!-- Карточка Оклейка пленкой -->
+          <article class="card" data-category="film">
+            <div class="before-after">
+              <img
+                src="https://www.vanswest.com.au/wp-content/uploads/2025/01/eTH56wne3Ee_x_oUJFs1WKjqjPBomrwGVAM7Ae13zIk9ccfs9vBZL0N10xEX-P1l7txoxBQS-A8PSCC9SCmAFU5VzulR9agShKj32rvkbLw-1024x768.jpg"
+                class="after" alt="После оклейки пленкой">
+              <div class="before">
+                <img src="./img/mercedes gt.png" alt="До оклейки пленкой">
+              </div>
+              <input type="range" min="0" max="100" value="50" aria-label="Сравнение до и после">
+              <span class="divider"></span>
+            </div>
+            <div class="info">
+              <h3>Mercedes AMG GT</h3>
+              <ul>
+                <li>Оклейка виниловой пленкой</li>
+                <li>Оклейка декоративных элементов</li>
+                <li>Оклейка антигравийной пленкой</li>
+                <li>Бронирование лобового стекла</li>
+              </ul>
+              <p class="time">Время: <b>4 дня</b></p>
+
+            </div>
+          </article>
+
+          <!-- Карточка Керамика -->
+          <article class="card" data-category="ceramics">
+            <div class="before-after">
+              <img src="./img/бмв  х5 2.png" class="after" alt="После нанесения керамики">
+              <div class="before">
+                <img src="./img/бмв х5.png" alt="До нанесения керамики">
+              </div>
+              <input type="range" min="0" max="100" value="50" aria-label="Сравнение до и после">
+              <span class="divider"></span>
+            </div>
+            <div class="info">
+              <h3>BMW X5</h3>
+              <ul>
+                <li>Полировка кузова</li>
+                <li>Керамика 2 слоя</li>
+                <li>Химчистка салона</li>
+              </ul>
+              <p class="time">Время: <b>2 дня</b></p>
+
+            </div>
+          </article>
+
+          <!-- Карточка Полировка -->
+          <article class="card" data-category="polishing">
+            <div class="before-after">
+              <img src="./img/audi222.png" class="after" alt="После полировки">
+              <div class="before">
+                <img src="./img/ауди а6.png" alt="До полировки">
+              </div>
+              <input type="range" min="0" max="100" value="50" aria-label="Сравнение до и после">
+              <span class="divider"></span>
+            </div>
+            <div class="info">
+              <h3>Audi A6</h3>
+              <ul>
+                <li>Полировка кузова</li>
+                <li>Полировка фар</li>
+                <li>Полировка дисков</li>
+                <li>Полировка стекол</li>
+              </ul>
+              <p class="time">Время: <b>2 дня</b></p>
+
+            </div>
+          </article>
+
+          <!-- Карточка Детейлинг уход -->
+          <article class="card" data-category="cleaning">
+            <div class="before-after">
+              <img src="./img/911 2.png" class="after" alt="После детейлинга">
+              <div class="before">
+                <img src="./img/911.png" alt="До детейлинга">
+              </div>
+              <input type="range" min="0" max="100" value="50" aria-label="Сравнение до и после">
+              <span class="divider"></span>
+            </div>
+            <div class="info">
+              <h3>Porsche 911 Carrera</h3>
+              <ul>
+                <li>Мойка кузова</li>
+                <li>Чистка салона</li>
+                <li>Уход за кожаным салоном</li>
+                <li>Очистка и защита ковров</li>
+              </ul>
+              <p class="time">Время: <b>1-2 дня</b></p>
+
+            </div>
+          </article>
+
+          <!-- Карточка Малярные работы -->
+          <article class="card" data-category="paint">
+            <div class="before-after">
+              <img src="./img/голф2.png" class="after" alt="После малярных работ">
+              <div class="before">
+                <img src="./img/голф1.png" alt="До малярных работ">
+              </div>
+              <input type="range" min="0" max="100" value="50" aria-label="Сравнение до и после">
+              <span class="divider"></span>
+            </div>
+            <div class="info">
+              <h3>Volkswagen Golf GTI</h3>
+              <ul>
+                <li>Покраска кузова</li>
+                <li>Покраска бамперов</li>
+                <li>Ремонт и покраска колес</li>
+                <li>Ремонт элементов интерьера</li>
+              </ul>
+              <p class="time">Время: <b>3-5 дней</b></p>
+
+            </div>
+          </article>
+
+          <!-- Карточка Перетяжка салона -->
+          <article class="card" data-category="interior">
+            <div class="before-after">
+              <img src="./img/rengrover.png" class="after" alt="После перетяжки салона">
+              <div class="before">
+                <img src="./img/ренж2.png" alt="До перетяжки салона">
+              </div>
+              <input type="range" min="0" max="100" value="50" aria-label="Сравнение до и после">
+              <span class="divider"></span>
+            </div>
+            <div class="info">
+              <h3>Land Rover Range Rover</h3>
+              <ul>
+                <li>Перетяжка сидений</li>
+                <li>Перетяжка руля</li>
+                <li>Перетяжка дверных панелей</li>
+                <li>Перетяжка потолка</li>
+              </ul>
+              <p class="time">Время: <b>3-4 дня</b></p>
+
+            </div>
+          </article>
+
+          <!-- Карточка Дооснащение -->
+          <article class="card" data-category="upgrade">
+            <div class="before-after">
+              <img src="https://i.pinimg.com/736x/c2/86/8d/c2868ddf297b1593bf0d8f1229426018.jpg" class="after"
+                alt="После дооснащения">
+              <div class="before">
+                <img src="https://i.pinimg.com/1200x/b3/a1/3b/b3a13b313ad26c684341238fb03ff80d.jpg"
+                  alt="До дооснащения">
+              </div>
+              <input type="range" min="0" max="100" value="50" aria-label="Сравнение до и после">
+              <span class="divider"></span>
+            </div>
+            <div class="info">
+              <h3>Tesla Model 3</h3>
+              <ul>
+                <li>Звёздное небо</li>
+                <li>Ламинация карбоном</li>
+                <li>Android-мультимедиа</li>
+                <li>Шумоизоляция</li>
+                <li>Доводчики дверей</li>
+              </ul>
+              <p class="time">Время: <b>2-5 дней</b></p>
+
+            </div>
+          </article>
+
+        </div>
+
+        <!-- Ссылка на все работы -->
+        <div class="more">
+          <a href="#" id="showAllBtn">Показать все 25 работ</a>
+        </div>
+
+        <!-- Доверие -->
+        <div class="trust">
+          <span><i class="fas fa-check-circle"></i> Все фото — наши</span>
+          <span><i class="fas fa-check-circle"></i> Без ретуши</span>
+          <span><i class="fas fa-check-circle"></i> Гарантия на работы</span>
+        </div>
+
+      </div>
+    </section>
+
+
+
+
+
+
+
+
+
+    <!-- Преимущества (УТП) -->
+    <section class="usp-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Не просто обещаем, а доказываем</h2>
+          <p class="section-subtitle">Почему клиенты выбирают нас и возвращаются снова</p>
+          <!-- Эмоциональный якорь -->
+          <p class="section-intro">Мы работаем с каждой машиной так, как сделали бы для своей. Это наш главный принцип,
+            а не просто строчка в рекламе.</p>
+        </div>
+
+        <div class="usp-grid">
+          <!-- Карточка 1 (ВЫДЕЛЕННАЯ - Главный аргумент) -->
+          <div class="usp-card usp-card--highlight" data-aos="fade-up">
+            <div class="usp-icon">
+              <i class="fas fa-microscope"></i>
+            </div>
+            <h3 class="usp-title">Вы видите цифры, а не догадки</h3>
+            <p class="usp-description">Перед работой и после — полная диагностика <strong>толщиномером и
+                pH-метром</strong>. Вы получаете цифровой отчёт о состоянии ЛКП и точно знаете, за что платите.</p>
+            <div class="usp-badge">ТОЧНЫЙ ЗАМЕР ПОКРЫТИЯ</div>
+          </div>
+
+          <!-- Карточка 2 -->
+          <div class="usp-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="usp-icon">
+              <i class="fas fa-handshake"></i>
+            </div>
+            <h3 class="usp-title">Цена зафиксирована в договоре</h3>
+            <p class="usp-description">Никаких сюрпризов "по ходу дела". После диагностики заключаем договор, где
+              <strong>фиксируем итоговую стоимость</strong>. Вы защищены от доплат.
+            </p>
+            <div class="usp-badge">ЦЕНА НЕ ИЗМЕНИТСЯ</div>
+          </div>
+
+          <!-- Карточка 3 -->
+          <div class="usp-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="usp-icon">
+              <i class="fas fa-camera"></i>
+            </div>
+            <h3 class="usp-title">Вы в курсе каждого этапа</h3>
+            <p class="usp-description">В личном кабинете вы видите <strong>20-40 фото и комментариев мастера</strong> в
+              реальном времени. Ваша машина не просто в боксе — она под вашим контролем.</p>
+            <div class="usp-badge">ОНЛАЙН-ОТЧЁТ 24/7</div>
+          </div>
+
+          <!-- Карточка 4 (ВЫДЕЛЕННАЯ - Качество материалов) -->
+          <div class="usp-card usp-card--highlight" data-aos="fade-up" data-aos-delay="300">
+            <div class="usp-icon">
+              <i class="fas fa-gem"></i>
+            </div>
+            <h3 class="usp-title">Материалы, которые служат годы</h3>
+            <p class="usp-description">Используем только <strong>Gyeon, CarPro, Koch Chemie</strong>. Их керамика и
+              защита <strong>в 2-3 раза долговечнее</strong> масс-маркета. Не экономим на главном.</p>
+            <div class="usp-badge">ПРЕМИУМ-МАТЕРИАЛЫ</div>
+          </div>
+
+          <!-- Карточка 5 (ВЫДЕЛЕННАЯ - Гарантия) -->
+          <div class="usp-card usp-card--highlight" data-aos="fade-up" data-aos-delay="400">
+            <div class="usp-icon">
+              <i class="fas fa-file-contract"></i>
+            </div>
+            <h3 class="usp-title">Гарантия, которая что-то значит</h3>
+            <p class="usp-description">Не просто слова, а <strong>пункты в договоре</strong>. До 5 лет на керамику, до
+              10 лет на плёнку. Если что-то случится — исправим за свой счёт.</p>
+            <div class="usp-badge">ГАРАНТИЯ В ДОГОВОРЕ</div>
+          </div>
+
+          <!-- Карточка 6 -->
+          <div class="usp-card" data-aos="fade-up" data-aos-delay="500">
+            <div class="usp-icon">
+              <i class="fas fa-user-tie"></i>
+            </div>
+            <h3 class="usp-title">Мастера, которые учились у брендов</h3>
+            <p class="usp-description">Наши специалицы — <strong>сертифицированные установщики Gyeon и CarPro</strong>.
+              Они знают нюансы материалов, которые используют.</p>
+            <div class="usp-badge">СЕРТИФИЦИРОВАННЫЕ МАСТЕРА</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Отзывы -->
+    <section class="reviews-section">
+      <div class="container_reviews">
+        <div class="section-header">
+          <h2 class="section-title">Не верите нам? Поверьте им</h2>
+          <p class="section-subtitle">Реальные отзывы клиентов — без прикрас и заказных слов</p>
+          <!-- Эмоциональный якорь -->
+          <p class="section-intro">Лучше один раз увидеть и услышать, чем сто раз прочитать. Поэтому мы ценим каждый
+            видео-отзыв — это высшая форма доверия.</p>
+        </div>
+
+        <!-- Видео-отзыв как главный акцент (можно сделать первым слайдом или отдельно) -->
+        <div class="featured-video-review">
+          <div class="video-review-label">
+            <i class="fas fa-video"></i> Видео-отзыв дня
+          </div>
+
+          <div class="featured-video-wrapper">
+
+            <div class="video-placeholder" data-video="./img/range-review.mp4">
+              <div class="play-button-large">
+                <i class="fas fa-play"></i>
+              </div>
+
+              <div class="video-info">
+                <h4>Анна Ковалёва | Range Rover Velar</h4>
+                <p>Показываю салон через 2 месяца после перетяжки</p>
+                <span class="video-duration">2:45</span>
+              </div>
+            </div>
+
+            <video class="featured-video" controls playsinline style="display:none">
+              <source type="video/mp4">
+            </video>
+
+
+            <video class="featured-video" controls preload="metadata">
+              <source type="video/mp4">
+            </video>
+
+          </div>
+        </div>
+
+
+
+        <div class="reviews-slider swiper">
+          <div class="swiper-wrapper">
+            <!-- Отзыв 1 с акцентом на услугу -->
+            <div class="swiper-slide review-card" data-service="ceramic">
+              <div class="service-badge">Керамическое покрытие</div>
+              <div class="review-header">
+                <div class="reviewer-avatar">
+                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+                    alt="Александр">
+                  <div class="verified-badge" title="Проверенный отзыв">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                </div>
+                <div class="reviewer-info">
+                  <h4>Александр Петров</h4>
+                  <div class="review-meta">
+                    <span class="car-model">Mercedes GLE 2023</span>
+                    <span class="review-source">
+                      <i class="fab fa-google"></i> Google Maps
+                    </span>
+                  </div>
+                  <div class="stars" data-rating="5">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                      class="fas fa-star"></i><i class="fas fa-star"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="review-content">
+                <p>"Заказывал керамику на новый GLE. Долго выбирал где делать — не ошибся. Ребята работали 3 дня, я прям
+                  в телеграмме следил за процессом — фото каждого этапа. Сейчас прошло уже 3 месяца, мою просто водой и
+                  машина как с салона. Ни одной царапины!"</p>
+                <!-- Добавим разговорную ремарку -->
+                <div class="review-highlight">Соседи думают, что я её каждый день натираю, а я просто дождь смываю 😄
+                </div>
+              </div>
+              <div class="review-media">
+                <img src="https://i.pinimg.com/1200x/6b/96/e7/6b96e767d0c29399a935faa0abb0e5a2.jpg"
+                  alt="Mercedes GLE после керамики" loading="lazy">
+                <div class="media-count">+12 фото</div>
+              </div>
+              <div class="review-date" title="Дата публикации отзыва">2 недели назад</div>
+              <div class="review-experience">После 3 месяцев эксплуатации</div>
+            </div>
+
+            <!-- Отзыв 2 - Видео сделаем особенным -->
+            <div class="swiper-slide review-card review-card--video" data-service="interior">
+              <div class="service-badge">Детейлинг салона</div>
+              <div class="video-review-tag">
+                <i class="fas fa-video"></i> Видео-отзыв
+              </div>
+              <div class="review-header">
+                <div class="reviewer-avatar">
+                  <img
+                    src="data:image/jpeg;base64,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"
+                    alt="Мария">
+                  <div class="verified-badge">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                </div>
+                <div class="reviewer-info">
+                  <h4>Мария Смирнова</h4>
+                  <div class="review-meta">
+                    <span class="car-model">Porsche 911 Carrera</span>
+                    <span class="review-source">
+                      <i class="fab fa-whatsapp"></i> Личное сообщение
+                    </span>
+                  </div>
+                  <div class="stars" data-rating="4.5">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                      class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="review-content">
+                <p>"После зимы салон 911 был в ужасном состоянии — пятна, песок, запах сигарет (покупала с рук). Думала,
+                  не отмоют. Сделали химчистку, кондиционер кожи, озонирование. Теперь пахнет как новый! Даже не
+                  верится, что это та же машина."</p>
+              </div>
+              <div class="review-media video-review" data-video-id="911-detailing">
+                <div class="video-thumbnail">
+                  <div class="play-button">
+                    <i class="fas fa-play"></i>
+                  </div>
+
+                  <video class="thumbnail-video" preload="metadata" playsinline muted loop poster="./img/911 2.png"
+                    style="width:100%; height:auto; display:block;">
+                    <source src="./img/auth.mp4" type="video/mp4">
+                    Ваш браузер не поддерживает видео тег.
+                  </video>
+
+                  <div class="video-overlay">
+                    <span class="video-length">1:34</span>
+                    <span class="watch-text">Смотреть отзыв</span>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="review-date">3 недели назад</div>
+              <div class="review-experience">Снято сразу после получения авто</div>
+            </div>
+
+            <!-- Отзыв 3 с акцентом на долгосрочный результат -->
+            <div class="swiper-slide review-card" data-service="ppf">
+              <div class="service-badge">Антигравийная плёнка</div>
+              <div class="review-header">
+                <div class="reviewer-avatar">
+                  <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+                    alt="Дмитрий">
+                  <div class="verified-badge">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                </div>
+                <div class="reviewer-info">
+                  <h4>Дмитрий Волков</h4>
+                  <div class="review-meta">
+                    <span class="car-model">BMW X5 xDrive40i</span>
+                    <span class="review-source">
+                      <i class="fas fa-map-marker-alt"></i> 2GIS
+                    </span>
+                  </div>
+                  <div class="stars" data-rating="5">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                      class="fas fa-star"></i><i class="fas fa-star"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="review-content">
+                <p>"Поклеили полную защиту Xpel на весь кузов. Цена немалая, но оно того стоило. Через месяц по работе
+                  поехал в область — камешки так и летели. Дома с фонариком смотрел — ни одной сколы! А через полгода
+                  вообще попал в град..."</p>
+                <div class="review-highlight">Плёнка вся в вмятинах, но краска цела. Заменили повреждённые фрагменты по
+                  гарантии — без вопросов.</div>
+              </div>
+              <div class="review-media">
+                <img src="https://i.pinimg.com/736x/ce/b9/d1/ceb9d130e96fe4029044ed75f36a755a.jpg" alt="Защита BMW X5"
+                  loading="lazy">
+                <div class="media-count">До/После</div>
+              </div>
+              <div class="review-date">1 месяц назад</div>
+              <div class="review-experience">Через 6 месяцев после оклейки</div>
+            </div>
+
+            <!-- Отзыв 4 - Еще одно видео -->
+            <div class="swiper-slide review-card review-card--video" data-service="interior">
+              <div class="service-badge">Перетяжка салона</div>
+              <div class="video-review-tag">
+                <i class="fas fa-video"></i> 3D-тур
+              </div>
+              <div class="review-header">
+                <div class="reviewer-avatar">
+                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face"
+                    alt="Анна">
+                  <div class="verified-badge">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                </div>
+                <div class="reviewer-info">
+                  <h4>Анна Ковалёва</h4>
+                  <div class="review-meta">
+                    <span class="car-model">Range Rover Velar</span>
+                    <span class="review-source">
+                      <i class="fab fa-google"></i> Google
+                    </span>
+                  </div>
+                  <div class="stars" data-rating="5">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                      class="fas fa-star"></i><i class="fas fa-star"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="review-content">
+                <p>"Перетягивала салон алькантарой с перфорацией. Работа — ювелирная. 5 дней я буквально жила в
+                  телеграм-канале с фотоотчётами. Каждый шов, каждый стык. Сейчас прошло 2 месяца — никаких отклеиваний,
+                  скрипов. Как будто с завода так было."</p>
+              </div>
+           <div class="review-media video-review" data-video-id="911-detailing">
+                <div class="video-thumbnail">
+                  <div class="play-button">
+                    <i class="fas fa-play"></i>
+                  </div>
+
+                  <video class="thumbnail-video" preload="metadata" playsinline muted loop poster="./img/911.png"
+                    style="width:30em; height: 30em;; display:block;">
+                    <source src="./img/range-review.mp4" type="video/mp4">
+                    Ваш браузер не поддерживает видео тег.
+                  </video>
+
+                  <div class="video-overlay">
+                    <span class="video-length">1:34</span>
+                    <span class="watch-text">Смотреть отзыв</span>
+                  </div>
+                </div>
+              </div>
+              <div class="review-date">2 месяца назад</div>
+              <div class="review-experience">После 2 месяцев ежедневной эксплуатации</div>
+            </div>
+          </div>
+
+          <!-- Навигация слайдера -->
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+        <!-- Усиленная статистика -->
+        <div class="reviews-stats" data-aos="fade-up" data-aos-delay="200">
+          <div class="stat-item">
+            <div class="stat-number" data-count="4.9">0</div>
+            <div class="stat-label">Реальный рейтинг в Google</div>
+            <div class="stat-sub">на основе 127 оценок</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-count="89">0</div>
+            <div class="stat-label">Отзывов с фото/видео</div>
+            <div class="stat-sub">клиенты не поленились снять</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-count="96">0</div>
+            <div class="stat-label">% порекомендуют нас</div>
+            <div class="stat-sub">опрос после завершения работ</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-count="42">0</div>
+            <div class="stat-label">Видео-отзыва</div>
+            <div class="stat-sub">самая ценная оценка</div>
+          </div>
+        </div>
+
+        <!-- Кнопка CTA с акцентом на оставить видео-отзыв -->
+        <div class="reviews-cta" data-aos="fade-up" data-aos-delay="300">
+          <p>Хотите такой же результат? <strong>Запишитесь на бесплатную диагностику</strong> и получите консультацию
+            мастера.</p>
+          <button class="btn btn-primary">
+            <i class="fas fa-calendar-check"></i> Записаться
+          </button>
+          <div class="cta-note">
+            <i class="fas fa-video"></i> Лучшим клиентам предлагаем записать видео-отзыв со скидкой на следующее
+            посещение
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Процесс работы -->
+    <section class="process-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Как мы работаем</h2>
+          <p class="section-subtitle">Чёткий процесс — залог идеального результата</p>
+        </div>
+
+        <div class="process-timeline">
+          <!-- Шаг 1 -->
+          <div class="process-step" data-step="1">
+            <div class="step-number">
+              <span>01</span>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content" data-aos="fade-right">
+              <div class="step-icon">
+                <i class="fas fa-car"></i>
+              </div>
+              <h3 class="step-title">Осмотр авто</h3>
+              <p class="step-description">Бесплатный детальный осмотр с замерами толщины ЛКП, оценкой состояния кузова и
+                салона. Составляем дефектную ведомость.</p>
+              <ul class="step-features">
+                <li><i class="fas fa-check-circle"></i> Проверка толщиномером</li>
+                <li><i class="fas fa-check-circle"></i> Фотофиксация состояния</li>
+                <li><i class="fas fa-check-circle"></i> Консультация мастера</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Шаг 2 -->
+          <div class="process-step" data-step="2">
+            <div class="step-number">
+              <span>02</span>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content" data-aos="fade-left">
+              <div class="step-icon">
+                <i class="fas fa-file-contract"></i>
+              </div>
+              <h3 class="step-title">Согласование работ</h3>
+              <p class="step-description">Подробная смета с фиксированной ценой. Заключаем договор с гарантией. Вносите
+                предоплату только после согласования всех деталей.</p>
+              <ul class="step-features">
+                <li><i class="fas fa-check-circle"></i> Прозрачная смета</li>
+                <li><i class="fas fa-check-circle"></i> Фиксированная цена</li>
+                <li><i class="fas fa-check-circle"></i> Гарантийный договор</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Шаг 3 -->
+          <div class="process-step" data-step="3">
+            <div class="step-number">
+              <span>03</span>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content" data-aos="fade-right">
+              <div class="step-icon">
+                <i class="fas fa-tools"></i>
+              </div>
+              <h3 class="step-title">Подготовка</h3>
+              <p class="step-description">Профессиональная мойка, обезжиривание, маскировка. Подготовка материалов и
+                оборудования. Настройка параметров для конкретного авто.</p>
+              <ul class="step-features">
+                <li><i class="fas fa-check-circle"></i> Глубокая очистка</li>
+                <li><i class="fas fa-check-circle"></i> Обезжиривание поверхности</li>
+                <li><i class="fas fa-check-circle"></i> Защитная маскировка</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Шаг 4 -->
+          <div class="process-step" data-step="4">
+            <div class="step-number">
+              <span>04</span>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content" data-aos="fade-left">
+              <div class="step-icon">
+                <i class="fas fa-cogs"></i>
+              </div>
+              <h3 class="step-title">Основные работы</h3>
+              <p class="step-description">Выполнение заказанных услуг с соблюдением технологий. Фотоотчёт в реальном
+                времени. Вы можете наблюдать за процессом онлайн.</p>
+              <ul class="step-features">
+                <li><i class="fas fa-check-circle"></i> Поэтапный фотоотчёт</li>
+                <li><i class="fas fa-check-circle"></i> Контроль качества</li>
+                <li><i class="fas fa-check-circle"></i> Онлайн-наблюдение</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Шаг 5 -->
+          <div class="process-step" data-step="5">
+            <div class="step-number">
+              <span>05</span>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content" data-aos="fade-right">
+              <div class="step-icon">
+                <i class="fas fa-clipboard-check"></i>
+              </div>
+              <h3 class="step-title">Контроль качества</h3>
+              <p class="step-description">Проверка под разными углами и освещением. Тестирование на водо- и
+                грязеотталкивающий эффект. Финальная полировка и защита.</p>
+              <ul class="step-features">
+                <li><i class="fas fa-check-circle"></i> Проверка под ультрафиолетом</li>
+                <li><i class="fas fa-check-circle"></i> Тест на гидрофобность</li>
+                <li><i class="fas fa-check-circle"></i> Финальная инспекция</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Шаг 6 -->
+          <div class="process-step" data-step="6">
+            <div class="step-number">
+              <span>06</span>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content" data-aos="fade-left">
+              <div class="step-icon">
+                <i class="fas fa-key"></i>
+              </div>
+              <h3 class="step-title">Передача авто</h3>
+              <p class="step-description">Демонстрация результата, инструктаж по уходу. Передача гарантийных документов
+                и остатков материалов. Оплата оставшейся суммы.</p>
+              <ul class="step-features">
+                <li><i class="fas fa-check-circle"></i> Демонстрация результата</li>
+                <li><i class="fas fa-check-circle"></i> Инструктаж по уходу</li>
+                <li><i class="fas fa-check-circle"></i> Гарантийные документы</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </section>
+
+
+
+
+
+    <section class="form-section" id="zapis">
+      <div class="form-gl">
+        <div class="form-container">
+          <div class="form-content">
+            <h1 class="form-title">Запишитесь на Детейлинг. Ваш автомобиль это оценит!</h1>
+            <p class="form-description">Оставьте свой номер, и наш специалист свяжется с вами в течение 15 минут,
+              чтобы подробно проконсультировать, рассчитать стоимость и выбрать удобное время.</p>
+
+            <!-- Добавил класс "form" форме и класс "full-width" элементам, которые должны быть широкими -->
+            <form action="#" method="POST" class="form">
+
+              <!-- Имя (1 колонка на ПК) -->
+              <div class="form-group">
+                <label for="name" class="form-label">Ваше имя*</label>
+                <input type="text" id="name" name="name" placeholder="Например, Александр" required class="form-input">
+              </div>
+
+              <!-- Телефон (2 колонка на ПК) -->
+              <div class="form-group">
+                <label for="phone" class="form-label">Номер телефона*</label>
+                <input type="tel" id="phone" name="phone" placeholder="+996 (___) __-__-__" required class="form-input">
+              </div>
+
+              <!-- Услуга (Полная ширина) -->
+              <div class="form-group full-width">
+                <label for="service" class="form-label">Выберите интересующую услугу*</label>
+                <select id="service" name="service" required class="form-select">
+                  <option value="" disabled selected>— Выберите услугу из списка —</option>
+                  <option value="wrap">Оклейка пленкой</option>
+                  <option value="polishing">Полировка автомобиля</option>
+                  <option value="detailing_care">Детейлинг уход</option>
+                  <option value="ceramic_coatings">Керамические покрытия</option>
+                  <option value="paint_work">Малярные работы</option>
+                  <option value="interior_upholstery">Перетяжка салона</option>
+                  <option value="retrofit">Дооснащение</option>
+                </select>
+              </div>
+
+              <!-- Детали (Полная ширина) -->
+              <div class="form-group full-width">
+                <label for="message" class="form-label">Детали запроса (Марка/Модель авто, год, пожелания)</label>
+                <textarea id="message" name="message"
+                  placeholder="Например: BMW X5, 2022 г. Интересует полная оклейка в матовую пленку."
+                  class="form-textarea"></textarea>
+              </div>
+
+              <!-- Согласие (Полная ширина) -->
+              <div class="form-group checkbox-group full-width">
+                <input type="checkbox" id="consent" name="consent" required class="form-checkbox">
+                <label for="consent" class="form-label">Я согласен(а) на обработку персональных данных и
+                  ознакомлен(а) с
+                  <a href="/policy" class="policy-link" target="_blank">Политикой конфиденциальности</a>*</label>
+              </div>
+
+              <!-- Кнопка (Полная ширина) -->
+              <button type="submit" class="form-submit full-width">Получить консультацию и расчет</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    </section>
+  </main>
+
+
+
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script src="js/header.js" defer></script>
+
+  <script src="js/main.js"></script>
+
+</body>
+
+</html>

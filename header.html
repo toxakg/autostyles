@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <!-- ✅ SEO -->
+  <meta name="description" content="Премиальный детейлинг-центр: полировка, химчистка, защита кузова. Онлайн-запись.">
+  <meta name="keywords" content="детейлинг, химчистка авто, полировка, авто мойка, керамика, пленка, антидождь">
+  <meta name="author" content="Autosyles">
+
+
+  <!-- ✅ Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+
+  <link rel="icon" href="./img/logo2.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+
+
+
+
+
+
+
+
+  <!-- ✅ Font Awesome (один раз!) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- ✅ Стили -->
+
+  <!-- <link rel="stylesheet" href="/css/header.css" /> -->
+
+
+  <title>Autosyles</title>
+</head>
+
+<body>
+  <header class="header-mobile">
+
+    <div class="logo">
+      <a href="/index.html">
+        <img src="./img/logo2.png" alt="Logo">
+      </a>
+    </div>
+
+
+    <div class="socials">
+      <!-- WhatsApp -->
+      <a href="https://wa.me/996996555730615" class="social-icon" aria-label="WhatsApp" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+      </a>
+
+      <!-- Instagram -->
+      <a href="https://www.instagram.com/t.m.a_kg/" class="social-icon" aria-label="Instagram" target="_blank">
+        <i class="fab fa-instagram"></i>
+      </a>
+
+      <!-- Telegram -->
+      <a href="https://t.me/996996555730615" class="social-icon" aria-label="Telegram" target="_blank">
+        <i class="fab fa-telegram"></i>
+      </a>
+    </div>
+
+    <!-- Город -->
+    <div class="city">
+      <a href="https://go.2gis.com/oVZ2o" target="_blank" aria-label="Ссылка на карту">
+        <i class="fas fa-map-marker-alt"></i>
+        <p> Бишкек</p>
+      </a>
+    </div>
+
+
+    <button class="menu-toggle" aria-controls="main-nav" aria-expanded="false">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+
+    <nav class="mobile-nav" id="main-nav">
+      <button class="close-menu-btn" aria-label="Закрыть меню">
+        <i class="fas fa-times"></i>
+      </button>
+      <a href="auth.html" class="mobile-menu__login">
+        <i class="fas fa-user"></i>
+        <span>Личный кабинет</span>
+      </a>
+
+
+
+      <div class="contact-block">
+        <a href="index.html#form-section" class="contact-btn">
+          <span>Связаться с нами</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+        <a href="tel:+996 (555) 73-06-15" class="phone-link">
+          <i class="fas fa-phone-alt"></i>
+          +996 (555) 73-06-15
+        </a>
+      </div>
+
+
+
+      <ul class="accordion-menu">
+        <li class="menu-item has-submenu">
+          <a href="okleyka.html" class="menu-link main-title" aria-expanded="false"
+            data-target="#submenu-okleyka">Оклейка
+            пленкой</a>
+          <span class="toggle-icon">+</span>
+          <ul class="submenu" id="submenu-okleyka">
+            <li><a href="okleyka.html#vinylWrapService">Оклейка виниловой пленкой</a></li>
+            <li><a href="okleyka.html#decorativeWrap">Оклейка декоративных элементов</a></li>
+            <li><a href="okleyka.html#antiGravWrap">Оклейка антигравийной пленкой</a></li>
+            <li><a href="okleyka.html#windshieldWrap">Бронирование лобового стекла</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item has-submenu">
+          <a href="polirovka.html" class="menu-link main-title" aria-expanded="false"
+            data-target="#submenu-polirovka">Полировка
+            автомобиля</a>
+          <span class="toggle-icon">+</span>
+          <ul class="submenu" id="submenu-polirovka">
+            <li><a href="polirovka.html#bodyPolishing">Полировка кузова</a></li>
+            <li><a href="polirovka.html#headlightPolishing">Полировка фар</a></li>
+            <li><a href="polirovka.html#wheelPolishing">Полировка колесных дисков</a></li>
+            <li><a href="polirovka.html#glassPolishing">Полировка стекол</a></li>
+          </ul>
+        </li>
+        <li class="menu-item has-submenu">
+          <a href="uhod.html" class="menu-link main-title" aria-expanded="false" data-target="#submenu-uhod">Детейлинг
+            уход</a>
+          <span class="toggle-icon">+</span>
+          <ul class="submenu" id="submenu-uhod">
+            <li><a href="uhod.html#bodyWash">Мойка кузова</a></li>
+            <li><a href="uhod.html#interiorCleaning">Чистка салона</a></li>
+            <li><a href="uhod.html#leatherCare">Уход за кожаным салоном</a></li>
+            <li><a href="uhod.html#carpetSeatProtection">Очистка и защита ковров и сидений</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item has-submenu">
+          <a href="ceramic.html" class="menu-link main-title" aria-expanded="false"
+            data-target="#submenu-ceramic">Керамические
+            покрытия</a>
+          <span class="toggle-icon">+</span>
+          <ul class="submenu" id="submenu-ceramic">
+            <li><a href="ceramic.html#ceramicBody">Керамическое покрытие кузова</a></li>
+            <li><a href="ceramic.html#ceramicGlass">Керамическое покрытие стекол</a></li>
+            <li><a href="ceramic.html#ceramicWheels">Керамическое покрытие колес</a></li>
+            <li><a href="ceramic.html#nanoInterior">Нанопокрытие для салона</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item has-submenu">
+          <a href="molyar.html" class="menu-link main-title" aria-expanded="false"
+            data-target="#submenu-molyar">Малярные
+            работы</a>
+          <span class="toggle-icon">+</span>
+          <ul class="submenu" id="submenu-molyar">
+            <li><a href="molyar.html#bodyPaint">Покраска кузова</a></li>
+            <li><a href="molyar.html#bumperPaint">Покраска бамперов</a></li>
+            <li><a href="molyar.html#wheelRepairPaint">Ремонт и покраска колес</a></li>
+            <li><a href="molyar.html#interiorRepairPaint">Ремонт и покраска элементов интерьера</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item has-submenu">
+          <a href="salon.html" class="menu-link main-title" aria-expanded="false" data-target="#submenu-salon">Перетяжка
+            салона</a>
+          <span class="toggle-icon">+</span>
+          <ul class="submenu" id="submenu-salon">
+            <li><a href="salon.html#seatUpholstery">Перетяжка сидений</a></li>
+            <li><a href="salon.html#steeringUpholstery">Перетяжка руля</a></li>
+            <li><a href="salon.html#doorPanelUpholstery">Перетяжка дверных панелей</a></li>
+            <li><a href="salon.html#roofUpholstery">Перетяжка потолка</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item has-submenu">
+          <a href="osnash.html" class="menu-link main-title" aria-expanded="false"
+            data-target="#submenu-osnash">Дооснащение</a>
+          <span class="toggle-icon">+</span>
+          <ul class="submenu" id="submenu-osnash">
+            <li><a href="osnash.html#multimediaSystems">Звёздное небо</a></li>
+            <li><a href="osnash.html#rearViewCamera">Ламинация карбоном</a></li>
+            <li><a href="osnash.html#parktronics">Установка Android-мультимедиа</a></li>
+            <li><a href="osnash.html#seatHeating">Выдвижные пороги</a></li>
+            <li><a href="osnash.html#soundproof">Шумоизоляция автомобиля</a></li>
+            <li><a href="osnash.html#doorClosers">Установка доводчиков дверей</a></li>
+            <li><a href="osnash.html#accessories">Аксессуары для автомобиля</a></li>
+          </ul>
+        </li>
+
+        <!-- Вставляешь в низ мобильного меню -->
+        <div class="menu-location">
+          <div class="location-info">
+            <span class="city">Бишкек,</span>
+            <span class="address">ул. Исакеева, 34/1</span>
+          </div>
+          <a href="https://yandex.ru/maps/?text=Бишкек, улица Исакеева, 34/1" target="_blank" class="map-button">
+            Показать на карте
+          </a>
+        </div>
+
+
+        <div class="socials">
+          <!-- WhatsApp -->
+          <a href="https://wa.me/996996555730615" class="social-icon" aria-label="WhatsApp" target="_blank">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+
+          <!-- Instagram -->
+          <a href="https://www.instagram.com/t.m.a_kg/" class="social-icon" aria-label="Instagram" target="_blank">
+            <i class="fab fa-instagram"></i>
+          </a>
+
+          <!-- Telegram -->
+          <a href="https://t.me/996996555730615" class="social-icon" aria-label="Telegram" target="_blank">
+            <i class="fab fa-telegram"></i>
+          </a>
+        </div>
+
+
+      </ul>
+    </nav>
+
+
+  </header>
+
+
+
+
+  <header class="desktop-header">
+    <div class="desktop-header__container">
+      <div class="desktop-header__left">
+        <a href="index.html" class="desktop-header__logo">
+          <img src="./img/logo2.png" alt="Логотип компании">
+        </a>
+
+      </div>
+
+      <nav class="desktop-header__nav">
+        <ul class="desktop-menu">
+          <li class="desktop-menu__item">
+            <a href="okleyka.html">Оклейка пленкой</a>
+            <div class="desktop-submenu">
+              <a href="okleyka.html#vinylWrapService">Оклейка виниловой пленкой</a>
+              <a href="okleyka.html#decorativeWrap">Оклейка декоративных элементов</a>
+              <a href="okleyka.html#antiGravWrap">Оклейка антигравийной пленкой</a>
+              <a href="okleyka.html#windshieldWrap">Бронирование лобового стекла</a>
+            </div>
+          </li>
+
+          <li class="desktop-menu__item">
+            <a href="polirovka.html">Полировка автомобиля</a>
+            <div class="desktop-submenu">
+              <a href="polirovka.html#bodyPolishing">Полировка кузова</a>
+              <a href="polirovka.html#headlightPolishing">Полировка фар</a>
+              <a href="polirovka.html#wheelPolishing">Полировка колесных дисков</a>
+              <a href="polirovka.html#glassPolishing">Полировка стекол</a>
+            </div>
+          </li>
+
+          <li class="desktop-menu__item">
+            <a href="uhod.html">Детейлинг уход</a>
+            <div class="desktop-submenu">
+              <a href="uhod.html#bodyWash">Мойка кузова</a>
+              <a href="uhod.html#interiorCleaning">Чистка салона</a>
+              <a href="uhod.html#leatherCare">Уход за кожаным салоном</a>
+              <a href="uhod.html#carpetSeatProtection">Очистка и защита ковров и сидений</a>
+            </div>
+          </li>
+
+          <li class="desktop-menu__item">
+            <a href="ceramic.html">Керамические покрытия</a>
+            <div class="desktop-submenu">
+              <a href="ceramic.html#ceramicBody">Керамическое покрытие кузова</a>
+              <a href="ceramic.html#ceramicGlass">Керамическое покрытие стекол</a>
+              <a href="ceramic.html#ceramicWheels">Керамическое покрытие колес</a>
+              <a href="ceramic.html#nanoInterior">Нанопокрытие для салона</a>
+            </div>
+          </li>
+
+          <li class="desktop-menu__item">
+            <a href="molyar.html">Малярные работы</a>
+            <div class="desktop-submenu">
+              <a href="molyar.html#bodyPaint">Покраска кузова</a>
+              <a href="molyar.html#bumperPaint">Покраска бамперов</a>
+              <a href="molyar.html#wheelRepairPaint">Ремонт и покраска колес</a>
+              <a href="molyar.html#interiorRepairPaint">Ремонт и покраска элементов интерьера</a>
+            </div>
+          </li>
+
+          <li class="desktop-menu__item">
+            <a href="salon.html">Перетяжка салона</a>
+            <div class="desktop-submenu">
+              <a href="salon.html#seatUpholstery">Перетяжка сидений</a>
+              <a href="salon.html#steeringUpholstery">Перетяжка руля</a>
+              <a href="salon.html#doorPanelUpholstery">Перетяжка дверных панелей</a>
+              <a href="salon.html#roofUpholstery">Перетяжка потолка</a>
+            </div>
+          </li>
+
+          <li class="desktop-menu__item">
+            <a href="osnash.html">Дооснащение</a>
+            <div class="desktop-submenu">
+              <a href="osnash.html#multimediaSystems">Звёздное небо</a>
+              <a href="osnash.html#rearViewCamera">Ламинация карбоном</a>
+              <a href="osnash.html#parktronics">Установка Android-мультимедиа</a>
+              <a href="osnash.html#seatHeating">Выдвижные пороги</a>
+              <a href="osnash.html#soundproof">Шумоизоляция автомобиля</a>
+              <a href="osnash.html#doorClosers">Установка доводчиков дверей</a>
+              <a href="osnash.html#accessories">Аксессуары для автомобиля</a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="desktop-header__right">
+        <div class="desktop-header__socials">
+          <!-- WhatsApp -->
+          <a href="https://wa.me/996996555730615" class="desktop-header__social-icon" aria-label="WhatsApp"
+            target="_blank">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+
+          <!-- Instagram -->
+          <a href="https://www.instagram.com/t.m.a_kg/" class="desktop-header__social-icon" aria-label="Instagram"
+            target="_blank">
+            <i class="fab fa-instagram"></i>
+          </a>
+
+          <!-- Telegram -->
+          <a href="https://t.me/996996555730615" class="desktop-header__social-icon" aria-label="Telegram"
+            target="_blank">
+            <i class="fab fa-telegram"></i>
+          </a>
+        </div>
+
+        <a href="auth.html" class="desktop-header__login">
+          <i class="fas fa-user"></i>
+
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+
+
+</body>

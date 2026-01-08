@@ -1,0 +1,203 @@
+
+
+/* Переменные для удобного управления цветами */
+:root {
+  --footer-bg: #2c3e50;      /* Темно-синий фон */
+  --footer-text: #ecf0f1;   /* Светлый текст */
+  --footer-heading: #ffffff; /* Белый для заголовков */
+  --footer-link-hover: #3498db; /* Ярко-синий для акцентов */
+  --footer-border: #4a6a8a;   /* Цвет разделительной линии */
+}
+
+
+/* --- Базовые стили (Mobile-First) --- */
+footer {
+  background-color: var(--footer-bg);
+  color: var(--footer-text);
+  padding: 3rem 1.5rem 1.5rem; /* Отступы: 3rem сверху, 1.5 по бокам, 1.5 снизу */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.footer-container {
+  display: flex;
+  flex-direction: column; /* Все блоки друг под другом на мобильных */
+  gap: 2.5rem; /* Расстояние между блоками */
+  max-width: 1200px; /* Ограничиваем максимальную ширину */
+  margin: 0 auto; /* Центрируем контейнер */
+}
+
+/* Стилизация заголовков секций (Контакты, Следите, Навигация...) */
+.footer-container h4 {
+  color: var(--footer-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+/* Декоративная линия под заголовком */
+.footer-container h4::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 2px;
+  background-color: var(--footer-link-hover);
+  margin-top: 0.5rem;
+}
+
+/* --- Секция "Контакты" --- */
+.footer-contact p {
+  margin-bottom: 0.75rem;
+  display: flex; /* Для выравнивания иконки и текста */
+  align-items: center;
+}
+
+.footer-contact i {
+  color: var(--footer-link-hover);
+  margin-right: 0.75rem;
+  width: 20px; /* Фиксированная ширина для ровного alignmenta */
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+/* --- Секция "Социальные сети" --- */
+.socials_icons {
+  display: flex;
+  gap: 1.5rem; /* Расстояние между иконками */
+}
+
+.social-icon i {
+  font-size: 1.75rem; /* Крупные иконки */
+  color: var(--footer-tex);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-icon:hover i {
+  color: var(--footer-link-hover);
+  transform: scale(1.3); /* Легкое увеличение при наведении */
+}
+
+/* --- Секция "Навигация" --- */
+.footer-nav ul {
+  list-style: none; /* Убираем маркеры списка */
+}
+
+.footer-nav li {
+  margin-bottom: 0.75rem;
+}
+
+.footer-nav a {
+  color: var(--footer-text);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-nav a:hover {
+  color: var(--footer-link-hover);
+  text-decoration: underline;
+}
+
+/* --- Улучшенные стили для Социальных сетей --- */
+
+.social-icon i {
+  /* Базовый размер иконки */
+  font-size: 2rem; /* Можете поменять на 1.75rem или 2.25rem */
+  
+  /* Плавный переход для увеличения и яркости */
+  transition: transform 0.3s ease, filter 0.3s ease, color 0.3s ease;
+}
+
+/* 1. "Свет по оргиналу" 
+  Задаем иконкам их оригинальные брендовые цвета 
+*/
+
+/* WhatsApp */
+.social-icon[aria-label="WhatsApp"] i {
+  color: #25D366;
+}
+
+/* Instagram */
+.social-icon[aria-label="Instagram"] i {
+  /* Используем один из главных цветов Instagram */
+  color: #E1306C;
+}
+
+/* Telegram */
+.social-icon[aria-label="Telegram"] i {
+  color: #0088CC;
+}
+
+
+/* 2. "Чуть больше" и "Еше ярче" при наведении 
+*/
+
+.social-icon:hover i {
+  /* "Чуть больше" - увеличиваем на 20% */
+  transform: scale(1.2);
+  
+  /* "Еше ярче" - увеличиваем яркость цвета на 25% */
+  filter: brightness(1.25);
+}
+
+/* --- Секция "Карта" --- */
+.footer-map iframe {
+  width: 100%; /* Карта на всю ширину блока */
+  height: 250px; /* Фиксированная высота на мобильных */
+  border: 0;
+  border-radius: 8px; /* Скругляем углы */
+  filter: grayscale(20%); /* Слегка обесцвечиваем карту для стиля */
+}
+
+/* --- Нижняя часть (Copyright) --- */
+.footer-bottom {
+  text-align: center;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--footer-border); /* Разделительная линия */
+  font-size: 0.9rem;
+  color: #bdc3c7; /* Чуть более тусклый цвет */
+}
+
+/* Стили для ссылок в блоке контактов */
+.footer-contact a {
+  color: inherit; /* Ссылка будет того же цвета, что и остальной текст футера */
+  text-decoration: none; /* Убираем стандартное подчеркивание */
+  transition: color 0.3s ease;
+}
+
+/* Эффект при наведении курсора */
+.footer-contact a:hover {
+  color: var(--footer-link-hover, #3498db); /* Цвет при наведении (можно поменять) */
+  text-decoration: underline; /* Добавляем подчеркивание при наведении */
+}
+
+
+/* === МЕДИА-ЗАПРОСЫ === */
+
+/* --- Планшеты (min-width: 768px) --- */
+/* На планшетах делаем сетку 2x2 */
+@media (min-width: 768px) {
+  .footer-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Две равные колонки */
+    gap: 3rem; /* Увеличим отступ */
+  }
+}
+
+/* --- Десктопы (min-width: 1024px) --- */
+/* На больших экранах делаем 4 колонки */
+@media (min-width: 1024px) {
+  .footer-container {
+    /* Контакты и Карта получают 2 доли ширины, 
+      Соцсети и Навигация - по 1 доле.
+    */
+    grid-template-columns: 2fr 1.5fr 1fr 2.5fr;
+  }
+
+  .footer-map iframe {
+    
+    min-height: 200px; /* Минимальная высота */
+   
+  }
+}
