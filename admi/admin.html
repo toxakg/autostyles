@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUTOSTYLES | Панель управления</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --neon: #ff4d00;
+  --neon2: #ff8800;
+  --gold: #c9a84c;
+  --bg:    #060910;
+  --bg2:   #0b0f1a;
+  --bg3:   #111827;
+  --surf:  rgba(13,18,30,0.95);
+  --surf2: rgba(20,28,46,0.7);
+  --border: rgba(255,77,0,0.2);
+  --border2: rgba(255,255,255,0.06);
+  --text:  #e2e8f4;
+  --muted: #5a6480;
+  --muted2:#8899bb;
+  --success:#00e5a0;
+  --warn:  #f59e0b;
+  --error: #ff3860;
+  --info:  #38bdf8;
+  --sb-w: 240px;
+  --sb-coll: 64px;
+  --hdr: 58px;
+  --radius: 4px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+::-webkit-scrollbar-thumb:hover{background:var(--neon);}
+a{color:inherit;text-decoration:none;}
+button{font-family:'Exo 2',sans-serif;cursor:pointer;}
+input,select,textarea{font-family:'Exo 2',sans-serif;color:var(--text);}
+
+.app{display:flex;height:100vh;overflow:hidden;}
+
+/* SIDEBAR */
+.sidebar{width:var(--sb-w);min-width:var(--sb-w);background:var(--surf);border-right:1px solid var(--border2);display:flex;flex-direction:column;transition:width 0.3s cubic-bezier(0.4,0,0.2,1), min-width 0.3s;position:relative;z-index:100;overflow:hidden;}
+.sidebar.collapsed{width:var(--sb-coll);min-width:var(--sb-coll);}
+.sidebar.collapsed .nav-label,.sidebar.collapsed .logo-text,.sidebar.collapsed .sidebar-bottom-label,.sidebar.collapsed .user-info{display:none;}
+.sidebar.collapsed .nav-item{justify-content:center;padding:10px 0;}
+.sidebar.collapsed .nav-item i{margin:0;}
+.sidebar-top{padding:16px 14px 12px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:10px;min-height:var(--hdr);}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#ff4d00,#c73800);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 16px rgba(255,77,0,0.4);}
+.logo-icon i{font-size:16px;color:#fff;}
+.logo-text{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.1em;line-height:1.3;}
+.logo-text span{display:block;font-family:'Exo 2',sans-serif;font-size:9px;letter-spacing:0.25em;color:var(--neon);font-weight:400;}
+.nav{flex:1;padding:10px 0;overflow-y:auto;overflow-x:hidden;}
+.nav-section-label{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:10px 16px 4px;font-family:'Rajdhani',sans-serif;font-weight:600;white-space:nowrap;}
+.sidebar.collapsed .nav-section-label{opacity:0;height:0;padding:0;overflow:hidden;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:0;cursor:pointer;transition:all 0.2s;position:relative;white-space:nowrap;border-left:2px solid transparent;}
+.nav-item:hover{background:rgba(255,77,0,0.06);color:var(--text);}
+.nav-item.active{background:rgba(255,77,0,0.1);border-left-color:var(--neon);color:var(--neon);}
+.nav-item i{width:18px;text-align:center;font-size:14px;flex-shrink:0;transition:color 0.2s;}
+.nav-item.active i{color:var(--neon);}
+.nav-label{font-size:13px;font-weight:500;letter-spacing:0.03em;}
+.nav-badge{margin-left:auto;background:var(--neon);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;font-family:'Rajdhani',sans-serif;}
+.sidebar-bottom{padding:12px;border-top:1px solid var(--border2);}
+.user-card{display:flex;align-items:center;gap:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:var(--radius);border:1px solid var(--border2);overflow:hidden;}
+.user-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#ff4d00,#ff8800);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;flex-shrink:0;}
+.user-info{overflow:hidden;}
+.user-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.user-role{font-size:9px;color:var(--neon);letter-spacing:0.15em;text-transform:uppercase;font-family:'Rajdhani',sans-serif;}
+.collapse-btn{position:absolute;top:16px;right:-14px;width:28px;height:28px;background:var(--bg3);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted2);font-size:11px;transition:all 0.2s;z-index:101;}
+.collapse-btn:hover{border-color:var(--neon);color:var(--neon);}
+.sidebar.collapsed .collapse-btn i{transform:rotate(180deg);}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.header{height:var(--hdr);background:var(--surf);border-bottom:1px solid var(--border2);display:flex;align-items:center;padding:0 20px;gap:16px;flex-shrink:0;}
+.page-title{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;letter-spacing:0.08em;flex:1;}
+.page-title span{color:var(--neon);}
+.header-search{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.03);border:1px solid var(--border2);border-radius:var(--radius);padding:6px 12px;width:220px;}
+.header-search i{color:var(--muted);font-size:12px;}
+.header-search input{background:none;border:none;outline:none;font-size:13px;color:var(--text);width:100%;}
+.header-search input::placeholder{color:var(--muted);}
+.header-actions{display:flex;align-items:center;gap:8px;}
+.hdr-btn{width:34px;height:34px;background:rgba(255,255,255,0.03);border:1px solid var(--border2);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted2);font-size:13px;transition:all 0.2s;position:relative;}
+.hdr-btn:hover{border-color:var(--neon);color:var(--neon);}
+.hdr-notif-dot{position:absolute;top:6px;right:6px;width:6px;height:6px;background:var(--neon);border-radius:50%;box-shadow:0 0 6px var(--neon);}
+.hdr-date{font-size:11px;color:var(--muted2);letter-spacing:0.05em;font-family:'Rajdhani',sans-serif;font-weight:600;padding:6px 10px;background:rgba(255,255,255,0.02);border:1px solid var(--border2);border-radius:var(--radius);}
+
+/* CONNECTION STATUS */
+.conn-status{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:var(--radius);font-size:11px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:0.08em;border:1px solid var(--border2);background:rgba(255,255,255,0.02);}
+.conn-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.conn-status.connected .conn-dot{background:var(--success);box-shadow:0 0 6px var(--success);}
+.conn-status.disconnected .conn-dot{background:var(--error);box-shadow:0 0 6px var(--error);}
+.conn-status.connecting .conn-dot{background:var(--warn);animation:pulse 1s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+.content{flex:1;overflow-y:auto;padding:20px;background:var(--bg);}
+.section{display:none;}
+.section.active{display:block;animation:secIn 0.3s ease;}
+@keyframes secIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
+@media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+.kpi-card{background:var(--surf);border:1px solid var(--border2);border-radius:var(--radius);padding:18px 20px;position:relative;overflow:hidden;transition:border-color 0.2s, transform 0.2s;}
+.kpi-card:hover{border-color:var(--border);transform:translateY(-1px);}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kpi-color,var(--neon));box-shadow:0 0 8px var(--kpi-color,var(--neon));}
+.kpi-label{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted2);font-family:'Rajdhani',sans-serif;font-weight:600;margin-bottom:8px;}
+.kpi-value{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:700;line-height:1;margin-bottom:6px;}
+.kpi-delta{font-size:11px;display:flex;align-items:center;gap:4px;}
+.kpi-delta.up{color:var(--success);}
+.kpi-delta.dn{color:var(--error);}
+.kpi-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:32px;opacity:0.07;color:var(--kpi-color,var(--neon));}
+
+.charts-row{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:18px;}
+@media(max-width:1100px){.charts-row{grid-template-columns:1fr;}}
+.chart-card{background:var(--surf);border:1px solid var(--border2);border-radius:var(--radius);padding:18px 20px;}
+.chart-title{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted2);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.chart-title i{color:var(--neon);font-size:11px;}
+.chart-wrap{position:relative;height:200px;}
+.recent-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:1000px){.recent-row{grid-template-columns:1fr;}}
+
+/* SECTION HEADER */
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+.section-title{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;letter-spacing:0.08em;flex:1;}
+.section-title small{display:block;font-size:10px;color:var(--muted2);letter-spacing:0.15em;font-weight:400;margin-top:1px;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:var(--radius);font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border:none;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.btn i{font-size:11px;}
+.btn-primary{background:var(--neon);color:#fff;box-shadow:0 2px 12px rgba(255,77,0,0.35);}
+.btn-primary:hover{background:#ff6a00;box-shadow:0 4px 18px rgba(255,77,0,0.5);transform:translateY(-1px);}
+.btn-secondary{background:rgba(255,255,255,0.05);color:var(--muted2);border:1px solid var(--border2);}
+.btn-secondary:hover{background:rgba(255,255,255,0.09);color:var(--text);}
+.btn-danger{background:rgba(255,56,96,0.15);color:var(--error);border:1px solid rgba(255,56,96,0.25);}
+.btn-danger:hover{background:rgba(255,56,96,0.25);}
+.btn-success{background:rgba(0,229,160,0.15);color:var(--success);border:1px solid rgba(0,229,160,0.25);}
+.btn-success:hover{background:rgba(0,229,160,0.25);}
+.btn-sm{padding:5px 10px;font-size:11px;}
+.btn-xs{padding:3px 8px;font-size:10px;}
+
+/* TOOLBAR */
+.toolbar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.search-box{display:flex;align-items:center;gap:8px;background:var(--surf);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 12px;min-width:200px;flex:1;max-width:320px;}
+.search-box i{color:var(--muted);font-size:12px;}
+.search-box input{background:none;border:none;outline:none;font-size:13px;color:var(--text);width:100%;}
+.search-box input::placeholder{color:var(--muted);}
+.filter-select{background:var(--surf);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 10px;font-size:12px;color:var(--muted2);outline:none;cursor:pointer;}
+.filter-select:focus{border-color:var(--neon);}
+
+/* TABLE */
+.table-wrap{background:var(--surf);border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden;}
+.table-scroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead{background:rgba(255,255,255,0.025);}
+th{padding:11px 14px;text-align:left;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted2);border-bottom:1px solid var(--border2);white-space:nowrap;cursor:pointer;user-select:none;}
+th:hover{color:var(--text);}
+th.sorted-asc::after{content:' ↑';color:var(--neon);}
+th.sorted-desc::after{content:' ↓';color:var(--neon);}
+th.no-sort{cursor:default;}
+td{padding:10px 14px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:middle;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+tr:hover td{background:rgba(255,255,255,0.02);}
+tr:last-child td{border-bottom:none;}
+.td-actions{display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.action-btn{width:28px;height:28px;border-radius:var(--radius);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;transition:all 0.15s;}
+.action-btn.edit{background:rgba(56,189,248,0.12);color:var(--info);}
+.action-btn.edit:hover{background:rgba(56,189,248,0.22);}
+.action-btn.del{background:rgba(255,56,96,0.12);color:var(--error);}
+.action-btn.del:hover{background:rgba(255,56,96,0.22);}
+.action-btn.view{background:rgba(245,158,11,0.12);color:var(--warn);}
+.action-btn.view:hover{background:rgba(245,158,11,0.22);}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:10px;font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;}
+.badge-pending{background:rgba(245,158,11,0.12);color:var(--warn);}
+.badge-confirmed{background:rgba(56,189,248,0.12);color:var(--info);}
+.badge-completed{background:rgba(0,229,160,0.12);color:var(--success);}
+.badge-cancelled{background:rgba(255,56,96,0.12);color:var(--error);}
+.badge-active{background:rgba(0,229,160,0.12);color:var(--success);}
+.badge-inactive{background:rgba(90,100,128,0.2);color:var(--muted2);}
+.badge-user{background:rgba(56,189,248,0.1);color:var(--info);}
+.badge-admin{background:rgba(255,77,0,0.12);color:var(--neon);}
+.badge-in-progress{background:rgba(56,189,248,0.12);color:var(--info);}
+
+/* PAGINATION */
+.pagination{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid var(--border2);font-size:12px;color:var(--muted2);}
+.page-btns{display:flex;gap:4px;}
+.page-btn{min-width:28px;height:28px;border:1px solid var(--border2);background:rgba(255,255,255,0.02);border-radius:var(--radius);font-size:11px;color:var(--muted2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;padding:0 6px;font-family:'Rajdhani',sans-serif;font-weight:600;}
+.page-btn:hover:not(:disabled){border-color:var(--neon);color:var(--neon);}
+.page-btn.active{background:var(--neon);border-color:var(--neon);color:#fff;}
+.page-btn:disabled{opacity:0.3;cursor:not-allowed;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;animation:ovIn 0.2s;}
+@keyframes ovIn{from{opacity:0;}to{opacity:1;}}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);width:100%;max-width:560px;max-height:90vh;display:flex;flex-direction:column;animation:modIn 0.25s cubic-bezier(0.4,0,0.2,1);position:relative;}
+.modal.modal-lg{max-width:720px;}
+@keyframes modIn{from{opacity:0;transform:scale(0.96) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon),var(--neon2));box-shadow:0 0 10px var(--neon);border-radius:var(--radius) var(--radius) 0 0;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid var(--border2);}
+.modal-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:10px;}
+.modal-title i{color:var(--neon);font-size:14px;}
+.modal-close{width:28px;height:28px;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:var(--radius);color:var(--muted2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all 0.15s;}
+.modal-close:hover{border-color:var(--error);color:var(--error);}
+.modal-body{flex:1;overflow-y:auto;padding:20px 22px;}
+.modal-footer{display:flex;justify-content:flex-end;gap:8px;padding:14px 22px;border-top:1px solid var(--border2);}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-grid.cols-1{grid-template-columns:1fr;}
+.col-span-2{grid-column:span 2;}
+.field-group{display:flex;flex-direction:column;gap:5px;}
+.field-group label{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted2);font-family:'Rajdhani',sans-serif;font-weight:600;}
+.field-group input,.field-group select,.field-group textarea{background:rgba(255,255,255,0.03);border:1px solid var(--border2);border-radius:var(--radius);padding:9px 12px;font-size:13px;color:var(--text);outline:none;transition:border-color 0.2s,box-shadow 0.2s;width:100%;}
+.field-group input:focus,.field-group select:focus,.field-group textarea:focus{border-color:var(--neon);box-shadow:0 0 0 3px rgba(255,77,0,0.1);}
+.field-group select option{background:var(--bg3);color:var(--text);}
+.field-group textarea{resize:vertical;min-height:70px;line-height:1.5;}
+.field-group input::placeholder{color:var(--muted);}
+
+/* TOAST */
+.toast-wrap{position:fixed;bottom:24px;right:24px;z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+.toast{display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:12px 16px;font-size:13px;min-width:260px;max-width:340px;pointer-events:all;animation:tIn 0.3s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden;}
+.toast::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--toast-color,var(--neon));}
+@keyframes tIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
+.toast-icon{font-size:14px;color:var(--toast-color,var(--neon));flex-shrink:0;}
+.toast-text{flex:1;line-height:1.4;}
+.toast-title{font-weight:600;font-size:13px;}
+.toast-msg{font-size:11px;color:var(--muted2);margin-top:1px;}
+
+/* CONFIRM */
+.confirm-modal{max-width:360px;}
+.confirm-body{padding:22px;text-align:center;}
+.confirm-icon{width:56px;height:56px;background:rgba(255,56,96,0.1);border:1px solid rgba(255,56,96,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:22px;color:var(--error);}
+.confirm-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;letter-spacing:0.05em;margin-bottom:6px;}
+.confirm-text{font-size:12px;color:var(--muted2);line-height:1.5;}
+
+/* MESSAGES */
+.messages-layout{display:grid;grid-template-columns:280px 1fr;gap:0;height:calc(100vh - var(--hdr) - 120px);background:var(--surf);border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden;}
+.msg-list{border-right:1px solid var(--border2);overflow-y:auto;}
+.msg-list-header{padding:14px 16px;border-bottom:1px solid var(--border2);font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted2);}
+.msg-item{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.03);transition:background 0.15s;}
+.msg-item:hover{background:rgba(255,255,255,0.02);}
+.msg-item.active{background:rgba(255,77,0,0.08);border-left:2px solid var(--neon);}
+.msg-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#38bdf8,#1e40af);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.msg-meta{flex:1;overflow:hidden;}
+.msg-from{font-size:12px;font-weight:600;margin-bottom:2px;}
+.msg-preview{font-size:11px;color:var(--muted2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.msg-time{font-size:9px;color:var(--muted);margin-top:2px;font-family:'Rajdhani',sans-serif;}
+.msg-unread{background:var(--neon);width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.chat-area{display:flex;flex-direction:column;}
+.chat-header{padding:14px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:12px;}
+.chat-name{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:0.05em;}
+.chat-sub{font-size:10px;color:var(--muted2);}
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;}
+.chat-empty{flex:1;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;}
+.chat-bubble{max-width:70%;padding:10px 14px;border-radius:var(--radius);font-size:13px;line-height:1.5;}
+.chat-bubble.recv{background:rgba(255,255,255,0.04);border:1px solid var(--border2);align-self:flex-start;}
+.chat-bubble.sent{background:rgba(255,77,0,0.12);border:1px solid rgba(255,77,0,0.2);align-self:flex-end;}
+.chat-ts{font-size:9px;color:var(--muted);margin-top:4px;font-family:'Rajdhani',sans-serif;}
+.chat-input-row{padding:14px 16px;border-top:1px solid var(--border2);display:flex;gap:8px;}
+.chat-input-row textarea{flex:1;background:rgba(255,255,255,0.03);border:1px solid var(--border2);border-radius:var(--radius);padding:8px 12px;font-size:13px;color:var(--text);outline:none;resize:none;height:38px;line-height:1.4;}
+.chat-input-row textarea:focus{border-color:var(--neon);}
+
+/* SETTINGS */
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.settings-card{background:var(--surf);border:1px solid var(--border2);border-radius:var(--radius);padding:20px;}
+.settings-card-title{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted2);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.settings-card-title i{color:var(--neon);}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border2);}
+.toggle-row:last-child{border-bottom:none;}
+.toggle-label{font-size:13px;}
+.toggle-desc{font-size:10px;color:var(--muted2);margin-top:2px;}
+.toggle-switch{width:36px;height:20px;background:rgba(255,255,255,0.08);border-radius:10px;position:relative;cursor:pointer;transition:background 0.2s;flex-shrink:0;}
+.toggle-switch.on{background:var(--neon);}
+.toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform 0.2s;box-shadow:0 1px 4px rgba(0,0,0,0.3);}
+.toggle-switch.on::after{transform:translateX(16px);}
+
+/* MISC */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 20px;color:var(--muted);text-align:center;}
+.empty-state i{font-size:36px;margin-bottom:14px;opacity:0.4;}
+.inline-spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,0.2);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.skeleton{background:linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.08) 50%,rgba(255,255,255,0.04) 75%);background-size:200%;animation:skelAnim 1.4s ease infinite;border-radius:2px;height:12px;display:inline-block;vertical-align:middle;}
+@keyframes skelAnim{0%{background-position:200%}100%{background-position:-200%}}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.detail-item{background:rgba(255,255,255,0.02);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 14px;}
+.detail-item label{font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-family:'Rajdhani',sans-serif;display:block;margin-bottom:4px;}
+.detail-item span{font-size:13px;font-weight:500;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="collapse-btn" onclick="toggleSidebar()">
+    <i class="fas fa-chevron-left"></i>
+  </div>
+  <div class="sidebar-top">
+    <div class="logo-icon"><i class="fas fa-car-side"></i></div>
+    <div class="logo-text">AUTOSTYLES <span>Admin Panel</span></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-section-label">Главная</div>
+    <div class="nav-item active" data-section="dashboard"><i class="fas fa-gauge-high"></i><span class="nav-label">Дашборд</span></div>
+    <div class="nav-section-label">Управление</div>
+    <div class="nav-item" data-section="appointments"><i class="fas fa-calendar-check"></i><span class="nav-label">Записи</span><span class="nav-badge" id="badge-appointments" style="display:none">0</span></div>
+    <div class="nav-item" data-section="orders"><i class="fas fa-receipt"></i><span class="nav-label">Заказы</span></div>
+    <div class="nav-item" data-section="services"><i class="fas fa-spray-can-sparkles"></i><span class="nav-label">Услуги</span></div>
+    <div class="nav-item" data-section="promotions"><i class="fas fa-tags"></i><span class="nav-label">Акции</span></div>
+    <div class="nav-section-label">Клиенты</div>
+    <div class="nav-item" data-section="users"><i class="fas fa-users"></i><span class="nav-label">Пользователи</span></div>
+    <div class="nav-item" data-section="messages"><i class="fas fa-comments"></i><span class="nav-label">Сообщения</span><span class="nav-badge" id="badge-messages" style="display:none">0</span></div>
+    <div class="nav-item" data-section="reviews"><i class="fas fa-star-half-stroke"></i><span class="nav-label">Отзывы</span></div>
+    <div class="nav-item" data-section="notifications"><i class="fas fa-bell"></i><span class="nav-label">Уведомления</span></div>
+    <div class="nav-section-label">Система</div>
+    <div class="nav-item" data-section="settings"><i class="fas fa-gear"></i><span class="nav-label">Настройки</span></div>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="user-card">
+      <div class="user-avatar">AD</div>
+      <div class="user-info">
+        <div class="user-name">Администратор</div>
+        <div class="user-role">Super Admin</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <header class="header">
+    <div class="page-title" id="page-title">Дашборд <span>/ Обзор</span></div>
+    <div class="header-search">
+      <i class="fas fa-magnifying-glass"></i>
+      <input type="text" placeholder="Глобальный поиск..." id="global-search">
+    </div>
+    <div class="header-actions">
+      <!-- Connection status indicator -->
+      <div class="conn-status connecting" id="conn-status">
+        <div class="conn-dot"></div>
+        <span id="conn-label">Подключение...</span>
+      </div>
+      <div class="hdr-date" id="hdr-date"></div>
+      <div class="hdr-btn" onclick="loadAllData()" title="Обновить">
+        <i class="fas fa-arrows-rotate" id="refresh-icon"></i>
+      </div>
+      <div class="hdr-btn" onclick="showSection('notifications')" title="Уведомления">
+        <i class="fas fa-bell"></i>
+        <div class="hdr-notif-dot" id="notif-dot" style="display:none;"></div>
+      </div>
+      <div class="hdr-btn" onclick="window.location.href='login.html'" title="Выйти">
+        <i class="fas fa-right-from-bracket"></i>
+      </div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="section active" id="section-dashboard">
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kpi-color:#ff4d00">
+          <div class="kpi-label">Всего записей</div>
+          <div class="kpi-value" id="kpi-appointments">—</div>
+          <div class="kpi-delta up" id="kpi-apts-delta"><i class="fas fa-arrow-up"></i> Загрузка...</div>
+          <i class="fas fa-calendar-check kpi-icon"></i>
+        </div>
+        <div class="kpi-card" style="--kpi-color:#00e5a0">
+          <div class="kpi-label">Выручка (сум)</div>
+          <div class="kpi-value" id="kpi-revenue">—</div>
+          <div class="kpi-delta up" id="kpi-rev-delta"><i class="fas fa-arrow-up"></i> Загрузка...</div>
+          <i class="fas fa-money-bill-wave kpi-icon"></i>
+        </div>
+        <div class="kpi-card" style="--kpi-color:#38bdf8">
+          <div class="kpi-label">Клиентов</div>
+          <div class="kpi-value" id="kpi-users">—</div>
+          <div class="kpi-delta up"><i class="fas fa-arrow-up"></i> Зарегистрировано</div>
+          <i class="fas fa-users kpi-icon"></i>
+        </div>
+        <div class="kpi-card" style="--kpi-color:#f59e0b">
+          <div class="kpi-label">Активных заказов</div>
+          <div class="kpi-value" id="kpi-orders">—</div>
+          <div class="kpi-delta" id="kpi-orders-delta"><i class="fas fa-circle"></i> В обработке</div>
+          <i class="fas fa-receipt kpi-icon"></i>
+        </div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-title"><i class="fas fa-chart-line"></i>Записи по месяцам</div>
+          <div class="chart-wrap"><canvas id="chart-appointments"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title"><i class="fas fa-chart-pie"></i>Статусы записей</div>
+          <div class="chart-wrap"><canvas id="chart-statuses"></canvas></div>
+        </div>
+      </div>
+      <div class="recent-row">
+        <div class="chart-card">
+          <div class="chart-title"><i class="fas fa-clock-rotate-left"></i>Последние записи</div>
+          <div id="recent-appointments"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title"><i class="fas fa-star"></i>Последние отзывы</div>
+          <div id="recent-reviews"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APPOINTMENTS -->
+    <div class="section" id="section-appointments">
+      <div class="section-header">
+        <div class="section-title">Записи <small>APPOINTMENTS MANAGEMENT</small></div>
+        <button class="btn btn-primary" onclick="openModal('appointment')"><i class="fas fa-plus"></i>Добавить запись</button>
+        <button class="btn btn-secondary" onclick="exportCSV('appointments')"><i class="fas fa-download"></i>CSV</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск по клиенту, телефону..." id="search-appointments" oninput="filterTable('appointments')"></div>
+        <select class="filter-select" id="filter-apt-status" onchange="filterTable('appointments')">
+          <option value="">Все статусы</option>
+          <option value="pending">Ожидание</option>
+          <option value="confirmed">Подтверждён</option>
+          <option value="in_progress">В работе</option>
+          <option value="completed">Выполнен</option>
+          <option value="cancelled">Отменён</option>
+        </select>
+        <select class="filter-select" id="filter-apt-date" onchange="filterTable('appointments')">
+          <option value="">Все даты</option>
+          <option value="today">Сегодня</option>
+          <option value="week">Эта неделя</option>
+          <option value="month">Этот месяц</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table id="tbl-appointments">
+            <thead><tr>
+              <th onclick="sortTable('appointments','id')">ID</th>
+              <th onclick="sortTable('appointments','client_name')">Клиент</th>
+              <th onclick="sortTable('appointments','client_phone')">Телефон</th>
+              <th>Услуга</th>
+              <th onclick="sortTable('appointments','scheduled_at')">Дата/Время</th>
+              <th onclick="sortTable('appointments','status')">Статус</th>
+              <th onclick="sortTable('appointments','total_price')">Сумма</th>
+              <th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-appointments"><tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pag-appointments"></div>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="section" id="section-orders">
+      <div class="section-header">
+        <div class="section-title">Заказы <small>ORDERS MANAGEMENT</small></div>
+        <button class="btn btn-secondary" onclick="exportCSV('orders')"><i class="fas fa-download"></i>CSV</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск по ID заказа..." id="search-orders" oninput="filterTable('orders')"></div>
+        <select class="filter-select" id="filter-order-status" onchange="filterTable('orders')">
+          <option value="">Все статусы</option>
+          <option value="pending">Ожидание</option>
+          <option value="paid">Оплачен</option>
+          <option value="cancelled">Отменён</option>
+          <option value="refunded">Возврат</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table id="tbl-orders">
+            <thead><tr>
+              <th>ID</th><th>Запись ID</th><th>Клиент</th><th>Сумма</th><th>Статус</th><th>Создан</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-orders"><tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pag-orders"></div>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="section" id="section-services">
+      <div class="section-header">
+        <div class="section-title">Услуги <small>SERVICES MANAGEMENT</small></div>
+        <button class="btn btn-primary" onclick="openModal('service')"><i class="fas fa-plus"></i>Добавить услугу</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск по названию..." id="search-services" oninput="filterTable('services')"></div>
+      </div>
+      <div class="table-wrap" style="margin-bottom:16px;">
+        <div class="table-scroll">
+          <table id="tbl-services">
+            <thead><tr>
+              <th>ID</th><th>Название</th><th>Описание</th><th>Базовая цена</th><th>Длительность</th><th>Создан</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-services"><tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="section-header" style="margin-top:24px;">
+        <div class="section-title">Типы услуг <small>SERVICE TYPES</small></div>
+        <button class="btn btn-primary" onclick="openModal('service_type')"><i class="fas fa-plus"></i>Добавить тип</button>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table id="tbl-service-types">
+            <thead><tr>
+              <th>ID</th><th>Услуга</th><th>Название типа</th><th>Доп. цена</th><th>Длительность</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-service-types"><tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROMOTIONS -->
+    <div class="section" id="section-promotions">
+      <div class="section-header">
+        <div class="section-title">Акции и промокоды <small>PROMOTIONS MANAGEMENT</small></div>
+        <button class="btn btn-primary" onclick="openModal('promotion')"><i class="fas fa-plus"></i>Создать акцию</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск по коду..." id="search-promotions" oninput="filterTable('promotions')"></div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table id="tbl-promotions">
+            <thead><tr>
+              <th>ID</th><th>Код</th><th>Описание</th><th>Скидка %</th><th>Истекает</th><th>Использований</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-promotions"><tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div class="section" id="section-users">
+      <div class="section-header">
+        <div class="section-title">Пользователи <small>USERS MANAGEMENT</small></div>
+        <button class="btn btn-secondary" onclick="exportCSV('profiles')"><i class="fas fa-download"></i>CSV</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск по имени, телефону..." id="search-users" oninput="filterTable('users')"></div>
+        <select class="filter-select" id="filter-user-role" onchange="filterTable('users')">
+          <option value="">Все роли</option>
+          <option value="user">Клиент</option>
+          <option value="admin">Администратор</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table id="tbl-users">
+            <thead><tr>
+              <th>UUID</th><th>Имя</th><th>Телефон</th><th>Роль</th><th>Уровень</th><th>День рождения</th><th>Зарегистрирован</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-users"><tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pag-users"></div>
+      </div>
+    </div>
+
+    <!-- MESSAGES -->
+    <div class="section" id="section-messages">
+      <div class="section-header">
+        <div class="section-title">Сообщения <small>MESSAGES CENTER</small></div>
+        <button class="btn btn-primary" onclick="openModal('send_message')"><i class="fas fa-paper-plane"></i>Отправить</button>
+      </div>
+      <div class="messages-layout">
+        <div class="msg-list">
+          <div class="msg-list-header">Входящие</div>
+          <div id="msg-list-body"></div>
+        </div>
+        <div class="chat-area">
+          <div class="chat-header" id="chat-header">
+            <div><div class="chat-name">Выберите чат</div><div class="chat-sub">Нажмите на диалог слева</div></div>
+          </div>
+          <div class="chat-messages" id="chat-messages">
+            <div class="chat-empty"><i class="fas fa-comments" style="font-size:24px;margin-right:10px;"></i>Выберите диалог</div>
+          </div>
+          <div class="chat-input-row">
+            <textarea id="chat-reply" placeholder="Ответить..."></textarea>
+            <button class="btn btn-primary" onclick="sendReply()"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVIEWS -->
+    <div class="section" id="section-reviews">
+      <div class="section-header">
+        <div class="section-title">Отзывы <small>REVIEWS MANAGEMENT</small></div>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск по комментарию..." id="search-reviews" oninput="filterTable('reviews')"></div>
+        <select class="filter-select" id="filter-review-rating" onchange="filterTable('reviews')">
+          <option value="">Все оценки</option>
+          <option value="5">⭐⭐⭐⭐⭐ 5</option>
+          <option value="4">⭐⭐⭐⭐ 4</option>
+          <option value="3">⭐⭐⭐ 3</option>
+          <option value="2">⭐⭐ 2</option>
+          <option value="1">⭐ 1</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table id="tbl-reviews">
+            <thead><tr>
+              <th>ID</th><th>Клиент</th><th>Запись</th><th>Оценка</th><th>Комментарий</th><th>Дата</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-reviews"><tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="section" id="section-notifications">
+      <div class="section-header">
+        <div class="section-title">Уведомления <small>NOTIFICATIONS MANAGEMENT</small></div>
+        <button class="btn btn-primary" onclick="openModal('notification')"><i class="fas fa-plus"></i>Создать</button>
+        <button class="btn btn-secondary" onclick="markAllRead()"><i class="fas fa-check-double"></i>Всё прочитано</button>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table id="tbl-notifications">
+            <thead><tr>
+              <th>ID</th><th>Пользователь</th><th>Заголовок</th><th>Сообщение</th><th>Тип</th><th>Прочитано</th><th>Дата</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-notifications"><tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="section" id="section-settings">
+      <div class="section-header">
+        <div class="section-title">Настройки <small>SYSTEM SETTINGS</small></div>
+        <button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-save"></i>Сохранить</button>
+      </div>
+      <div class="settings-grid">
+        <div class="settings-card">
+          <div class="settings-card-title"><i class="fas fa-building"></i>Информация о компании</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="field-group"><label>Название</label><input type="text" id="s-name" value="AUTOSTYLES Studio"></div>
+            <div class="field-group"><label>Адрес</label><input type="text" id="s-address" value="г. Бишкек, ул. Манаса 40"></div>
+            <div class="field-group"><label>Телефон</label><input type="text" id="s-phone" value="+996 555 000 000"></div>
+            <div class="field-group"><label>Email</label><input type="email" id="s-email" value="info@autostyles.kg"></div>
+            <div class="field-group"><label>Часы работы</label><input type="text" id="s-hours" value="Пн–Вс: 09:00 – 20:00"></div>
+          </div>
+        </div>
+        <div class="settings-card">
+          <div class="settings-card-title"><i class="fas fa-sliders"></i>Системные настройки</div>
+          <div class="toggle-row"><div><div class="toggle-label">Email уведомления</div><div class="toggle-desc">Отправлять клиентам письма</div></div><div class="toggle-switch on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">SMS уведомления</div><div class="toggle-desc">Через SMS-шлюз</div></div><div class="toggle-switch" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Онлайн-запись</div><div class="toggle-desc">Клиенты могут записываться онлайн</div></div><div class="toggle-switch on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Система бонусов</div><div class="toggle-desc">Начислять бонусные баллы</div></div><div class="toggle-switch on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">2FA для админов</div><div class="toggle-desc">Двухфакторная аутентификация</div></div><div class="toggle-switch" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+        <div class="settings-card">
+          <div class="settings-card-title"><i class="fas fa-database"></i>Supabase подключение</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="padding:10px 14px;background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.2);border-radius:var(--radius);font-size:12px;color:var(--success);display:flex;align-items:center;gap:8px;">
+              <i class="fas fa-circle-check"></i>Подключение настроено автоматически
+            </div>
+            <div class="field-group"><label>Project URL</label><input type="text" id="s-url" value="https://oekrtypfqaierhkhulab.supabase.co" readonly style="opacity:0.6;cursor:not-allowed;"></div>
+            <button class="btn btn-secondary" onclick="loadAllData()"><i class="fas fa-arrows-rotate"></i>Перезагрузить данные</button>
+          </div>
+        </div>
+        <div class="settings-card">
+          <div class="settings-card-title"><i class="fas fa-chart-bar"></i>Статистика БД</div>
+          <div id="db-stats" style="display:flex;flex-direction:column;gap:10px;margin-top:4px;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOnBg(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title"><i class="fas fa-circle-plus"></i><span id="modal-title-text">Добавить</span></div>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer" id="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()"><i class="fas fa-xmark"></i>Отмена</button>
+      <button class="btn btn-primary" id="modal-save-btn" onclick="saveModal()"><i class="fas fa-check"></i>Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="confirm-overlay">
+  <div class="modal confirm-modal">
+    <div class="modal-header">
+      <div class="modal-title"><i class="fas fa-triangle-exclamation" style="color:var(--error)"></i><span>Подтверждение</span></div>
+      <button class="modal-close" onclick="closeConfirm()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="confirm-body">
+      <div class="confirm-icon"><i class="fas fa-trash"></i></div>
+      <div class="confirm-title">Удалить запись?</div>
+      <div class="confirm-text" id="confirm-text">Это действие необратимо.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeConfirm()"><i class="fas fa-xmark"></i>Отмена</button>
+      <button class="btn btn-danger" id="confirm-ok"><i class="fas fa-trash"></i>Удалить</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script>
+/* ══════════════════════════════════════════════
+   SUPABASE — HARDCODED CREDENTIALS
+══════════════════════════════════════════════ */
+const SUPABASE_URL = "https://oekrtypfqaierhkhulab.supabase.co";
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9la3J0eXBmcWFpZXJoa2h1bGFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4NDgwMTYsImV4cCI6MjA3ODQyNDAxNn0.61ouoN7hBsGFibzrijeNG7i6HOcukDImbQjYRBZjQiA';
+
+
+let sb = null;
+
+function initSupabase() {
+  if (sb) return true; // уже инициализирован
+  if (typeof supabase === 'undefined') {
+    console.error('❌ Supabase SDK not loaded');
+    setConnStatus('disconnected', 'SDK не загружен');
+    return false;
+  }
+  try {
+    sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      auth: {
+        storageKey: 'supabase-auth-token',
+        storage: window.localStorage,
+        autoRefreshToken: true,
+        persistSession: true
+      }
+    });
+    window.supabaseClient = sb;
+    console.log('✅ Supabase client initialized');
+    return true;
+  } catch(e) {
+    console.error('❌ Supabase init error:', e);
+    setConnStatus('disconnected', 'Ошибка инициализации');
+    return false;
+  }
+}
+
+function setConnStatus(state, label) {
+  const el = document.getElementById('conn-status');
+  const lbl = document.getElementById('conn-label');
+  if (!el || !lbl) return;
+  el.className = 'conn-status ' + state;
+  lbl.textContent = label;
+}
+
+/* ══════════════════════════════════════════════
+   DATA STATE
+══════════════════════════════════════════════ */
+const state = {
+  data: {
+    appointments: [], orders: [], services: [], service_types: [],
+    promotions: [], profiles: [], messages: [], reviews: [],
+    notifications: [], cars: []
+  },
+  currentSection: 'dashboard',
+  sort: {},
+  activeThread: null,
+};
+
+/* ══════════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════════ */
+function fmtDate(dt) {
+  if (!dt) return '—';
+  try { return new Date(dt).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}); }
+  catch(e) { return dt; }
+}
+function fmtDateOnly(dt) {
+  if (!dt) return '—';
+  try { return new Date(dt).toLocaleDateString('ru-RU'); } catch(e) { return dt; }
+}
+function fmtMoney(v) {
+  if (v === null || v === undefined || v === '') return '—';
+  return Number(v).toLocaleString('ru-RU') + ' с';
+}
+function fmtDuration(m) {
+  if (!m) return '—';
+  const h = Math.floor(m/60), min = m%60;
+  return h > 0 ? `${h}ч ${min > 0 ? min+'м' : ''}` : `${min}м`;
+}
+function stars(n) { return '★'.repeat(n) + '☆'.repeat(5-n); }
+function escHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ── PROFILE LOOKUP — матчинг по user_id из state.data.profiles ── */
+function getProfile(userId) {
+  if (!userId) return null;
+  return state.data.profiles.find(p => p.id === userId) || null;
+}
+function profileName(userId) { return getProfile(userId)?.name || '—'; }
+function profilePhone(userId) { return getProfile(userId)?.phone || '—'; }
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+function toast(title, msg='', type='success') {
+  const colors = {success:'var(--success)',error:'var(--error)',info:'var(--info)',warn:'var(--warn)'};
+  const icons  = {success:'fa-circle-check',error:'fa-circle-exclamation',info:'fa-circle-info',warn:'fa-triangle-exclamation'};
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.style.setProperty('--toast-color', colors[type]||colors.info);
+  el.innerHTML = `<i class="fas ${icons[type]||icons.info} toast-icon"></i>
+    <div class="toast-text"><div class="toast-title">${escHtml(title)}</div>${msg?`<div class="toast-msg">${escHtml(msg)}</div>`:''}</div>
+    <i class="fas fa-xmark" style="color:var(--muted);cursor:pointer;font-size:11px;" onclick="this.closest('.toast').remove()"></i>`;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(()=>{ el.style.transition='opacity 0.4s'; el.style.opacity='0'; setTimeout(()=>el.remove(),400); }, 3400);
+}
+
+/* ══════════════════════════════════════════════
+   SIDEBAR & NAV
+══════════════════════════════════════════════ */
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); }
+
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => showSection(item.dataset.section));
+});
+
+function showSection(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('section-' + name)?.classList.add('active');
+  document.querySelector(`[data-section="${name}"]`)?.classList.add('active');
+  state.currentSection = name;
+  const titles = {
+    dashboard:'Дашборд <span>/ Обзор</span>', appointments:'Записи <span>/ Управление</span>',
+    orders:'Заказы <span>/ Управление</span>', services:'Услуги <span>/ Каталог</span>',
+    promotions:'Акции <span>/ Промокоды</span>', users:'Пользователи <span>/ База</span>',
+    messages:'Сообщения <span>/ Чат</span>', reviews:'Отзывы <span>/ Аналитика</span>',
+    notifications:'Уведомления <span>/ Лента</span>', settings:'Настройки <span>/ Система</span>',
+  };
+  document.getElementById('page-title').innerHTML = titles[name] || name;
+}
+
+/* ══════════════════════════════════════════════
+   STATUS BADGES
+══════════════════════════════════════════════ */
+const STATUS_MAP = {
+  pending:['badge-pending','Ожидание'], confirmed:['badge-confirmed','Подтверждён'],
+  in_progress:['badge-in-progress','В работе'], completed:['badge-completed','Выполнен'],
+  cancelled:['badge-cancelled','Отменён'], paid:['badge-completed','Оплачен'],
+  refunded:['badge-cancelled','Возврат'], active:['badge-active','Активна'],
+  inactive:['badge-inactive','Неактивна'], user:['badge-user','Клиент'],
+  admin:['badge-admin','Админ'], info:['badge-confirmed','Инфо'],
+  success:['badge-completed','Успех'], warning:['badge-pending','Предупреждение'],
+};
+function badge(status) {
+  const [cls, label] = STATUS_MAP[status] || ['badge-inactive', status || '—'];
+  return `<span class="badge ${cls}">${label}</span>`;
+}
+function readBadge(v) {
+  return v ? `<span class="badge badge-completed">Прочитано</span>` : `<span class="badge badge-pending">Новое</span>`;
+}
+function ratingBadge(n) {
+  const colors = ['','#ef4444','#f59e0b','#f59e0b','#22c55e','#00e5a0'];
+  return `<span style="color:${colors[n]||'#fff'};font-size:13px;letter-spacing:2px;">${stars(n)}</span>`;
+}
+
+/* ══════════════════════════════════════════════
+   LOAD ALL DATA
+══════════════════════════════════════════════ */
+async function loadAllData() {
+  if (!initSupabase()) return;
+
+  const icon = document.getElementById('refresh-icon');
+  if (icon) icon.style.animation = 'spin 0.7s linear infinite';
+  setConnStatus('connecting', 'Загрузка...');
+
+  try {
+    // Загружаем profiles первыми (отдельно), затем всё остальное
+    // appointments -> services(name) JOIN работает (прямой FK)
+    // orders/messages/reviews/notifications/cars -> auth.users, не profiles -> join НЕ работает
+    // Поэтому profiles подгружаем отдельно и матчим в JS по user_id
+    const [
+      { data: appointments, error: e1 },
+      { data: orders,       error: e2 },
+      { data: services,     error: e3 },
+      { data: serviceTypes, error: e4 },
+      { data: promotions,   error: e5 },
+      { data: profiles,     error: e6 },
+      { data: messages,     error: e7 },
+      { data: reviews,      error: e8 },
+      { data: notifications,error: e9 },
+      { data: cars,         error: e10 }
+    ] = await Promise.all([
+      sb.from('appointments').select('*, services(name)').order('created_at',{ascending:false}),
+      sb.from('orders').select('*').order('created_at',{ascending:false}),
+      sb.from('services').select('*').order('id'),
+      sb.from('service_types').select('*, services(name)').order('id'),
+      sb.from('promotions').select('*').order('created_at',{ascending:false}),
+      sb.from('profiles').select('*').order('created_at',{ascending:false}),
+      sb.from('messages').select('*').order('created_at',{ascending:false}),
+      sb.from('reviews').select('*').order('created_at',{ascending:false}),
+      sb.from('notifications').select('*').order('created_at',{ascending:false}),
+      sb.from('cars').select('*').order('created_at',{ascending:false})
+    ]);
+
+    // Проверяем первую ошибку - если RLS или нет доступа
+    const firstError = e1||e2||e3||e4||e5||e6||e7||e8||e9||e10;
+    if (firstError) throw firstError;
+
+    state.data.appointments  = appointments  || [];
+    state.data.orders        = orders        || [];
+    state.data.services      = services      || [];
+    state.data.service_types = serviceTypes  || [];
+    state.data.promotions    = promotions    || [];
+    state.data.profiles      = profiles      || [];
+    state.data.messages      = messages      || [];
+    state.data.reviews       = reviews       || [];
+    state.data.notifications = notifications || [];
+    state.data.cars          = cars          || [];
+
+    renderAll();
+    setConnStatus('connected', 'Подключено');
+    if (icon) icon.style.animation = '';
+    toast('Данные загружены', `${state.data.appointments.length} записей · ${state.data.profiles.length} клиентов`, 'success');
+
+  } catch(error) {
+    console.error('❌ Load error:', error);
+    if (icon) icon.style.animation = '';
+    setConnStatus('disconnected', 'Ошибка');
+    toast('Ошибка загрузки', error.message || String(error), 'error');
+  }
+}
+
+/* ══════════════════════════════════════════════
+   RENDER TABLES
+══════════════════════════════════════════════ */
+function renderTable(name, data) {
+  const renders = {
+    appointments:  renderAppointments,
+    orders:        renderOrders,
+    services:      renderServices,
+    service_types: renderServiceTypes,
+    promotions:    renderPromotions,
+    users:         renderUsers,
+    reviews:       renderReviews,
+    notifications: renderNotifications,
+  };
+  if (renders[name]) renders[name](data ?? state.data[name] ?? []);
+}
+
+function noData(cols, msg='Нет данных') {
+  return `<tr><td colspan="${cols}" style="text-align:center;padding:30px;color:var(--muted)">${msg}</td></tr>`;
+}
+
+function renderAppointments(data) {
+  const tb = document.getElementById('tbody-appointments');
+  if (!tb) return;
+  if (!data?.length) { tb.innerHTML = noData(8); return; }
+  tb.innerHTML = data.map(r => `<tr>
+    <td><b style="color:var(--muted2)">#${r.id}</b></td>
+    <td><b>${escHtml(r.client_name || profileName(r.user_id))}</b></td>
+    <td>${escHtml(r.client_phone || profilePhone(r.user_id))}</td>
+    <td>${escHtml(r.services?.name || '—')}</td>
+    <td>${fmtDate(r.scheduled_at)}</td>
+    <td>${badge(r.status)}</td>
+    <td><b style="color:var(--neon)">${fmtMoney(r.total_price)}</b></td>
+    <td><div class="td-actions">
+      <button class="action-btn view" onclick="viewRecord('appointment',${r.id})" title="Просмотр"><i class="fas fa-eye"></i></button>
+      <button class="action-btn edit" onclick="editRecord('appointment',${r.id})" title="Редактировать"><i class="fas fa-pen"></i></button>
+      <button class="action-btn del"  onclick="confirmDelete('appointments',${r.id})" title="Удалить"><i class="fas fa-trash"></i></button>
+    </div></td>
+  </tr>`).join('');
+}
+
+function renderOrders(data) {
+  const tb = document.getElementById('tbody-orders');
+  if (!tb) return;
+  if (!data?.length) { tb.innerHTML = noData(7); return; }
+  tb.innerHTML = data.map(r => `<tr>
+    <td><b style="color:var(--muted2)">#${r.id}</b></td>
+    <td style="color:var(--info)">#${r.appointment_id}</td>
+    <td>${escHtml(profileName(r.user_id))}</td>
+    <td><b style="color:var(--neon)">${fmtMoney(r.total_price)}</b></td>
+    <td>${badge(r.status)}</td>
+    <td>${fmtDate(r.created_at)}</td>
+    <td><div class="td-actions">
+      <button class="action-btn edit" onclick="editRecord('order',${r.id})" title="Изменить статус"><i class="fas fa-pen"></i></button>
+      <button class="action-btn del"  onclick="confirmDelete('orders',${r.id})" title="Удалить"><i class="fas fa-trash"></i></button>
+    </div></td>
+  </tr>`).join('');
+}
+
+function renderServices(data) {
+  const tb = document.getElementById('tbody-services');
+  if (!tb) return;
+  if (!data?.length) { tb.innerHTML = noData(7); return; }
+  tb.innerHTML = data.map(r => `<tr>
+    <td><b style="color:var(--muted2)">#${r.id}</b></td>
+    <td><b>${escHtml(r.name)}</b></td>
+    <td style="max-width:180px">${escHtml(r.description||'—')}</td>
+    <td><b style="color:var(--neon)">${fmtMoney(r.base_price)}</b></td>
+    <td>${fmtDuration(r.duration_minutes)}</td>
+    <td>${fmtDateOnly(r.created_at)}</td>
+    <td><div class="td-actions">
+      <button class="action-btn edit" onclick="editRecord('service',${r.id})" title="Редактировать"><i class="fas fa-pen"></i></button>
+      <button class="action-btn del"  onclick="confirmDelete('services',${r.id})" title="Удалить"><i class="fas fa-trash"></i></button>
+    </div></td>
+  </tr>`).join('');
+}
+
+function renderServiceTypes(data) {
+  const tb = document.getElementById('tbody-service-types');
+  if (!tb) return;
+  if (!data?.length) { tb.innerHTML = noData(6); return; }
+  tb.innerHTML = data.map(r => `<tr>
+    <td><b style="color:var(--muted2)">#${r.id}</b></td>
+    <td>${escHtml(r.services?.name || '—')}</td>
+    <td><b>${escHtml(r.name)}</b></td>
+    <td style="color:var(--warn)">+${fmtMoney(r.additional_price)}</td>
+    <td>${fmtDuration(r.duration_minutes)}</td>
+    <td><div class="td-actions">
+      <button class="action-btn edit" onclick="editRecord('service_type',${r.id})" title="Редактировать"><i class="fas fa-pen"></i></button>
+      <button class="action-btn del"  onclick="confirmDelete('service_types',${r.id})" title="Удалить"><i class="fas fa-trash"></i></button>
+    </div></td>
+  </tr>`).join('');
+}
+
+function renderPromotions(data) {
+  const tb = document.getElementById('tbody-promotions');
+  if (!tb) return;
+  if (!data?.length) { tb.innerHTML = noData(7); return; }
+  tb.innerHTML = data.map(r => {
+    const expired = r.expires_at && new Date(r.expires_at) < new Date();
+    return `<tr>
+      <td><b style="color:var(--muted2)">#${r.id}</b></td>
+      <td><code style="background:rgba(255,77,0,0.1);color:var(--neon);padding:2px 8px;border-radius:3px;font-size:12px;">${escHtml(r.code)}</code></td>
+      <td>${escHtml(r.description||'—')}</td>
+      <td><b style="color:var(--success)">${r.discount_percent}%</b></td>
+      <td style="color:${expired?'var(--error)':'inherit'}">${fmtDateOnly(r.expires_at)}${expired?' <span class="badge badge-cancelled">Истёк</span>':''}</td>
+      <td>${r.usages||0}</td>
+      <td><div class="td-actions">
+        <button class="action-btn edit" onclick="editRecord('promotion',${r.id})"><i class="fas fa-pen"></i></button>
+        <button class="action-btn del"  onclick="confirmDelete('promotions',${r.id})"><i class="fas fa-trash"></i></button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderUsers(data) {
+  const tb = document.getElementById('tbody-users');
+  if (!tb) return;
+  if (!data?.length) { tb.innerHTML = noData(8); return; }
+  tb.innerHTML = data.map(r => `<tr>
+    <td style="font-family:monospace;font-size:10px;color:var(--muted2)">${String(r.id).slice(0,8)}…</td>
+    <td><b>${escHtml(r.name)}</b></td>
+    <td>${escHtml(r.phone||'—')}</td>
+    <td>${badge(r.role||'user')}</td>
+    <td>${r.level_id ? `Уровень ${r.level_id}` : '—'}</td>
+    <td>${fmtDateOnly(r.birthday)}</td>
+    <td>${fmtDateOnly(r.created_at)}</td>
+    <td><div class="td-actions">
+      <button class="action-btn edit" onclick="editRecord('user','${r.id}')"><i class="fas fa-pen"></i></button>
+      <button class="action-btn del"  onclick="confirmDelete('profiles','${r.id}')"><i class="fas fa-trash"></i></button>
+    </div></td>
+  </tr>`).join('');
+}
+
+function renderReviews(data) {
+  const tb = document.getElementById('tbody-reviews');
+  if (!tb) return;
+  if (!data?.length) { tb.innerHTML = noData(7); return; }
+  tb.innerHTML = data.map(r => `<tr>
+    <td><b style="color:var(--muted2)">#${r.id}</b></td>
+    <td>${escHtml(profileName(r.user_id))}</td>
+    <td>#${r.appointment_id||'—'}</td>
+    <td>${ratingBadge(r.rating)}</td>
+    <td style="max-width:200px">${escHtml(r.comment||'—')}</td>
+    <td>${fmtDateOnly(r.created_at)}</td>
+    <td><div class="td-actions">
+      <button class="action-btn del" onclick="confirmDelete('reviews',${r.id})"><i class="fas fa-trash"></i></button>
+    </div></td>
+  </tr>`).join('');
+}
+
+function renderNotifications(data) {
+  const tb = document.getElementById('tbody-notifications');
+  if (!tb) return;
+  if (!data?.length) { tb.innerHTML = noData(8); return; }
+  tb.innerHTML = data.map(r => `<tr style="${!r.is_read?'background:rgba(255,77,0,0.04)':''}">
+    <td><b style="color:var(--muted2)">#${r.id}</b></td>
+    <td>${escHtml(profileName(r.user_id))}</td>
+    <td><b>${escHtml(r.title)}</b></td>
+    <td style="max-width:180px">${escHtml(r.message)}</td>
+    <td>${badge(r.type||'info')}</td>
+    <td>${readBadge(r.is_read)}</td>
+    <td>${fmtDateOnly(r.created_at)}</td>
+    <td><div class="td-actions">
+      ${!r.is_read?`<button class="action-btn view" onclick="markRead(${r.id})" title="Прочитано"><i class="fas fa-check"></i></button>`:''}
+      <button class="action-btn del" onclick="confirmDelete('notifications',${r.id})"><i class="fas fa-trash"></i></button>
+    </div></td>
+  </tr>`).join('');
+}
+
+/* ══════════════════════════════════════════════
+   MESSAGES
+══════════════════════════════════════════════ */
+// Добавьте эту вспомогательную функцию в админ-панель
+function profileName(userId) {
+    if (!userId || !state.data.profiles) return null;
+    const profile = state.data.profiles.find(p => p.id === userId);
+    return profile ? profile.name : null;
+}
+
+// Обновленная функция renderMessages
+function renderMessages() {
+    const list = document.getElementById('msg-list-body');
+    if (!list) return;
+    
+    const msgs = state.data.messages || [];
+    const colors = ['#38bdf8', '#a78bfa', '#34d399', '#fb923c', '#f472b6'];
+    
+    if (!msgs.length) { 
+        list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">Нет сообщений</div>'; 
+        return; 
+    }
+    
+    list.innerHTML = msgs.map((m, i) => `
+        <div class="msg-item${m.id === state.activeThread ? ' active' : ''}" onclick="openThread(${m.id})">
+            <div class="msg-avatar" style="background:${colors[i % 5]}">
+                ${(profileName(m.user_id) || '?').charAt(0)}
+            </div>
+            <div class="msg-meta">
+                <div class="msg-from">${escapeHtml(profileName(m.user_id) || 'Аноним')}</div>
+                <div class="msg-preview">${escapeHtml((m.message || '').substring(0, 30))}${(m.message || '').length > 30 ? '...' : ''}</div>
+                <div class="msg-time">${fmtDate(m.created_at)}</div>
+            </div>
+            ${!m.is_read ? '<div class="msg-unread"></div>' : ''}
+        </div>
+    `).join('');
+    
+    updateBadge('messages', msgs.filter(m => !m.is_read).length);
+}
+
+// Обновленная функция openThread
+function openThread(id) {
+    state.activeThread = id;
+    const msg = state.data.messages.find(m => m.id === id);
+    if (!msg) return;
+    
+    // Отмечаем как прочитанное
+    if (sb && !msg.is_read) {
+        sb.from('messages').update({ is_read: true }).eq('id', id).then();
+        msg.is_read = true;
+    }
+    
+    renderMessages();
+    
+    // Загружаем всю переписку с этим пользователем
+    loadThreadMessages(msg.user_id);
+}
+
+async function loadThreadMessages(userId) {
+    if (!sb || !userId) return;
+    
+    try {
+        const { data: messages, error } = await sb
+            .from('messages')
+            .select('*')
+            .or(`user_id.eq.${userId},receiver_id.eq.${userId}`)
+            .order('created_at', { ascending: true });
+        
+        if (error) throw error;
+        
+        const header = document.getElementById('chat-header');
+        const userName = profileName(userId) || 'Аноним';
+        
+        header.innerHTML = `
+            <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#38bdf8,#1e40af);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">
+                ${userName.charAt(0)}
+            </div>
+            <div>
+                <div class="chat-name">${escapeHtml(userName)}</div>
+                <div class="chat-sub">${userId}</div>
+            </div>
+        `;
+        
+        const area = document.getElementById('chat-messages');
+        area.innerHTML = messages.map(m => {
+            const isFromUser = m.user_id === userId;
+            return `
+                <div class="chat-bubble ${isFromUser ? 'recv' : 'sent'}">
+                    ${escapeHtml(m.message)}
+                    <div class="chat-ts">${fmtDate(m.created_at)} ${isFromUser ? '' : '• Вы'}</div>
+                </div>
+            `;
+        }).join('');
+        
+        area.scrollTop = area.scrollHeight;
+        
+    } catch (error) {
+        console.error('Error loading thread:', error);
+    }
+}
+
+// Обновленная функция sendReply
+function sendReply() {
+    const txt = document.getElementById('chat-reply').value.trim();
+    if (!txt || !state.activeThread || !sb) return;
+    
+    const msg = state.data.messages.find(m => m.id === state.activeThread);
+    if (!msg) return;
+    
+    sb.from('messages').insert({
+        user_id: 'admin', // ID админа
+        receiver_id: msg.user_id,
+        message: txt,
+        direction: 'staff_to_client',
+        is_read: false
+    }).then(({ error }) => {
+        if (error) { 
+            toast('Ошибка', error.message, 'error'); 
+            return; 
+        }
+        
+        const area = document.getElementById('chat-messages');
+        area.innerHTML += `
+            <div class="chat-bubble sent">
+                ${escapeHtml(txt)}
+                <div class="chat-ts">Сейчас • Вы</div>
+            </div>
+        `;
+        
+        document.getElementById('chat-reply').value = '';
+        area.scrollTop = area.scrollHeight;
+        toast('Ответ отправлен', '', 'success');
+        
+        // Отмечаем сообщение как прочитанное
+        if (!msg.is_read) {
+            sb.from('messages').update({ is_read: true }).eq('id', msg.id).then();
+            msg.is_read = true;
+            renderMessages();
+        }
+    });
+}
+
+// Обновленная функция buildSendMessageForm
+function buildSendMessageForm() {
+    const userOptions = (state.data.profiles || [])
+        .filter(p => p.role === 'user')
+        .map(u => `<option value="${u.id}">${escapeHtml(u.name)} (${u.phone || 'нет телефона'})</option>`)
+        .join('');
+    
+    return `<div class="form-grid cols-1">
+        <div class="field-group">
+            <label>Получатель</label>
+            <select id="f-receiver_id">
+                <option value="">Выберите пользователя</option>
+                ${userOptions}
+            </select>
+        </div>
+        <div class="field-group">
+            <label>Сообщение</label>
+            <textarea id="f-message" placeholder="Введите текст сообщения..." style="min-height:100px;"></textarea>
+        </div>
+        <div class="field-group">
+            <label>Отправить уведомление</label>
+            <select id="f-send-notification">
+                <option value="true">Да, отправить уведомление</option>
+                <option value="false">Только сообщение</option>
+            </select>
+        </div>
+    </div>`;
+}
+
+// Обновленная функция saveSendMessage
+async function saveSendMessage() {
+    if (!sb) throw new Error('Supabase не настроен');
+    
+    const receiverId = collectField('f-receiver_id', true);
+    const message = collectField('f-message', true);
+    const sendNotification = document.getElementById('f-send-notification')?.value === 'true';
+    
+    const data = {
+        user_id: 'admin', // ID админа
+        receiver_id: receiverId,
+        message: message,
+        direction: 'staff_to_client',
+        is_read: false
+    };
+    
+    const { error } = await sb.from('messages').insert(data);
+    if (error) throw error;
+    
+    // Если нужно отправить уведомление
+    if (sendNotification) {
+        await sb.from('notifications').insert({
+            user_id: receiverId,
+            title: 'Новое сообщение от администратора',
+            message: message.substring(0, 50) + (message.length > 50 ? '...' : ''),
+            type: 'info',
+            is_read: false
+        });
+    }
+}
+/* ══════════════════════════════════════════════
+   FILTER & SORT
+══════════════════════════════════════════════ */
+function filterTable(name) {
+  let data = [...(state.data[name === 'users' ? 'profiles' : name] || [])];
+  const q = document.getElementById('search-' + name)?.value?.toLowerCase().trim();
+  if (q) data = data.filter(row => Object.values(row).some(v => String(v).toLowerCase().includes(q)));
+  
+  const fStatus = document.getElementById('filter-apt-status')?.value;
+  if (fStatus && name === 'appointments') data = data.filter(r => r.status === fStatus);
+  const fRole = document.getElementById('filter-user-role')?.value;
+  if (fRole && name === 'users') data = data.filter(r => r.role === fRole);
+  const fOrder = document.getElementById('filter-order-status')?.value;
+  if (fOrder && name === 'orders') data = data.filter(r => r.status === fOrder);
+  const fRating = document.getElementById('filter-review-rating')?.value;
+  if (fRating && name === 'reviews') data = data.filter(r => r.rating == fRating);
+  
+  if (name === 'users') renderUsers(data);
+  else renderTable(name, data);
+}
+
+function sortTable(tableName, field) {
+  const key = tableName + '_' + field;
+  state.sort[key] = state.sort[key] === 'asc' ? 'desc' : 'asc';
+  const dir = state.sort[key];
+  let data = [...(state.data[tableName] || [])];
+  data.sort((a,b) => {
+    let av = a[field], bv = b[field];
+    if (typeof av === 'string') av = av.toLowerCase();
+    if (typeof bv === 'string') bv = bv.toLowerCase();
+    if (av < bv) return dir==='asc' ? -1 : 1;
+    if (av > bv) return dir==='asc' ? 1 : -1;
+    return 0;
+  });
+  renderTable(tableName, data);
+}
+
+/* ══════════════════════════════════════════════
+   MODAL SYSTEM
+══════════════════════════════════════════════ */
+let currentModalType = null, currentEditId = null;
+
+function openModal(type, id=null) {
+  currentModalType = type; currentEditId = id;
+  const configs = {
+    appointment:  { title: id ? 'Редактировать запись'  : 'Новая запись',    icon: 'fa-calendar-plus',      body: buildAppointmentForm(id) },
+    service:      { title: id ? 'Редактировать услугу'  : 'Новая услуга',    icon: 'fa-spray-can-sparkles', body: buildServiceForm(id) },
+    service_type: { title: id ? 'Редактировать тип'     : 'Новый тип услуги',icon: 'fa-list-ul',            body: buildServiceTypeForm(id) },
+    promotion:    { title: id ? 'Редактировать акцию'   : 'Новая акция',     icon: 'fa-tags',               body: buildPromotionForm(id) },
+    user:         { title: 'Редактировать пользователя',                      icon: 'fa-user-pen',           body: buildUserForm(id) },
+    order:        { title: 'Изменить статус заказа',                          icon: 'fa-receipt',            body: buildOrderForm(id) },
+    notification: { title: 'Новое уведомление',                               icon: 'fa-bell',               body: buildNotificationForm() },
+    send_message: { title: 'Отправить сообщение',                             icon: 'fa-paper-plane',        body: buildSendMessageForm() },
+  };
+  const cfg = configs[type]; if (!cfg) return;
+  document.getElementById('modal-title-text').textContent = cfg.title;
+  document.querySelector('#modal-title i').className = `fas ${cfg.icon}`;
+  document.getElementById('modal-body').innerHTML = cfg.body;
+  document.getElementById('modal-footer').innerHTML = `
+    <button class="btn btn-secondary" onclick="closeModal()"><i class="fas fa-xmark"></i>Отмена</button>
+    <button class="btn btn-primary" id="modal-save-btn" onclick="saveModal()"><i class="fas fa-check"></i>Сохранить</button>`;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); currentModalType=null; currentEditId=null; }
+function closeModalOnBg(e) { if (e.target===document.getElementById('modal-overlay')) closeModal(); }
+
+/* ─ FORM BUILDERS ─ */
+function buildAppointmentForm(id) {
+  const r = id ? state.data.appointments.find(a=>a.id==id)||{} : {};
+  const svcOpts = (state.data.services||[]).map(s=>`<option value="${s.id}" ${r.service_id==s.id?'selected':''}>${escHtml(s.name)}</option>`).join('');
+  return `<div class="form-grid">
+    <div class="field-group"><label>Имя клиента</label><input type="text" id="f-client_name" value="${escHtml(r.client_name||'')}" placeholder="ФИО клиента"></div>
+    <div class="field-group"><label>Телефон</label><input type="tel" id="f-client_phone" value="${escHtml(r.client_phone||'')}" placeholder="+996..."></div>
+    <div class="field-group"><label>Услуга</label><select id="f-service_id"><option value="">— Выберите —</option>${svcOpts}</select></div>
+    <div class="field-group"><label>Дата и время</label><input type="datetime-local" id="f-scheduled_at" value="${r.scheduled_at?r.scheduled_at.slice(0,16):''}"></div>
+    <div class="field-group"><label>Статус</label><select id="f-status">
+      <option value="pending" ${r.status==='pending'?'selected':''}>Ожидание</option>
+      <option value="confirmed" ${r.status==='confirmed'?'selected':''}>Подтверждён</option>
+      <option value="in_progress" ${r.status==='in_progress'?'selected':''}>В работе</option>
+      <option value="completed" ${r.status==='completed'?'selected':''}>Выполнен</option>
+      <option value="cancelled" ${r.status==='cancelled'?'selected':''}>Отменён</option>
+    </select></div>
+    <div class="field-group"><label>Сумма (сом)</label><input type="number" id="f-total_price" value="${r.total_price||0}" min="0"></div>
+    <div class="field-group col-span-2"><label>Примечания</label><textarea id="f-notes">${escHtml(r.notes||'')}</textarea></div>
+  </div>`;
+}
+
+function buildServiceForm(id) {
+  const r = id ? state.data.services.find(s=>s.id==id)||{} : {};
+  return `<div class="form-grid">
+    <div class="field-group col-span-2"><label>Название</label><input type="text" id="f-name" value="${escHtml(r.name||'')}" placeholder="Полировка кузова"></div>
+    <div class="field-group col-span-2"><label>Описание</label><textarea id="f-description">${escHtml(r.description||'')}</textarea></div>
+    <div class="field-group"><label>Базовая цена (сом)</label><input type="number" id="f-base_price" value="${r.base_price||0}" min="0"></div>
+    <div class="field-group"><label>Длительность (мин)</label><input type="number" id="f-duration_minutes" value="${r.duration_minutes||60}" min="15" step="15"></div>
+  </div>`;
+}
+
+function buildServiceTypeForm(id) {
+  const r = id ? state.data.service_types.find(s=>s.id==id)||{} : {};
+  const svcOpts = (state.data.services||[]).map(s=>`<option value="${s.id}" ${r.service_id==s.id?'selected':''}>${escHtml(s.name)}</option>`).join('');
+  return `<div class="form-grid">
+    <div class="field-group col-span-2"><label>Услуга</label><select id="f-service_id"><option value="">— Выберите услугу —</option>${svcOpts}</select></div>
+    <div class="field-group col-span-2"><label>Название типа</label><input type="text" id="f-name" value="${escHtml(r.name||'')}" placeholder="Бизнес / Эконом / VIP"></div>
+    <div class="field-group"><label>Доп. цена (сом)</label><input type="number" id="f-additional_price" value="${r.additional_price||0}" min="0"></div>
+    <div class="field-group"><label>Доп. длительность (мин)</label><input type="number" id="f-duration_minutes" value="${r.duration_minutes||0}" min="0" step="15"></div>
+  </div>`;
+}
+
+function buildPromotionForm(id) {
+  const r = id ? state.data.promotions.find(p=>p.id==id)||{} : {};
+  return `<div class="form-grid">
+    <div class="field-group"><label>Код промокода</label><input type="text" id="f-code" value="${escHtml(r.code||'')}" placeholder="PROMO2025" oninput="this.value=this.value.toUpperCase()"></div>
+    <div class="field-group"><label>Скидка %</label><input type="number" id="f-discount_percent" value="${r.discount_percent||0}" min="1" max="100"></div>
+    <div class="field-group col-span-2"><label>Описание</label><input type="text" id="f-description" value="${escHtml(r.description||'')}" placeholder="Описание акции"></div>
+    <div class="field-group col-span-2"><label>Истекает</label><input type="date" id="f-expires_at" value="${r.expires_at?r.expires_at.slice(0,10):''}"></div>
+  </div>`;
+}
+
+function buildUserForm(id) {
+  const r = id ? state.data.profiles.find(u=>u.id==id)||{} : {};
+  return `<div class="form-grid">
+    <div class="field-group col-span-2"><label>Имя</label><input type="text" id="f-name" value="${escHtml(r.name||'')}"></div>
+    <div class="field-group"><label>Телефон</label><input type="tel" id="f-phone" value="${escHtml(r.phone||'')}"></div>
+    <div class="field-group"><label>Роль</label><select id="f-role">
+      <option value="user" ${r.role==='user'?'selected':''}>Клиент</option>
+      <option value="admin" ${r.role==='admin'?'selected':''}>Администратор</option>
+    </select></div>
+    <div class="field-group"><label>День рождения</label><input type="date" id="f-birthday" value="${r.birthday||''}"></div>
+    <div class="field-group"><label>Уровень (1-5)</label><input type="number" id="f-level_id" value="${r.level_id||1}" min="1" max="5"></div>
+  </div>`;
+}
+
+function buildOrderForm(id) {
+  const r = id ? state.data.orders.find(o=>o.id==id)||{} : {};
+  return `<div class="form-grid cols-1">
+    <div class="field-group"><label>Статус заказа</label><select id="f-status">
+      <option value="pending" ${r.status==='pending'?'selected':''}>Ожидание</option>
+      <option value="paid" ${r.status==='paid'?'selected':''}>Оплачен</option>
+      <option value="cancelled" ${r.status==='cancelled'?'selected':''}>Отменён</option>
+      <option value="refunded" ${r.status==='refunded'?'selected':''}>Возврат</option>
+    </select></div>
+    <div class="field-group"><label>Сумма (сом)</label><input type="number" id="f-total_price" value="${r.total_price||0}" min="0"></div>
+  </div>`;
+}
+
+function buildNotificationForm() {
+  const opts = (state.data.profiles||[]).map(u=>`<option value="${u.id}">${escHtml(u.name)}</option>`).join('');
+  return `<div class="form-grid">
+    <div class="field-group col-span-2"><label>Пользователь</label><select id="f-user_id">${opts}</select></div>
+    <div class="field-group col-span-2"><label>Заголовок</label><input type="text" id="f-title" placeholder="Заголовок уведомления"></div>
+    <div class="field-group col-span-2"><label>Сообщение</label><textarea id="f-message" placeholder="Текст уведомления..."></textarea></div>
+    <div class="field-group"><label>Тип</label><select id="f-type">
+      <option value="info">Информация</option><option value="success">Успех</option><option value="warning">Предупреждение</option>
+    </select></div>
+  </div>`;
+}
+
+function buildSendMessageForm() {
+  const opts = (state.data.profiles||[]).map(u=>`<option value="${u.id}">${escHtml(u.name)}</option>`).join('');
+  return `<div class="form-grid cols-1">
+    <div class="field-group"><label>Получатель</label><select id="f-receiver_id">${opts}</select></div>
+    <div class="field-group"><label>Сообщение</label><textarea id="f-message" placeholder="Введите текст..." style="min-height:100px;"></textarea></div>
+  </div>`;
+}
+
+/* ─ SAVE ─ */
+function collectField(id, required=false) {
+  const el = document.getElementById(id);
+  if (!el) return undefined;
+  const val = el.value.trim();
+  if (required && !val) throw new Error(`Поле обязательно`);
+  return val || undefined;
+}
+
+async function saveModal() {
+  const btn = document.getElementById('modal-save-btn');
+  btn.innerHTML = '<span class="inline-spinner"></span> Сохранение...';
+  btn.disabled = true;
+  try {
+    if (!sb) throw new Error('Supabase не настроен');
+    const saves = {
+      appointment:  saveAppointment,
+      service:      saveService,
+      service_type: saveServiceType,
+      promotion:    savePromotion,
+      user:         saveUser,
+      order:        saveOrder,
+      notification: saveNotification,
+      send_message: saveSendMessage,
+    };
+    if (saves[currentModalType]) await saves[currentModalType]();
+    closeModal();
+    toast('Сохранено!', 'Данные успешно обновлены', 'success');
+    await loadAllData();
+  } catch(e) {
+    toast('Ошибка', e.message, 'error');
+  } finally {
+    btn.innerHTML = '<i class="fas fa-check"></i>Сохранить';
+    btn.disabled = false;
+  }
+}
+
+async function saveAppointment() {
+  const data = {
+    client_name: collectField('f-client_name', true),
+    client_phone: collectField('f-client_phone'),
+    service_id: Number(collectField('f-service_id')),
+    scheduled_at: collectField('f-scheduled_at', true),
+    status: collectField('f-status'),
+    total_price: Number(collectField('f-total_price')||0),
+    notes: collectField('f-notes'),
+  };
+  const {error} = currentEditId
+    ? await sb.from('appointments').update(data).eq('id', currentEditId)
+    : await sb.from('appointments').insert(data);
+  if (error) throw error;
+}
+
+async function saveService() {
+  const data = { name: collectField('f-name',true), description: collectField('f-description'), base_price: Number(collectField('f-base_price')||0), duration_minutes: Number(collectField('f-duration_minutes')||60) };
+  const {error} = currentEditId ? await sb.from('services').update(data).eq('id',currentEditId) : await sb.from('services').insert(data);
+  if (error) throw error;
+}
+
+async function saveServiceType() {
+  const data = { service_id: Number(collectField('f-service_id',true)), name: collectField('f-name',true), additional_price: Number(collectField('f-additional_price')||0), duration_minutes: Number(collectField('f-duration_minutes')||0) };
+  const {error} = currentEditId ? await sb.from('service_types').update(data).eq('id',currentEditId) : await sb.from('service_types').insert(data);
+  if (error) throw error;
+}
+
+async function savePromotion() {
+  const data = { code: collectField('f-code',true), description: collectField('f-description'), discount_percent: Number(collectField('f-discount_percent')||0), expires_at: collectField('f-expires_at') };
+  const {error} = currentEditId ? await sb.from('promotions').update(data).eq('id',currentEditId) : await sb.from('promotions').insert(data);
+  if (error) throw error;
+}
+
+async function saveUser() {
+  const data = { name: collectField('f-name',true), phone: collectField('f-phone'), role: collectField('f-role'), birthday: collectField('f-birthday'), level_id: Number(collectField('f-level_id')||1) };
+  const {error} = await sb.from('profiles').update(data).eq('id', currentEditId);
+  if (error) throw error;
+}
+
+async function saveOrder() {
+  const data = { status: collectField('f-status'), total_price: Number(collectField('f-total_price')||0) };
+  const {error} = await sb.from('orders').update(data).eq('id', currentEditId);
+  if (error) throw error;
+}
+
+async function saveNotification() {
+  const data = { user_id: collectField('f-user_id',true), title: collectField('f-title',true), message: collectField('f-message',true), type: collectField('f-type'), is_read: false };
+  const {error} = await sb.from('notifications').insert(data);
+  if (error) throw error;
+}
+
+async function saveSendMessage() {
+  const data = { user_id: collectField('f-receiver_id',true), receiver_id: collectField('f-receiver_id'), message: collectField('f-message',true), direction: 'staff_to_client', is_read: true };
+  const {error} = await sb.from('messages').insert(data);
+  if (error) throw error;
+}
+
+/* ─ VIEW ─ */
+function viewRecord(type, id) {
+  const r = state.data.appointments.find(a=>a.id==id);
+  if (!r) return;
+  currentModalType = '_view';
+  document.getElementById('modal-title-text').textContent = `Запись #${r.id}`;
+  document.querySelector('#modal-title i').className = 'fas fa-eye';
+  document.getElementById('modal-footer').innerHTML = `
+    <button class="btn btn-secondary" onclick="closeModal()"><i class="fas fa-xmark"></i>Закрыть</button>
+    <button class="btn btn-primary" onclick="closeModal();editRecord('appointment',${r.id})"><i class="fas fa-pen"></i>Редактировать</button>`;
+  document.getElementById('modal-body').innerHTML = `<div class="detail-grid">
+    <div class="detail-item"><label>Клиент</label><span>${escHtml(r.client_name||'—')}</span></div>
+    <div class="detail-item"><label>Телефон</label><span>${escHtml(r.client_phone||'—')}</span></div>
+    <div class="detail-item"><label>Услуга</label><span>${escHtml(r.services?.name||'—')}</span></div>
+    <div class="detail-item"><label>Дата/Время</label><span>${fmtDate(r.scheduled_at)}</span></div>
+    <div class="detail-item"><label>Статус</label><span>${badge(r.status)}</span></div>
+    <div class="detail-item"><label>Сумма</label><span style="color:var(--neon);font-size:16px;font-weight:700">${fmtMoney(r.total_price)}</span></div>
+    <div class="detail-item" style="grid-column:span 2"><label>Примечания</label><span>${escHtml(r.notes||'—')}</span></div>
+  </div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function editRecord(type, id) { openModal(type, id); }
+
+/* ══════════════════════════════════════════════
+   DELETE
+══════════════════════════════════════════════ */
+function confirmDelete(tableName, id) {
+  document.getElementById('confirm-text').textContent = `Запись #${id} из таблицы "${tableName}" будет удалена безвозвратно.`;
+  document.getElementById('confirm-overlay').classList.add('open');
+  document.getElementById('confirm-ok').onclick = async () => {
+    await deleteRecord(tableName, id);
+    closeConfirm();
+  };
+}
+function closeConfirm() { document.getElementById('confirm-overlay').classList.remove('open'); }
+
+async function deleteRecord(tableName, id) {
+  if (!sb) { toast('Supabase не настроен', '', 'error'); return; }
+  try {
+    const { error } = await sb.from(tableName).delete().eq('id', id);
+    if (error) throw error;
+    toast('Удалено', `Запись #${id} удалена`, 'warn');
+    await loadAllData();
+  } catch(e) {
+    toast('Ошибка удаления', e.message, 'error');
+  }
+}
+
+/* ══════════════════════════════════════════════
+   NOTIFICATIONS
+══════════════════════════════════════════════ */
+async function markRead(id) {
+  if (!sb) return;
+  await sb.from('notifications').update({is_read:true}).eq('id',id);
+  await loadAllData();
+}
+async function markAllRead() {
+  if (!sb) return;
+  await sb.from('notifications').update({is_read:true}).eq('is_read',false);
+  await loadAllData();
+  toast('Готово', 'Все уведомления прочитаны');
+}
+
+/* ══════════════════════════════════════════════
+   BADGES
+══════════════════════════════════════════════ */
+function updateBadge(name, count) {
+  const el = document.getElementById('badge-' + name);
+  if (!el) return;
+  el.textContent = count;
+  el.style.display = count > 0 ? '' : 'none';
+}
+
+/* ══════════════════════════════════════════════
+   KPIs & CHARTS
+══════════════════════════════════════════════ */
+function updateKPIs() {
+  const apts = state.data.appointments || [];
+  const orders = state.data.orders || [];
+  const profiles = state.data.profiles || [];
+  document.getElementById('kpi-appointments').textContent = apts.length;
+  const rev = apts.filter(a=>a.status==='completed').reduce((s,a)=>s+Number(a.total_price||0),0);
+  document.getElementById('kpi-revenue').textContent = fmtMoney(rev);
+  document.getElementById('kpi-users').textContent = profiles.length;
+  const activeOrders = orders.filter(o=>o.status==='pending').length;
+  document.getElementById('kpi-orders').textContent = activeOrders;
+  document.getElementById('kpi-apts-delta').innerHTML = `<i class="fas fa-arrow-up"></i> ${apts.filter(a=>a.status==='pending').length} ожидают`;
+  document.getElementById('kpi-rev-delta').innerHTML = `<i class="fas fa-check"></i> ${apts.filter(a=>a.status==='completed').length} выполнено`;
+  document.getElementById('kpi-orders-delta').innerHTML = `<i class="fas fa-circle"></i> ${activeOrders} в обработке`;
+}
+
+let chartApts, chartStat;
+function initCharts() {
+  const ctx1 = document.getElementById('chart-appointments')?.getContext('2d');
+  const ctx2 = document.getElementById('chart-statuses')?.getContext('2d');
+  if (!ctx1 || !ctx2) return;
+  
+  const months = ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
+  const counts = new Array(12).fill(0);
+  (state.data.appointments||[]).forEach(a => { if (a.created_at) counts[new Date(a.created_at).getMonth()]++; });
+  
+  const grad = ctx1.createLinearGradient(0,0,0,180);
+  grad.addColorStop(0,'rgba(255,77,0,0.3)');
+  grad.addColorStop(1,'rgba(255,77,0,0.01)');
+  
+  if (chartApts) chartApts.destroy();
+  chartApts = new Chart(ctx1, {
+    type: 'line',
+    data: { labels: months, datasets: [{ data: counts, borderColor:'#ff4d00', backgroundColor:grad, fill:true, tension:0.4, borderWidth:2, pointBackgroundColor:'#ff4d00', pointRadius:4 }] },
+    options: { maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#5a6480',font:{family:"'Rajdhani',sans-serif"}}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#5a6480',font:{family:"'Rajdhani',sans-serif"}}}}, animation:{duration:800} }
+  });
+  
+  const apts = state.data.appointments || [];
+  const sc = s => apts.filter(a=>a.status===s).length;
+  if (chartStat) chartStat.destroy();
+  chartStat = new Chart(ctx2, {
+    type: 'doughnut',
+    data: {
+      labels: ['Ожидание','Подтверждён','В работе','Выполнен','Отменён'],
+      datasets: [{ data: [sc('pending'),sc('confirmed'),sc('in_progress'),sc('completed'),sc('cancelled')], backgroundColor:['rgba(245,158,11,0.8)','rgba(56,189,248,0.8)','rgba(56,189,248,0.4)','rgba(0,229,160,0.8)','rgba(255,56,96,0.8)'], borderColor:'rgba(0,0,0,0.3)', borderWidth:2 }]
+    },
+    options: { plugins:{legend:{position:'bottom',labels:{color:'#8899bb',font:{family:"'Rajdhani',sans-serif"},boxWidth:10,padding:10}}}, maintainAspectRatio:false, cutout:'65%' }
+  });
+}
+
+function renderRecentAppointments() {
+  const el = document.getElementById('recent-appointments');
+  if (!el) return;
+  const list = (state.data.appointments||[]).slice(0,5);
+  if (!list.length) { el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted)">Нет записей</div>'; return; }
+  el.innerHTML = list.map(r => `
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border2)">
+      <div style="width:32px;height:32px;border-radius:3px;background:rgba(255,77,0,0.1);border:1px solid rgba(255,77,0,0.2);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--neon);font-weight:700">#${r.id}</div>
+      <div style="flex:1;overflow:hidden">
+        <div style="font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(r.client_name || profileName(r.user_id))}</div>
+        <div style="font-size:10px;color:var(--muted2)">${fmtDate(r.scheduled_at)}</div>
+      </div>
+      ${badge(r.status)}
+      <div style="font-size:12px;color:var(--neon);font-weight:600;white-space:nowrap">${fmtMoney(r.total_price)}</div>
+    </div>`).join('');
+}
+
+function renderRecentReviews() {
+  const el = document.getElementById('recent-reviews');
+  if (!el) return;
+  const list = (state.data.reviews||[]).slice(0,5);
+  if (!list.length) { el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted)">Нет отзывов</div>'; return; }
+  el.innerHTML = list.map(r => `
+    <div style="padding:10px 0;border-bottom:1px solid var(--border2)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+        <span style="font-size:12px;font-weight:600">${escHtml(profileName(r.user_id))}</span>
+        <span>${ratingBadge(r.rating)}</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted2);line-height:1.4">${escHtml(r.comment||'')}</div>
+    </div>`).join('');
+}
+
+function renderDbStats() {
+  const el = document.getElementById('db-stats');
+  if (!el) return;
+  const tables = [
+    {name:'appointments',label:'Записи',icon:'fa-calendar-check',color:'var(--neon)'},
+    {name:'orders',label:'Заказы',icon:'fa-receipt',color:'var(--success)'},
+    {name:'profiles',label:'Пользователи',icon:'fa-users',color:'var(--info)'},
+    {name:'services',label:'Услуги',icon:'fa-spray-can-sparkles',color:'var(--warn)'},
+    {name:'promotions',label:'Акции',icon:'fa-tags',color:'var(--gold)'},
+    {name:'messages',label:'Сообщения',icon:'fa-comments',color:'#a78bfa'},
+    {name:'reviews',label:'Отзывы',icon:'fa-star',color:'#fbbf24'},
+    {name:'cars',label:'Автомобили',icon:'fa-car',color:'#64748b'},
+  ];
+  el.innerHTML = tables.map(t => `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:rgba(255,255,255,0.02);border-radius:3px;">
+      <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted2)">
+        <i class="fas ${t.icon}" style="color:${t.color};width:14px;text-align:center;"></i>${t.label}
+      </div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:${t.color}">${state.data[t.name]?.length||0}</div>
+    </div>`).join('');
+}
+
+/* ══════════════════════════════════════════════
+   SETTINGS SAVE (локальные настройки компании)
+══════════════════════════════════════════════ */
+function saveSettings() {
+  const name = document.getElementById('s-name')?.value;
+  const addr = document.getElementById('s-address')?.value;
+  if (name) localStorage.setItem('company_name', name);
+  if (addr) localStorage.setItem('company_addr', addr);
+  toast('Настройки сохранены', 'Параметры компании обновлены', 'success');
+}
+
+/* ══════════════════════════════════════════════
+   EXPORT CSV
+══════════════════════════════════════════════ */
+function exportCSV(name) {
+  const data = state.data[name] || [];
+  if (!data.length) { toast('Нет данных для экспорта','','warn'); return; }
+  const keys = Object.keys(data[0]);
+  const rows = [keys.join(','), ...data.map(r => keys.map(k=>`"${String(r[k]||'').replace(/"/g,'""')}"`).join(','))];
+  const blob = new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8;'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${name}_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  toast('CSV экспортирован',`${data.length} записей`,'success');
+}
+
+/* ══════════════════════════════════════════════
+   GLOBAL SEARCH
+══════════════════════════════════════════════ */
+document.getElementById('global-search')?.addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if (!q) return;
+  const found = state.data.appointments.filter(r => Object.values(r).some(v=>String(v).toLowerCase().includes(q)));
+  if (found.length) { showSection('appointments'); renderAppointments(found); }
+});
+
+/* ══════════════════════════════════════════════
+   RENDER ALL
+══════════════════════════════════════════════ */
+function renderAll() {
+  renderAppointments(state.data.appointments);
+  renderOrders(state.data.orders);
+  renderServices(state.data.services);
+  renderServiceTypes(state.data.service_types);
+  renderPromotions(state.data.promotions);
+  renderUsers(state.data.profiles);
+  renderReviews(state.data.reviews);
+  renderNotifications(state.data.notifications);
+  renderMessages();
+  updateKPIs();
+  renderRecentAppointments();
+  renderRecentReviews();
+  renderDbStats();
+  updateBadge('appointments', state.data.appointments.filter(a=>a.status==='pending').length);
+  updateBadge('messages', state.data.messages.filter(m=>!m.is_read).length);
+  const hasUnread = state.data.notifications.some(n=>!n.is_read);
+  document.getElementById('notif-dot').style.display = hasUnread ? '' : 'none';
+  initCharts();
+}
+
+/* ══════════════════════════════════════════════
+   KEYBOARD SHORTCUTS
+══════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal(); closeConfirm(); }
+  if (e.ctrlKey && e.key === 'k') { e.preventDefault(); document.getElementById('global-search')?.focus(); }
+});
+
+/* ══════════════════════════════════════════════
+   HEADER DATE
+══════════════════════════════════════════════ */
+function updateDate() {
+  document.getElementById('hdr-date').textContent = new Date().toLocaleDateString('ru-RU',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric'});
+}
+updateDate();
+
+/* ══════════════════════════════════════════════
+   INIT — автозапуск при загрузке страницы
+══════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('🚀 AUTOSTYLES Admin Panel — initializing...');
+  loadAllData(); // Сразу загружаем данные из Supabase
+});
+</script>
+</body>
+</html>

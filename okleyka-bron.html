@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Okleyka Pro | Премиум оклейка авто №1 в Бишкеке</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./okleyka-vinyl.css">
+</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<body>
+    <!-- Navigation -->
+    <nav id="navbar" class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">
+
+                    <span class="logo-text">AUTOSTYLES<span class="logo-accent">Pro</span></span>
+                </div>
+
+                <div class="nav-links">
+                    <a href="./okleyka.html" style="color: rgb(6, 247, 247); font-size: large; text-decoration: none;"
+                        onmouseover="this.style.color='rgb(165, 255, 0)';"
+                        onmouseout="this.style.color='rgb(6, 197, 197)';">
+                        Главная
+                    </a>
+                    <a href="#services">Услуги</a>
+                    <a href="#process">Процесс</a>
+                    <a href="#gallery">Примеры</a>
+                    <a href="#booking" class="btn-primary">Записаться</a>
+                </div>
+
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <!-- Фоновое изображение -->
+        <img src="https://avatars.mds.yandex.net/i?id=29a634e5131aeb26048dc588f866abe1_l-5147050-images-thumbs&n=13"
+            alt="Фон автомобильной оклейки" class="hero-bg">
+
+        <div class="hero-overlay"></div>
+
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-badge">
+                        <span class="badge-dot"></span>
+                        <span>Студия №1 в Бишкеке</span>
+                    </div>
+
+                    <h1 class="hero-title">
+                        <span class="title-line">ТВОЕ АВТО</span>
+                        <span class="title-line">В НОВОМ</span>
+                        <span class="title-line accent">ЦВЕТЕ</span>
+                    </h1>
+
+                    <p class="hero-subtitle">
+                        Премиальная оклейка плёнкой с гарантией до 5 лет. Используем только SunTek, 3M и Avery Dennison.
+                    </p>
+
+                    <div class="hero-features">
+                        <div class="feature-item">
+                            <span class="feature-icon">🛡️</span>
+                            <span>Гарантия качества</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">👨‍🔧</span>
+                            <span>Опыт 10+ лет</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🧼</span>
+                            <span>Без следов клея</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🏷️</span>
+                            <span>Премиум плёнки</span>
+                        </div>
+                    </div>
+
+                    <a href="#booking" class="btn-hero">
+                        <span>Заказать услугу</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12m-6-6l6 6-6 6" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="hero-card">
+                    <div class="before-after-slider">
+                        <div class="slider-container">
+                            <img src="https://avatars.mds.yandex.net/get-autoru-vos/2180434/99838528577a4976858144d4b059f1b3/456x342"
+                                alt="До оклейки" class="before-img">
+                            <div class="after-container">
+                                <img src="https://autobezzabot.ru/wp-content/uploads/2023/05/bronirovanie-stekla-avtomobilya-land-rover-range-rover-16.jpg"
+                                    alt="После оклейки" class="after-img">
+                            </div>
+                            <div class="slider-control">
+                                <input type="range" min="0" max="100" value="50" class="slider-input">
+                                <div class="slider-line"></div>
+                                <div class="slider-handle">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                        <path
+                                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <span class="slider-label before-label">ДО</span>
+                            <span class="slider-label after-label">ПОСЛЕ</span>
+                        </div>
+                        <div class="slider-info">
+                            <h3> Range Rover Vogue SE </h3>
+                            <p>Бронированная плёнка (Security Film)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">БРОНИРОВАНИЕ СТЁКОЛ</h2>
+                <div class="section-divider"></div>
+            </div>
+
+            <div class="services-grid">
+
+                <!-- 1. Security Film -->
+                <article class="service-card" data-badge="Популярно" data-badge-type="popular">
+                    <div class="service-image">
+                        <img src="https://avatars.mds.yandex.net/i?id=cbdcfd3384d99c1f60d2ca909558711d23c5390a-3986049-images-thumbs&n=13" alt="Бронированная пленка стекол">
+                        <div class="service-badge popular">Популярно</div>
+                        <div class="service-price">от 8 000 с</div>
+                    </div>
+                    <div class="service-content">
+                        <h3>🔒 Бронированная плёнка (Security Film)</h3>
+                        <p>
+                            Усиливает стекло и удерживает осколки при ударе.
+                            Толщина плёнки: от 100 до 300+ мкм.
+                        </p>
+                        <p>
+                            Чем толще плёнка — тем выше уровень защиты.
+                        </p>
+                        <a href="#booking" class="btn-primary">Записаться</a>
+                    </div>
+                </article>
+
+                <!-- 2. Ламинированное стекло -->
+                <article class="service-card" data-badge="Надёжно" data-badge-type="premium">
+                    <div class="service-image">
+                        <img src="https://avatars.mds.yandex.net/i?id=b554d6d790209ef14b52e3d5028b5b5ded5fb4ca-4435263-images-thumbs&n=13" alt="Ламинированное стекло">
+                        <div class="service-badge premium">Надёжно</div>
+                        <div class="service-price">от 25 000 с</div>
+                    </div>
+                    <div class="service-content">
+                        <h3>🚗 Ламинированное стекло</h3>
+                        <p>
+                            Многослойное стекло с защитной плёнкой внутри.
+                            Снижает риск пробития и травм.
+                        </p>
+                        <p>
+                            Возможны классы защиты по стандартам NIJ / EN.
+                        </p>
+                        <a href="#booking" class="btn-primary">Записаться</a>
+                    </div>
+                </article>
+
+                <!-- 3. Баллистическое стекло -->
+                <article class="service-card" data-badge="VIP" data-badge-type="premium">
+                    <div class="service-image">
+                        <img src="https://avatars.mds.yandex.net/i?id=15453184f96a9a96856185f9e7ea5137454121ea-10144593-images-thumbs&n=13" alt="Баллистическое стекло">
+                        <div class="service-badge premium">VIP</div>
+                        <div class="service-price">от 150 000 с</div>
+                    </div>
+                    <div class="service-content">
+                        <h3>💥 Баллистическое (бронь-стекло)</h3>
+                        <p>
+                            Защита от огнестрельного оружия.
+                            Используется в VIP-авто и спецтехнике.
+                        </p>
+                        <p>
+                            Классы защиты: B4–B7 (в зависимости от угрозы).
+                        </p>
+                        <a href="#booking" class="btn-primary">Консультация</a>
+                    </div>
+                </article>
+
+                <!-- 4. Термозащитное бронирование -->
+                <article class="service-card" data-badge="Комфорт" data-badge-type="popular">
+                    <div class="service-image">
+                        <img src="https://crystal-auto.ru/wp-content/uploads/2025/11/oklejka-czvetnym-poliuretanom.jpg" alt="Термозащитная пленка">
+                        <div class="service-badge popular">Комфорт</div>
+                        <div class="service-price">от 6 000 с</div>
+                    </div>
+                    <div class="service-content">
+                        <h3>🌡️ Термозащитное бронирование</h3>
+                        <p>
+                            Плёнки с UV и IR фильтрами.
+                            Защищают от жары, ультрафиолета и выгорания салона.
+                        </p>
+                        <p>
+                            Комфорт + базовая защита стекла.
+                        </p>
+                        <a href="#booking" class="btn-primary">Записаться</a>
+                    </div>
+                </article>
+
+                <!-- 5. Бронирование с затемнением -->
+                <article class="service-card" data-badge="Хит" data-badge-type="popular">
+                    <div class="service-image">
+                        <img src="https://avatars.mds.yandex.net/i?id=f4c8aa47d62eb1d54ba54140c69750b157db6fad-10815658-images-thumbs&n=13" alt="Бронирование с затемнением">
+                        <div class="service-badge popular">Хит</div>
+                        <div class="service-price">от 10 000 с</div>
+                    </div>
+                    <div class="service-content">
+                        <h3>👁️ Бронирование с затемнением</h3>
+                        <p>
+                            Совмещает защитную плёнку и тонировку.
+                            Прочнее и безопаснее обычной тонировки.
+                        </p>
+                        <p>
+                            Светопропускание — по нормам ПДД.
+                        </p>
+                        <a href="#booking" class="btn-primary">Записаться</a>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Process Section -->
+    <section id="process" class="process-section">
+        <div class="container">
+            <div class="process-content">
+                <div class="process-info">
+                    <h2 class="section-title">КАК МЫ РАБОТАЕМ</h2>
+                    <p class="process-description">
+                        Мы придерживаемся строгих технологических стандартов. Весь процесс проходит в чистом боксе при
+                        стабильной температуре.
+                    </p>
+
+                    <div class="process-steps">
+                        <div class="process-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>Подготовка</h3>
+                                <p>Детальная мойка и глубокая очистка кузова от битума и загрязнений.</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>Обезжиривание</h3>
+                                <p>Обработка поверхности специальными составами для идеальной адгезии.</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>Нанесение</h3>
+                                <p>Профессиональная укладка плёнки без резки по лакокрасочному покрытию.</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h3>Контроль</h3>
+                                <p>Проверка краёв, прогрев и финальная инспекция под мощным светом.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="process-gallery">
+                    <div class="gallery-item offset">
+                        <img src="https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&q=80&w=400"
+                            alt="Этап 1">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&q=80&w=400"
+                            alt="Этап 2">
+                    </div>
+                    <div class="gallery-item offset">
+                        <img src="https://a.d-cd.net/B1nslQFNTi9B6TpIbifVFWUuGDI-1920.jpg" alt="Этап 3">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://a.d-cd.net/k9iDo6bu2E3OYD-GJU9NKM5h9AI-1920.jpg" alt="Этап 4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Pricing Section -->
+  <section class="pricing-section">
+    <div class="container">
+        <div class="pricing-card">
+            <div class="pricing-glow"></div>
+
+            <div class="pricing-content">
+                <div class="pricing-included">
+                    <h2>Что включено в стоимость антигравийной защиты?</h2>
+                    <ul class="included-list">
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Тщательная мойка и детальная очистка кузова</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Полное обезжиривание для идеальной адгезии плёнки</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Использование премиум PPF SunTek, 3M или Avery Dennison</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Профессиональный монтаж без пузырей и складок</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Гарантия на 3-5 лет на работу и материал</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pricing-box">
+                    <p class="pricing-label">Стоимость начинается от</p>
+                    <div class="pricing-amount">
+                        <span class="price-value">8000</span>
+                        <span class="price-currency">сом</span>
+                    </div>
+                    <p class="pricing-note">
+                        * Итоговая цена зависит от марки автомобиля, типа плёнки и объёма покрываемых зон.
+                    </p>
+                    <a href="#booking" class="pricing-btn">Получить точный расчёт</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">НАШИ РАБОТЫ</h2>
+                <p class="section-subtitle">Листайте ползунок, чтобы сравнить результат</p>
+            </div>
+
+            <div class="gallery-grid">
+                <!-- 1. Бронированная плёнка -->
+            <div class="gallery-slider">
+                <div class="before-after-slider">
+                    <div class="slider-container">
+                        <img src="https://copilot.microsoft.com/th/id/BCO.f35e8ed0-4d16-43e2-a9ff-819f8e5da608.png" alt="До" class="before-img">
+                        <div class="after-container">
+                            <img src="https://premiere.media/wp-content/uploads/2021/02/892d8bf89c643288813b8624f898fee9-1.jpg" alt="После" class="after-img">
+                        </div>
+                        <div class="slider-control">
+                            <input type="range" min="0" max="100" value="50" class="slider-input">
+                            <div class="slider-line"></div>
+                            <div class="slider-handle">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="slider-label before-label">ДО</span>
+                        <span class="slider-label after-label">ПОСЛЕ</span>
+                    </div>
+                    <div class="slider-info">
+                        <h3>Security Film</h3>
+                        <p>Усиление стекла, удержание осколков при ударе, толщина 100–300 мкм</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Ламинированное стекло -->
+            <div class="gallery-slider">
+                <div class="before-after-slider">
+                    <div class="slider-container">
+                        <img src="https://copilot.microsoft.com/th/id/BCO.7a310700-6831-4624-9d40-939940065dd0.png" alt="До" class="before-img">
+                        <div class="after-container">
+                            <img src="https://copilot.microsoft.com/th/id/BCO.765661b1-b4fc-41b7-989f-e2121e630958.png" alt="После" class="after-img">
+                        </div>
+                        <div class="slider-control">
+                            <input type="range" min="0" max="100" value="50" class="slider-input">
+                            <div class="slider-line"></div>
+                            <div class="slider-handle">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="slider-label before-label">ДО</span>
+                        <span class="slider-label after-label">ПОСЛЕ</span>
+                    </div>
+                    <div class="slider-info">
+                        <h3>Ламинированное стекло</h3>
+                        <p>Многослойное стекло с защитной плёнкой, снижает риск пробития</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Баллистическое стекло -->
+            <div class="gallery-slider">
+                <div class="before-after-slider">
+                    <div class="slider-container">
+                        <img src="https://avatars.mds.yandex.net/i?id=b8ac1256ff3b84162ffeab8e7cc47351_l-5226776-images-thumbs&n=13" alt="До" class="before-img">
+                        <div class="after-container">
+                            <img src="https://copilot.microsoft.com/th/id/BCO.765661b1-b4fc-41b7-989f-e2121e630958.png" alt="После" class="after-img">
+                        </div>
+                        <div class="slider-control">
+                            <input type="range" min="0" max="100" value="50" class="slider-input">
+                            <div class="slider-line"></div>
+                            <div class="slider-handle">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="slider-label before-label">ДО</span>
+                        <span class="slider-label after-label">ПОСЛЕ</span>
+                    </div>
+                    <div class="slider-info">
+                        <h3>Баллистическое стекло</h3>
+                        <p>Защита от выстрелов, многослойное стекло + поликарбонат, классы B4–B7</p>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+   <section class="reviews-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">ОТЗЫВЫ</h2>
+        </div>
+
+        <div class="reviews-grid">
+            <article class="review-card">
+                <div class="review-header">
+                    <img src="https://images.unsplash.com/photo-1614200187524-dc4b892acf16?auto=format&fit=crop&q=80&w=200"
+                         alt="Mercedes GLE" class="review-car-img">
+                    <div class="review-author">
+                        <h4>Сергей П.</h4>
+                        <p>Mercedes GLE</p>
+                    </div>
+                    <div class="review-meta">
+                        <span class="review-source">Google</span>
+                        <div class="review-stars">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="review-text">
+                    "Бронирование стекол на высшем уровне! Стёкла стали прочнее, осколков нет даже после небольших ударов. Мастера работают аккуратно и быстро."
+                </p>
+                <p class="review-date">15.02.2024</p>
+            </article>
+
+            <article class="review-card">
+                <div class="review-header">
+                    <img src="https://images.unsplash.com/photo-1555212697-194d092e3b8f?auto=format&fit=crop&q=80&w=200"
+                         alt="BMW X5" class="review-car-img">
+                    <div class="review-author">
+                        <h4>Анна К.</h4>
+                        <p>BMW X5</p>
+                    </div>
+                    <div class="review-meta">
+                        <span class="review-source">2GIS</span>
+                        <div class="review-stars">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="review-text">
+                    "Установили ламинированное стекло и бронированную плёнку. Стёкла стали гораздо прочнее, а салон защищён от UV и тепла. Очень довольна результатом!"
+                </p>
+                <p class="review-date">28.01.2024</p>
+            </article>
+
+            <article class="review-card">
+                <div class="review-header">
+                    <img src="https://images.unsplash.com/photo-1541443131876-44b03de101c5?auto=format&fit=crop&q=80&w=200"
+                         alt="Audi Q7" class="review-car-img">
+                    <div class="review-author">
+                        <h4>Игорь Л.</h4>
+                        <p>Audi Q7</p>
+                    </div>
+                    <div class="review-meta">
+                        <span class="review-source">Instagram</span>
+                        <div class="review-stars">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="review-text">
+                    "Баллистическое стекло установили на мой автомобиль. Теперь не переживаю за безопасность в городе и на трассе. Рекомендую всем, кто ценит защиту и комфорт."
+                </p>
+                <p class="review-date">10.02.2024</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+
+    <!-- FAQ Section -->
+   <section class="faq-section">
+    <div class="container">
+        <h2 class="section-title">ЧАСТЫЕ ВОПРОСЫ</h2>
+
+        <div class="faq-list">
+
+            <!-- 1 -->
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Сколько держится бронированная плёнка?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Качественная плёнка для бронирования стекол служит от 5 до 10 лет. Мы даём гарантию 3–5 лет на выполненные работы.</p>
+                </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Можно ли мыть стекла после установки?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Да, но рекомендуется воздержаться от мойки в первые 7–10 дней. В дальнейшем используйте бесконтактную мойку или мягкую губку.</p>
+                </div>
+            </div>
+
+            <!-- 3 -->
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Снимается ли плёнка без следов?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Да, профессиональная плёнка снимается без остатка клея и не повреждает заводское стекло и уплотнения.</p>
+                </div>
+            </div>
+
+            <!-- 4 -->
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Сколько времени занимает бронирование стекол?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Установка плёнки на все стекла занимает 1–2 рабочих дня. Лобовое стекло или отдельные элементы — от 2–4 часов.</p>
+                </div>
+            </div>
+
+            <!-- 5 -->
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Защищает ли плёнка от выстрелов или сильных ударов?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Стандартная бронированная плёнка задерживает осколки и замедляет разрушение стекла. Для защиты от пуль используются специальные баллистические стекла.</p>
+                </div>
+            </div>
+
+            <!-- 6 -->
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Можно ли сочетать бронирование с тонировкой?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Да, большинство защитных плёнок совместимы с тонировкой. Это повышает прочность и сохраняет комфорт в салоне.</p>
+                </div>
+            </div>
+
+            <!-- 7 -->
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Есть ли защита от ультрафиолета и жары?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Да, термозащитные плёнки блокируют UV и IR лучи, защищая салон и стекла от выгорания и перегрева.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+    <!-- Booking Section -->
+    <section id="booking" class="booking-section">
+        <div class="container">
+            <div class="booking-content">
+                <div class="booking-info">
+                    <h2 class="section-title">
+                        ЗАПИШИТЕСЬ НА<br>
+                        <span class="accent">КОНСУЛЬТАЦИЮ</span>
+                    </h2>
+                    <p class="booking-description">
+                        Мы ответим в течение 10 минут, сориентируем по цене и подберём удобное время.
+                    </p>
+
+                    <div class="contact-buttons">
+                        <a href="https://wa.me/996555123456" class="contact-btn whatsapp">
+                            <span>💬</span>
+                            <span>WhatsApp</span>
+                        </a>
+                        <a href="https://t.me/studio_wrap" class="contact-btn telegram">
+                            <span>📱</span>
+                            <span>Telegram</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="booking-form-wrapper">
+                    <form class="booking-form" id="bookingForm">
+                        <div class="form-group">
+                            <label>Ваше имя</label>
+                            <input type="text" name="name" placeholder="Александр" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Телефон</label>
+                                <input type="tel" name="phone" placeholder="+996 ___ ___ ___" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Автомобиль</label>
+                                <input type="text" name="car" placeholder="Mercedes GLC">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Предпочитаемая дата</label>
+                            <input type="date" name="date">
+                        </div>
+
+                        <button type="submit" class="form-submit">
+                            Отправить заявку
+                        </button>
+
+                        <p class="form-privacy">
+                            Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-icon">O</div>
+                        <span class="logo-text">AUTOSTYLES<span class="logo-accent">Pro</span></span>
+                    </div>
+                    <p class="footer-description">
+                        Профессиональная студия стайлинга и защиты автомобилей в Бишкеке.
+                        Мы сохраняем ценность вашего автомобиля с помощью премиальных материалов.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/t.m.a_kg/" class="social-link instagram"
+                            aria-label="Instagram">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                            </svg>
+                        </a>
+
+                        <a href="https://wa.me/996996555730615" class="social-link whatsapp" aria-label="WhatsApp">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2a10 10 0 0 0-8.7 15L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 13.4c-.2.6-1.1 1.1-1.8 1.2-.5.1-1.1.1-3.6-.8-3-1.3-4.9-4.4-5-4.6-.2-.3-1.2-1.6-1.2-3 0-1.4.7-2 1-2.3.2-.2.5-.3.8-.3h.6c.2 0 .5-.1.8.6.3.7 1 2.3 1.1 2.4.1.2.1.4 0 .6-.1.2-.2.4-.4.6l-.4.5c-.1.2-.3.4-.1.8.2.4.9 1.5 1.9 2.4 1.3 1.1 2.4 1.5 2.8 1.6.3.1.6.1.8-.1l.9-1.1c.2-.3.5-.3.8-.2.3.1 2 .9 2.3 1.1.3.1.5.2.6.4.1.1.1.6-.1 1.2z" />
+                            </svg>
+                        </a>
+
+                        <a href="https://t.me/996996555730615" class="social-link telegram" aria-label="Telegram">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M22 3L2 11l5 2 2 6 3-4 5 4 5-16z" />
+                            </svg>
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="footer-links">
+                    <h4>Навигация</h4>
+                    <ul>
+                        <li><a href="#services">Услуги</a></li>
+                        <li><a href="#gallery">Портфолио</a></li>
+                        <li><a href="#booking">Запись</a></li>
+                        <li><a href="#faq">Вопросы</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-contact">
+                    <h4>Контакты</h4>
+                    <ul>
+                        <li>
+                            <span class="contact-icon">📍</span>
+                            <span>г. Бишкек, ул. Манаса 123</span>
+                        </li>
+                        <li>
+                            <span class="contact-icon">📞</span>
+                            <span>+996 (555) 123-456</span>
+                        </li>
+                        <li>
+                            <span class="contact-icon">⏰</span>
+                            <span>Пн-Сб: 09:00 - 19:00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2024 AUTOSTYLES. Все права защищены.</p>
+                <div class="footer-legal">
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Условия использования</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./js/okkkk.js"></script>
+</body>
+
+</html>

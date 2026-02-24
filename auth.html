@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUTOSTYLES | Вход в систему</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon: #ff4d00;
+            --neon-glow: #ff6a00;
+            --neon-dim: rgba(255, 77, 0, 0.25);
+            --gold: #c9a84c;
+            --bg: #070a0f;
+            --surface: rgba(10, 14, 22, 0.85);
+            --surface2: rgba(20, 26, 40, 0.6);
+            --border: rgba(255, 77, 0, 0.35);
+            --border-dim: rgba(255,255,255,0.1);
+            --text: #e8eaf0;
+            --text-muted: #8b97b5;
+            --success: #00e5a0;
+            --error: #ff3860;
+            --admin-bg: rgba(20, 10, 30, 0.95);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg);
+            font-family: 'Exo 2', sans-serif;
+            color: var(--text);
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ── CANVAS BACKGROUND ── */
+        #bg-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+
+        /* ── SCANLINES overlay ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.08) 2px,
+                rgba(0,0,0,0.08) 4px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* ── NOISE GRAIN ── */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: -200%;
+            width: 400%;
+            height: 400%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.45;
+            pointer-events: none;
+            z-index: 1;
+            animation: grainShift 8s steps(10) infinite;
+        }
+        @keyframes grainShift {
+            0%,100%{transform:translate(0,0)}
+            10%{transform:translate(-3%,-3%)}
+            20%{transform:translate(2%,4%)}
+            30%{transform:translate(-4%,2%)}
+            40%{transform:translate(3%,-2%)}
+            50%{transform:translate(-2%,3%)}
+            60%{transform:translate(4%,-4%)}
+            70%{transform:translate(-3%,3%)}
+            80%{transform:translate(2%,-3%)}
+            90%{transform:translate(-4%,4%)}
+        }
+
+        /* ── MAIN WRAPPER ── */
+        .page-wrap {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 520px;
+            padding: 16px;
+        }
+
+        /* ── CARD ── */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 44px 40px 40px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(24px);
+            box-shadow:
+                0 0 0 1px var(--border-dim),
+                0 0 80px rgba(255,77,0,0.15),
+                0 40px 80px rgba(0,0,0,0.6),
+                inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+
+        /* Corner accents */
+        .card::before, .card::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-color: var(--neon);
+            border-style: solid;
+            border-width: 3px 0 0 3px;
+            filter: drop-shadow(0 0 8px var(--neon-glow));
+        }
+        .card::before {
+            top: -1px; left: -1px;
+            border-width: 3px 0 0 3px;
+        }
+        .card::after {
+            bottom: -1px; right: -1px;
+            border-width: 0 3px 3px 0;
+        }
+        .corner-br {
+            position: absolute;
+            top: -1px; right: -1px;
+            width: 30px; height: 30px;
+            border-top: 3px solid var(--neon);
+            border-right: 3px solid var(--neon);
+            filter: drop-shadow(0 0 8px var(--neon-glow));
+        }
+        .corner-bl {
+            position: absolute;
+            bottom: -1px; left: -1px;
+            width: 30px; height: 30px;
+            border-bottom: 3px solid var(--neon);
+            border-left: 3px solid var(--neon);
+            filter: drop-shadow(0 0 8px var(--neon-glow));
+        }
+
+        /* ── LOGO ── */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+        .logo-mark {
+            width: 88px; height: 88px;
+            margin: 0 auto 18px;
+            position: relative;
+        }
+        .logo-mark svg {
+            width: 100%; height: 100%;
+            filter: drop-shadow(0 0 15px rgba(255,77,0,0.6));
+        }
+        .logo-ring {
+            animation: rotateSpin 10s linear infinite;
+            transform-origin: center;
+        }
+        @keyframes rotateSpin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+        .brand-name {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 26px;
+            letter-spacing: 0.2em;
+            color: var(--text);
+            text-shadow: 0 0 20px rgba(255,77,0,0.5);
+            margin-bottom: 5px;
+        }
+        .brand-sub {
+            font-family: 'Exo 2', sans-serif;
+            font-size: 13px;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--neon);
+            margin-top: 4px;
+            text-shadow: 0 0 15px var(--neon-glow);
+        }
+
+        /* ── HEADER WITH ADMIN BUTTON ── */
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--neon); }
+        .back-link i { font-size: 12px; }
+
+        .admin-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,77,0,0.12);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 6px 14px;
+            color: var(--neon);
+            text-decoration: none;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .admin-btn:hover {
+            background: rgba(255,77,0,0.25);
+            border-color: var(--neon);
+            box-shadow: 0 0 15px rgba(255,77,0,0.4);
+            transform: translateY(-2px);
+        }
+
+        /* ── TABS ── */
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 32px;
+            position: relative;
+            border-bottom: 1px solid var(--border-dim);
+        }
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 14px 0;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.3s;
+            position: relative;
+        }
+        .tab-btn.active { color: var(--neon); }
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 0; right: 0;
+            height: 3px;
+            background: var(--neon);
+            transform: scaleX(0);
+            transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: 0 0 18px var(--neon);
+        }
+        .tab-btn.active::after { transform: scaleX(1); }
+
+        /* ── FORM SECTION ── */
+        .form-section {
+            display: none;
+        }
+        .form-section.active {
+            display: block;
+            animation: slideIn 0.35s cubic-bezier(0.4,0,0.2,1);
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 30px;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px rgba(255,77,0,0.3);
+        }
+        .form-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+            margin-bottom: 26px;
+        }
+
+        /* ── ADMIN LOGIN MODAL ── */
+        .admin-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .admin-modal {
+            background: var(--admin-bg);
+            border: 2px solid var(--neon);
+            border-radius: 8px;
+            padding: 40px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(255,77,0,0.3);
+            animation: slideUp 0.4s;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .admin-modal .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .admin-modal .close-btn:hover { color: var(--neon); }
+        .admin-modal h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            color: var(--neon);
+            margin-bottom: 10px;
+            text-align: center;
+            text-shadow: 0 0 15px var(--neon-glow);
+        }
+        .admin-modal .admin-sub {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 25px;
+            letter-spacing: 0.1em;
+        }
+        .admin-modal .field {
+            margin-bottom: 20px;
+        }
+        .admin-modal .field-label {
+            color: var(--text);
+            font-size: 12px;
+        }
+        .admin-modal input {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,77,0,0.3);
+        }
+        .admin-modal input:focus {
+            border-color: var(--neon);
+            box-shadow: 0 0 0 4px rgba(255,77,0,0.2);
+        }
+        .admin-modal .btn-admin {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #8a2be2, #4a00e0);
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.2em;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 4px 20px rgba(138,43,226,0.4);
+            margin-top: 10px;
+        }
+        .admin-modal .btn-admin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(138,43,226,0.6);
+        }
+        .admin-modal .admin-lock-icon {
+            text-align: center;
+            font-size: 40px;
+            color: var(--neon);
+            margin-bottom: 15px;
+        }
+        .admin-modal .forgot-admin {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .admin-modal .forgot-admin button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 12px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .admin-modal .forgot-admin button:hover {
+            color: var(--neon);
+        }
+
+        /* ── INPUTS ── */
+        .field {
+            position: relative;
+            margin-bottom: 18px;
+        }
+        .field-label {
+            display: block;
+            font-size: 13px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+        }
+        .field-wrap {
+            position: relative;
+        }
+        .field-wrap i.icon-left {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 15px;
+            pointer-events: none;
+            transition: color 0.2s;
+        }
+        .field-wrap input:focus ~ i.icon-left,
+        .field-wrap:focus-within i.icon-left {
+            color: var(--neon);
+        }
+        input {
+            width: 100%;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-dim);
+            border-radius: 4px;
+            padding: 15px 16px 15px 46px;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 16px;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+        input::placeholder { color: rgba(107,117,147,0.6); }
+        input:focus {
+            border-color: var(--neon);
+            background: rgba(255,77,0,0.06);
+            box-shadow: 0 0 0 4px rgba(255,77,0,0.15), inset 0 0 25px rgba(255,77,0,0.05);
+        }
+        input.valid {
+            border-color: var(--success);
+            box-shadow: 0 0 0 4px rgba(0,229,160,0.15);
+        }
+        input.invalid {
+            border-color: var(--error);
+            box-shadow: 0 0 0 4px rgba(255,56,96,0.15);
+        }
+        .toggle-pw {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+        .toggle-pw:hover { color: var(--text); }
+
+        /* ── PASSWORD STRENGTH ── */
+        .pw-strength {
+            margin-top: 10px;
+        }
+        .pw-bars {
+            display: flex;
+            gap: 5px;
+            height: 4px;
+            margin-bottom: 6px;
+        }
+        .pw-bar {
+            flex: 1;
+            background: rgba(255,255,255,0.08);
+            border-radius: 2px;
+            transition: background 0.3s;
+        }
+        .pw-label {
+            font-size: 12px;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* ── ROW ── */
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+            margin-top: 8px;
+        }
+        .checkbox-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .checkbox-wrap input[type=checkbox] {
+            width: 18px;
+            height: 18px;
+            padding: 0;
+            accent-color: var(--neon);
+            cursor: pointer;
+        }
+        .checkbox-wrap span {
+            font-size: 14px;
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+        }
+        .link-btn {
+            background: none;
+            border: none;
+            color: var(--neon);
+            font-size: 14px;
+            cursor: pointer;
+            letter-spacing: 0.08em;
+            font-family: 'Exo 2', sans-serif;
+            transition: opacity 0.2s;
+            text-shadow: 0 0 8px var(--neon-glow);
+        }
+        .link-btn:hover { opacity: 0.8; }
+
+        /* ── PRIMARY BUTTON ── */
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ff4d00 0%, #ff3000 50%, #d43d00 100%);
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.15s, box-shadow 0.3s;
+            box-shadow: 0 6px 25px rgba(255,77,0,0.5), 0 0 0 2px rgba(255,100,0,0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 35px rgba(255,77,0,0.7), 0 0 0 2px rgba(255,100,0,0.5);
+        }
+        .btn-primary:active { transform: scale(0.97); }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.5s;
+        }
+        .btn-primary:hover::before { left: 150%; }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ── GREEN BUTTON ── */
+        .btn-success {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #00e070 0%, #00b050 100%);
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.3s;
+            box-shadow: 0 6px 25px rgba(0,224,112,0.45);
+        }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 10px 35px rgba(0,224,112,0.6); }
+        .btn-success:active { transform: scale(0.97); }
+
+        /* ── DIVIDER ── */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 24px 0;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-dim);
+        }
+        .divider span {
+            font-size: 12px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-family: 'Rajdhani', sans-serif;
+            white-space: nowrap;
+        }
+
+        /* ── OAUTH ── */
+        .oauth-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        .oauth-btn {
+            padding: 13px 0;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-dim);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+        .oauth-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.25);
+            color: var(--text);
+            transform: translateY(-3px);
+        }
+        .oauth-btn i { font-size: 17px; }
+        .oauth-btn .g { color: #ea4335; }
+        .oauth-btn .f { color: #1877f2; }
+        .oauth-btn .v { color: #4c76a3; }
+
+        /* ── PHONE LINK ── */
+        .phone-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            letter-spacing: 0.08em;
+            font-family: 'Exo 2', sans-serif;
+            transition: color 0.2s;
+        }
+        .phone-link:hover { color: var(--neon); }
+
+        /* ── BACK-PANEL HEADER ── */
+        .panel-back {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .back-icon {
+            width: 38px; height: 38px;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid var(--border-dim);
+            border-radius: 3px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            background: none;
+        }
+        .back-icon:hover { border-color: var(--neon); color: var(--neon); }
+        .panel-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 22px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255,77,0,0.3);
+        }
+
+        /* ── OTP ── */
+        .otp-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .otp-cell {
+            width: 54px;
+            height: 62px;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-dim);
+            border-radius: 4px;
+            color: var(--text);
+            outline: none;
+            transition: all 0.2s;
+            padding: 0;
+        }
+        .otp-cell:focus {
+            border-color: var(--neon);
+            box-shadow: 0 0 0 4px rgba(255,77,0,0.2);
+            background: rgba(255,77,0,0.06);
+        }
+        .otp-cell.filled {
+            border-color: var(--success);
+            color: var(--success);
+            box-shadow: 0 0 15px rgba(0,229,160,0.3);
+        }
+
+        /* ── TIMER ── */
+        .timer-row {
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 12px;
+            letter-spacing: 0.08em;
+        }
+        .timer-row .countdown {
+            color: var(--neon);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* ── MESSAGE BOX ── */
+        #msg-box {
+            margin-top: 18px;
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s;
+        }
+        #msg-box.show { display: flex; }
+        #msg-box.success {
+            background: rgba(0,229,160,0.15);
+            border: 1px solid rgba(0,229,160,0.4);
+            color: var(--success);
+        }
+        #msg-box.error {
+            background: rgba(255,56,96,0.15);
+            border: 1px solid rgba(255,56,96,0.4);
+            color: var(--error);
+        }
+
+        /* ── 2FA SECTION ── */
+        .twofa {
+            margin-top: 22px;
+            padding: 22px;
+            background: rgba(255,77,0,0.08);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            display: none;
+        }
+        .twofa.show { display: block; animation: slideIn 0.3s; }
+        .twofa-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--neon);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .twofa-title i { font-size: 14px; }
+        .twofa-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            letter-spacing: 0.06em;
+        }
+
+        /* ── AGREEMENT ── */
+        .agree-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: center;
+            letter-spacing: 0.06em;
+            margin-top: 18px;
+            line-height: 1.8;
+        }
+        .agree-text a { color: var(--neon); text-decoration: none; }
+        .agree-text a:hover { opacity: 0.8; }
+
+        /* ── PULSE BADGE ── */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--success);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+        }
+        .status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(0,229,160,0.7); }
+            50% { box-shadow: 0 0 0 8px rgba(0,229,160,0); }
+        }
+
+        /* ── PROGRESS BAR ── */
+        .loading-bar {
+            position: absolute;
+            bottom: 0; left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon), #ff9f00);
+            width: 0;
+            transition: width 0.4s;
+            box-shadow: 0 0 12px var(--neon);
+        }
+
+        /* ── FIELD VALIDATION ICONS ── */
+        .valid-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .field-wrap.has-toggle .valid-icon { right: 40px; }
+        input.valid ~ .valid-icon { opacity: 1; color: var(--success); }
+        input.invalid ~ .valid-icon { opacity: 1; color: var(--error); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 500px) {
+            .page-wrap { max-width: 100%; }
+            .card { padding: 35px 25px 30px; }
+            .form-title { font-size: 26px; }
+            .brand-name { font-size: 22px; }
+            .otp-cell { width: 45px; height: 55px; font-size: 22px; }
+            .admin-modal { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Animated Background Canvas -->
+<canvas id="bg-canvas"></canvas>
+
+<div class="page-wrap">
+    
+    <!-- Header with Admin Button (Ваш выбранный вариант) -->
+    <div class="header-row">
+        <a href="index.html" class="back-link">
+            <i class="fas fa-chevron-left"></i> На главную
+        </a>
+        <button class="admin-btn" onclick="openAdminModal()">
+            <i class="fas fa-lock" style="font-size: 11px;"></i>
+            <span>ADMIN</span>
+        </button>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div class="admin-overlay" id="adminModal" onclick="if(event.target===this) closeAdminModal()">
+        <div class="admin-modal">
+            <span class="close-btn" onclick="closeAdminModal()">&times;</span>
+            <div class="admin-lock-icon">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h2>ADMIN PANEL</h2>
+            <div class="admin-sub">Доступ только для персонала</div>
+            
+            <form id="admin-login-form" onsubmit="handleAdminLogin(event)">
+                <div class="field">
+                    <label class="field-label">ЛОГИН</label>
+                    <div class="field-wrap">
+                        <i class="fas fa-user icon-left"></i>
+                        <input type="text" id="admin-username" placeholder="admin" autocomplete="off">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="field-label">ПАРОЛЬ</label>
+                    <div class="field-wrap has-toggle">
+                        <i class="fas fa-key icon-left"></i>
+                        <input type="password" id="admin-password" placeholder="••••••••">
+                        <i class="fas fa-eye toggle-pw" onclick="togglePw('admin-password', this)"></i>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-admin" id="admin-login-btn">
+                    <i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i> ВОЙТИ
+                </button>
+                
+                <div class="forgot-admin">
+                    <button type="button" onclick="handleAdminForgot()">Забыли пароль?</button>
+                </div>
+            </form>
+            
+            <div id="admin-msg" style="margin-top: 15px; font-size: 12px; text-align: center; color: var(--error); display: none;"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <!-- Corner decorations -->
+        <div class="corner-br"></div>
+        <div class="corner-bl"></div>
+        <div class="loading-bar" id="loading-bar"></div>
+
+        <!-- Logo -->
+        <div class="logo-section">
+            <div class="logo-mark">
+                <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="40" cy="40" r="36" stroke="rgba(255,77,0,0.25)" stroke-width="1.2"/>
+                    <circle class="logo-ring" cx="40" cy="40" r="32" stroke="#ff4d00" stroke-width="2"
+                            stroke-dasharray="6 4" opacity="0.7"/>
+                    <path d="M18 46l4-10h2l3-6h26l3 6h2l4 10v4H18v-4z" fill="rgba(255,77,0,0.18)" stroke="#ff4d00" stroke-width="1.5"/>
+                    <path d="M24 40l2-5h28l2 5" stroke="#ff4d00" stroke-width="1.2" opacity="0.8"/>
+                    <circle cx="27" cy="50" r="4" fill="#070a0f" stroke="#ff4d00" stroke-width="1.8"/>
+                    <circle cx="53" cy="50" r="4" fill="#070a0f" stroke="#ff4d00" stroke-width="1.8"/>
+                    <circle cx="27" cy="50" r="1.8" fill="#ff4d00"/>
+                    <circle cx="53" cy="50" r="1.8" fill="#ff4d00"/>
+                    <line x1="30" y1="38" x2="50" y2="38" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+                    <circle cx="40" cy="40" r="2.5" fill="#ff4d00" opacity="0.9"/>
+                </svg>
+            </div>
+            <div class="brand-name">AUTOSTYLES</div>
+            <div class="brand-sub">Detailing Studio</div>
+            <br>
+            <span class="status-badge">
+                <span class="status-dot"></span>
+                Защищённое соединение
+            </span>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">
+                <i class="fas fa-sign-in-alt" style="margin-right:8px;font-size:13px;"></i>Вход
+            </button>
+            <button class="tab-btn" id="tab-reg" onclick="switchTab('register')">
+                <i class="fas fa-user-plus" style="margin-right:8px;font-size:13px;"></i>Регистрация
+            </button>
+        </div>
+
+        <!-- ════ LOGIN FORM ════ -->
+        <div class="form-section active" id="form-login">
+            <div class="form-title">С возвращением!</div>
+            <div class="form-subtitle">Войдите в личный кабинет детейлинг-центра</div>
+
+            <form id="login-email-form" autocomplete="on" novalidate>
+                <div class="field">
+                    <label class="field-label">Email</label>
+                    <div class="field-wrap has-toggle">
+                        <i class="fas fa-envelope icon-left"></i>
+                        <input type="email" id="login-email" placeholder="your@email.com" autocomplete="email"
+                               oninput="validateEmail(this)">
+                        <i class="far fa-circle-check valid-icon"></i>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="field-label">Пароль</label>
+                    <div class="field-wrap has-toggle">
+                        <i class="fas fa-lock icon-left"></i>
+                        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+                        <i class="fas fa-eye toggle-pw" onclick="togglePw('login-password', this)"></i>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="checkbox-wrap">
+                        <input type="checkbox" id="remember-me"> <span>Запомнить меня</span>
+                    </label>
+                    <button type="button" class="link-btn" onclick="switchPanel('forgot')">Забыли пароль?</button>
+                </div>
+
+                <button type="submit" class="btn-primary" id="login-btn">
+                    <i class="fas fa-bolt" style="margin-right:10px;"></i>Войти
+                </button>
+            </form>
+
+            <div class="divider"><span>или войдите через</span></div>
+
+            <div class="oauth-grid">
+                <button class="oauth-btn" onclick="handleOAuth('google')" title="Google">
+                    <i class="fab fa-google g"></i> Google
+                </button>
+                <button class="oauth-btn" onclick="handleOAuth('facebook')" title="Facebook">
+                    <i class="fab fa-facebook-f f"></i> FB
+                </button>
+                <button class="oauth-btn" onclick="handleOAuth('vk')" title="VK">
+                    <i class="fab fa-vk v"></i> VK
+                </button>
+            </div>
+
+            <button class="phone-link" onclick="switchPanel('phone')">
+                <i class="fas fa-mobile-alt"></i> Войти по номеру телефона
+            </button>
+
+            <!-- 2FA Section -->
+            <div class="twofa" id="twofa-section">
+                <div class="twofa-title"><i class="fas fa-shield-halved"></i> Двухфакторная аутентификация</div>
+                <div class="twofa-desc">Введите 6-значный код из приложения-аутентификатора</div>
+                <div class="otp-row" id="twofa-otp"></div>
+                <button class="btn-primary" onclick="verify2FA()" style="margin-top:10px;">
+                    <i class="fas fa-shield-check" style="margin-right:10px;"></i>Подтвердить
+                </button>
+            </div>
+        </div>
+
+        <!-- ════ REGISTER FORM ════ -->
+        <div class="form-section" id="form-register">
+            <div class="form-title">Создать аккаунт</div>
+            <div class="form-subtitle">Присоединяйтесь к клиентам AUTOSTYLES Studio</div>
+
+            <form id="reg-form" novalidate>
+                <div class="field">
+                    <label class="field-label">Имя</label>
+                    <div class="field-wrap">
+                        <i class="fas fa-user icon-left"></i>
+                        <input type="text" id="reg-name" placeholder="Ваше имя" autocomplete="name"
+                               oninput="validateName(this)">
+                        <i class="far fa-circle-check valid-icon"></i>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="field-label">Email</label>
+                    <div class="field-wrap">
+                        <i class="fas fa-envelope icon-left"></i>
+                        <input type="email" id="reg-email" placeholder="your@email.com" autocomplete="email"
+                               oninput="validateEmail(this)">
+                        <i class="far fa-circle-check valid-icon"></i>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="field-label">Телефон <span style="opacity:.4;font-size:10px;">(необязательно)</span></label>
+                    <div class="field-wrap">
+                        <i class="fas fa-phone-alt icon-left"></i>
+                        <input type="tel" id="reg-phone" placeholder="+996 (___) ___-___" autocomplete="tel"
+                               oninput="formatPhone(this)">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="field-label">Пароль</label>
+                    <div class="field-wrap has-toggle">
+                        <i class="fas fa-lock icon-left"></i>
+                        <input type="password" id="reg-password" placeholder="Минимум 6 символов"
+                               autocomplete="new-password" oninput="checkStrength(this)">
+                        <i class="fas fa-eye toggle-pw" onclick="togglePw('reg-password', this)"></i>
+                    </div>
+                    <div class="pw-strength">
+                        <div class="pw-bars">
+                            <div class="pw-bar" id="bar1"></div>
+                            <div class="pw-bar" id="bar2"></div>
+                            <div class="pw-bar" id="bar3"></div>
+                            <div class="pw-bar" id="bar4"></div>
+                        </div>
+                        <div class="pw-label" id="pw-label">Введите пароль</div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="field-label">Повторите пароль</label>
+                    <div class="field-wrap">
+                        <i class="fas fa-lock-open icon-left"></i>
+                        <input type="password" id="reg-password2" placeholder="Повторите пароль"
+                               autocomplete="new-password" oninput="checkMatch(this)">
+                        <i class="far fa-circle-check valid-icon"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-success" style="margin-top:8px;" id="reg-btn">
+                    <i class="fas fa-user-plus" style="margin-right:10px;"></i>Зарегистрироваться
+                </button>
+            </form>
+
+            <div class="agree-text">
+                Регистрируясь, вы соглашаетесь с 
+                <a href="#">условиями использования</a> и 
+                <a href="#">политикой конфиденциальности</a>
+            </div>
+        </div>
+
+        <!-- ════ PHONE PANEL ════ -->
+        <div class="form-section" id="panel-phone">
+            <div class="panel-back">
+                <button class="back-icon" onclick="switchPanel('back')"><i class="fas fa-arrow-left"></i></button>
+                <div class="panel-title">Вход по телефону</div>
+            </div>
+
+            <div class="field">
+                <label class="field-label">Номер телефона</label>
+                <div class="field-wrap">
+                    <i class="fas fa-mobile-alt icon-left"></i>
+                    <input type="tel" id="phone-number" placeholder="+996 (___) ___-___" oninput="formatPhone(this)">
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="sendOTP()" id="otp-send-btn">
+                <i class="fas fa-paper-plane" style="margin-right:10px;"></i>Получить код
+            </button>
+
+            <div id="otp-section" style="display:none;margin-top:20px;">
+                <div class="form-subtitle" style="text-align:center;margin-bottom:6px;">Введите 6-значный код</div>
+                <div class="otp-row" id="otp-inputs"></div>
+                <button class="btn-success" onclick="verifyOTP()" style="margin-top:6px;">
+                    <i class="fas fa-check" style="margin-right:10px;"></i>Подтвердить
+                </button>
+                <div class="timer-row" id="timer-row">
+                    Повторная отправка через <span class="countdown" id="countdown">60</span>с
+                </div>
+                <div class="timer-row" style="margin-top:8px;display:none;" id="resend-wrap">
+                    <button class="link-btn" onclick="sendOTP()">Отправить повторно</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════ FORGOT PASSWORD ════ -->
+        <div class="form-section" id="panel-forgot">
+            <div class="panel-back">
+                <button class="back-icon" onclick="switchPanel('back')"><i class="fas fa-arrow-left"></i></button>
+                <div class="panel-title">Сброс пароля</div>
+            </div>
+            <div class="form-subtitle" style="margin-bottom:22px;">
+                Введите email — отправим ссылку для сброса пароля
+            </div>
+
+            <form id="reset-form" novalidate>
+                <div class="field">
+                    <label class="field-label">Email</label>
+                    <div class="field-wrap">
+                        <i class="fas fa-envelope icon-left"></i>
+                        <input type="email" id="reset-email" placeholder="your@email.com" oninput="validateEmail(this)">
+                        <i class="far fa-circle-check valid-icon"></i>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-paper-plane" style="margin-right:10px;"></i>Отправить ссылку
+                </button>
+            </form>
+        </div>
+
+        <!-- Message box -->
+        <div id="msg-box">
+            <i class="fas fa-circle-info" id="msg-icon"></i>
+            <span id="msg-text"></span>
+        </div>
+    </div>
+</div>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="js/supabaseClient.js"></script>
+<script>
+/* ════════════════════════════════════
+   SUPABASE STUB (replace with real client)
+════════════════════════════════════ */
+if (typeof window.supabase === 'undefined') {
+    window.sb = {
+        auth: {
+            signInWithPassword: async ({ email, password }) => {
+                await delay(800);
+                if (!email || !password) return { error: { message: 'Заполните все поля' } };
+                return { data: { user: { id: '1', factors: [] } }, error: null };
+            },
+            signUp: async ({ email, password }) => {
+                await delay(900);
+                if (!email || !password) return { error: { message: 'Заполните все поля' } };
+                return { data: { user: { id: '2' } }, error: null };
+            },
+            signInWithOAuth: async ({ provider }) => { return {}; },
+            signInWithOtp: async ({ phone }) => {
+                await delay(600);
+                return { error: null };
+            },
+            verifyOtp: async ({ phone, token }) => {
+                await delay(700);
+                return { data: { user: { id: '3' } }, error: null };
+            },
+            resetPasswordForEmail: async (email) => {
+                await delay(600);
+                return { error: null };
+            }
+        },
+        from: (table) => ({
+            insert: async (rows) => { return { error: null }; }
+        })
+    };
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+/* ════════════════════════════════════
+   CANVAS BACKGROUND
+════════════════════════════════════ */
+(function() {
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [], lines = [];
+    const PARTICLE_COUNT = 70;
+    const COLORS = ['rgba(255,77,0,', 'rgba(255,120,0,', 'rgba(200,50,0,', 'rgba(255,200,100,'];
+
+    function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Create particles
+    function mkParticle() {
+        return {
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: Math.random() * 2 + 0.3,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: -Math.random() * 0.7 - 0.1,
+            alpha: Math.random() * 0.7 + 0.2,
+            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            life: 1,
+            decay: Math.random() * 0.004 + 0.001,
+        };
+    }
+    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(mkParticle());
+
+    // Speed lines
+    function mkLine() {
+        return {
+            x: Math.random() * W,
+            y: Math.random() * H,
+            len: Math.random() * 150 + 50,
+            speed: Math.random() * 4 + 2,
+            alpha: Math.random() * 0.15 + 0.03,
+            w: Math.random() * 1 + 0.3,
+        };
+    }
+    for (let i = 0; i < 25; i++) lines.push(mkLine());
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+
+        // Background gradient
+        const bg = ctx.createRadialGradient(W * 0.5, H * 0.5, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.8);
+        bg.addColorStop(0, 'rgba(20, 10, 2, 1)');
+        bg.addColorStop(0.5, 'rgba(10, 5, 1, 1)');
+        bg.addColorStop(1, 'rgba(5, 8, 15, 1)');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+
+        // Ambient glow
+        const glow = ctx.createRadialGradient(W * 0.5, H * 0.8, 0, W * 0.5, H * 0.8, W * 0.6);
+        glow.addColorStop(0, 'rgba(255,60,0,0.1)');
+        glow.addColorStop(1, 'transparent');
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, W, H);
+
+        // Speed lines (right-angled)
+        lines.forEach(l => {
+            ctx.beginPath();
+            ctx.moveTo(l.x, l.y);
+            ctx.lineTo(l.x + l.len, l.y);
+            ctx.strokeStyle = `rgba(255,100,0,${l.alpha})`;
+            ctx.lineWidth = l.w;
+            ctx.stroke();
+            l.x += l.speed;
+            if (l.x > W + 200) { l.x = -200; l.y = Math.random() * H; }
+        });
+
+        // Particles
+        particles.forEach((p, i) => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = p.color + (p.alpha * p.life) + ')';
+            ctx.fill();
+            p.x += p.vx; p.y += p.vy;
+            p.life -= p.decay;
+            if (p.life <= 0 || p.y < -10) particles[i] = mkParticle();
+        });
+
+        // Grid lines (subtle)
+        ctx.strokeStyle = 'rgba(255,77,0,0.04)';
+        ctx.lineWidth = 0.5;
+        const gs = 70;
+        for (let x = 0; x < W; x += gs) {
+            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+        }
+        for (let y = 0; y < H; y += gs) {
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+        }
+
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+
+/* ════════════════════════════════════
+   UI STATE
+════════════════════════════════════ */
+let currentTab = 'login';    // 'login' | 'register'
+let currentPanel = null;     // 'phone' | 'forgot' | null
+let otpTimer = null;
+
+function switchTab(tab) {
+    currentTab = tab;
+    currentPanel = null;
+    ['form-login','form-register','panel-phone','panel-forgot'].forEach(id => {
+        document.getElementById(id).classList.remove('active');
+    });
+    document.getElementById('form-' + tab).classList.add('active');
+    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+    document.getElementById('tab-reg').classList.toggle('active', tab === 'register');
+}
+
+function switchPanel(panel) {
+    ['form-login','form-register','panel-phone','panel-forgot'].forEach(id => {
+        document.getElementById(id).classList.remove('active');
+    });
+    if (panel === 'back') {
+        currentPanel = null;
+        document.getElementById('form-' + currentTab).classList.add('active');
+    } else {
+        currentPanel = panel;
+        document.getElementById('panel-' + panel).classList.add('active');
+    }
+}
+
+/* ── ADMIN MODAL FUNCTIONS ── */
+function openAdminModal() {
+    document.getElementById('adminModal').style.display = 'flex';
+    // Очищаем поля при открытии
+    document.getElementById('admin-username').value = '';
+    document.getElementById('admin-password').value = '';
+    document.getElementById('admin-msg').style.display = 'none';
+}
+
+function closeAdminModal() {
+    document.getElementById('adminModal').style.display = 'none';
+}
+
+function handleAdminLogin(event) {
+    event.preventDefault();
+    
+    const username = document.getElementById('admin-username').value.trim();
+    const password = document.getElementById('admin-password').value;
+    const msgBox = document.getElementById('admin-msg');
+    const loginBtn = document.getElementById('admin-login-btn');
+    
+    // Простейшая валидация
+    if (!username || !password) {
+        showAdminMsg('Заполните все поля', 'error');
+        return;
+    }
+    
+    // Имитация загрузки
+    loginBtn.disabled = true;
+    loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i> ВХОД...';
+    
+    // Проверка учетных данных администратора
+    setTimeout(() => {
+        // ЗДЕСЬ ВЫ МОЖЕТЕ ИЗМЕНИТЬ ЛОГИН И ПАРОЛЬ АДМИНИСТРАТОРА
+        const validUsername = 'admin';
+        const validPassword = 'admin123';
+        
+        if (username === validUsername && password === validPassword) {
+            // Успешный вход
+            showAdminMsg('Вход выполнен! Перенаправление...', 'success');
+            
+            // Сохраняем статус админа в sessionStorage
+            sessionStorage.setItem('adminAuthenticated', 'true');
+            
+            // Перенаправление в админ-панель
+            setTimeout(() => {
+                window.location.href = './admi/admin.html';
+            }, 1500);
+        } else {
+            // Неверные данные
+            showAdminMsg('Неверный логин или пароль', 'error');
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right:8px;"></i> ВОЙТИ';
+        }
+    }, 1000);
+}
+
+function handleAdminForgot() {
+    // Функция восстановления доступа для админа
+    showAdminMsg('Для восстановления доступа обратитесь к системному администратору', 'error');
+}
+
+function showAdminMsg(text, type) {
+    const msgBox = document.getElementById('admin-msg');
+    msgBox.style.display = 'block';
+    msgBox.textContent = text;
+    msgBox.style.color = type === 'error' ? 'var(--error)' : 'var(--success)';
+    
+    // Автоматически скрываем через 5 секунд
+    setTimeout(() => {
+        msgBox.style.display = 'none';
+    }, 5000);
+}
+
+/* ── Validation ── */
+function validateEmail(input) {
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
+    input.classList.toggle('valid', ok && input.value.length > 0);
+    input.classList.toggle('invalid', !ok && input.value.length > 0);
+}
+function validateName(input) {
+    const ok = input.value.trim().length >= 2;
+    input.classList.toggle('valid', ok);
+    input.classList.toggle('invalid', !ok && input.value.length > 0);
+}
+
+/* ── Password strength ── */
+function checkStrength(input) {
+    const v = input.value;
+    let score = 0;
+    if (v.length >= 6) score++;
+    if (v.length >= 10) score++;
+    if (/[A-Z]/.test(v) && /[a-z]/.test(v)) score++;
+    if (/[0-9]/.test(v)) score++;
+    if (/[^A-Za-z0-9]/.test(v)) score++;
+
+    const labels = ['','Слабый','Средний','Хороший','Сильный'];
+    const colors = ['','#ef4444','#f59e0b','#22c55e','#00e5a0'];
+    const filled = Math.min(4, Math.ceil(score * 4 / 5));
+
+    for (let i = 1; i <= 4; i++) {
+        const bar = document.getElementById('bar' + i);
+        bar.style.background = i <= filled ? colors[filled] : 'rgba(255,255,255,0.08)';
+    }
+    const lbl = document.getElementById('pw-label');
+    lbl.textContent = v.length === 0 ? 'Введите пароль' : (labels[filled] || 'Слабый');
+    lbl.style.color = v.length === 0 ? '' : colors[filled] || '#ef4444';
+
+    input.classList.toggle('valid', score >= 2 && v.length >= 6);
+    input.classList.toggle('invalid', score < 2 && v.length > 0);
+}
+
+function checkMatch(input) {
+    const pw = document.getElementById('reg-password').value;
+    const ok = input.value === pw && pw.length >= 6;
+    input.classList.toggle('valid', ok);
+    input.classList.toggle('invalid', !ok && input.value.length > 0);
+}
+
+/* ── Phone format ── */
+function formatPhone(input) {
+    let v = input.value.replace(/\D/g, '');
+    if (!v.startsWith('996')) v = '996' + v;
+    v = v.slice(0, 12);
+    let out = '+996';
+    if (v.length > 3) out += ' (' + v.slice(3, 6);
+    if (v.length >= 7) out += ') ' + v.slice(6, 9);
+    if (v.length >= 10) out += '-' + v.slice(9, 12);
+    input.value = out;
+}
+
+/* ── Password visibility ── */
+function togglePw(id, icon) {
+    const inp = document.getElementById(id);
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+    icon.classList.toggle('fa-eye');
+    icon.classList.toggle('fa-eye-slash');
+}
+
+/* ── Loading bar ── */
+function setLoading(pct) {
+    document.getElementById('loading-bar').style.width = pct + '%';
+}
+
+/* ── Message box ── */
+let msgTimeout;
+function showMsg(text, type = 'success') {
+    clearTimeout(msgTimeout);
+    const box = document.getElementById('msg-box');
+    const icon = document.getElementById('msg-icon');
+    document.getElementById('msg-text').textContent = text;
+    box.className = 'show ' + type;
+    icon.className = type === 'success' ? 'fas fa-circle-check' : 'fas fa-circle-exclamation';
+    msgTimeout = setTimeout(() => box.classList.remove('show'), 5000);
+}
+
+/* ── Build OTP inputs ── */
+function buildOTP(containerId, count = 6) {
+    const wrap = document.getElementById(containerId);
+    wrap.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+        const inp = document.createElement('input');
+        inp.type = 'text';
+        inp.maxLength = 1;
+        inp.className = 'otp-cell';
+        inp.inputMode = 'numeric';
+        inp.dataset.idx = i;
+        inp.addEventListener('input', e => {
+            e.target.value = e.target.value.replace(/\D/g,'');
+            if (e.target.value && i < count - 1) {
+                wrap.querySelectorAll('.otp-cell')[i + 1].focus();
+            }
+            e.target.classList.toggle('filled', e.target.value.length === 1);
+        });
+        inp.addEventListener('keydown', e => {
+            if (e.key === 'Backspace' && !e.target.value && i > 0) {
+                wrap.querySelectorAll('.otp-cell')[i - 1].focus();
+            }
+        });
+        wrap.appendChild(inp);
+    }
+}
+
+function getOTPValue(containerId) {
+    return [...document.getElementById(containerId).querySelectorAll('.otp-cell')]
+        .map(c => c.value).join('');
+}
+
+/* ── OTP PHONE ── */
+async function sendOTP() {
+    const phone = document.getElementById('phone-number').value.replace(/\D/g,'');
+    if (phone.length < 11) { showMsg('Введите корректный номер телефона', 'error'); return; }
+
+    const btn = document.getElementById('otp-send-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:10px;"></i>Отправка...';
+    setLoading(40);
+
+    try {
+        const { error } = await window.sb.auth.signInWithOtp({ phone: '+' + phone });
+        if (error) throw error;
+
+        setLoading(100);
+        document.getElementById('otp-section').style.display = 'block';
+        buildOTP('otp-inputs');
+        startTimer();
+        showMsg('Код отправлен на ваш номер');
+    } catch (e) {
+        showMsg('Ошибка: ' + e.message, 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:10px;"></i>Получить код';
+        setTimeout(() => setLoading(0), 600);
+    }
+}
+
+function startTimer() {
+    let left = 60;
+    const cd = document.getElementById('countdown');
+    const timerRow = document.getElementById('timer-row');
+    const resendWrap = document.getElementById('resend-wrap');
+    timerRow.style.display = '';
+    resendWrap.style.display = 'none';
+    cd.textContent = left;
+
+    clearInterval(otpTimer);
+    otpTimer = setInterval(() => {
+        left--;
+        cd.textContent = left;
+        if (left <= 0) {
+            clearInterval(otpTimer);
+            timerRow.style.display = 'none';
+            resendWrap.style.display = '';
+        }
+    }, 1000);
+}
+
+async function verifyOTP() {
+    const otp = getOTPValue('otp-inputs');
+    if (otp.length !== 6) { showMsg('Введите полный код', 'error'); return; }
+    const phone = document.getElementById('phone-number').value.replace(/\D/g,'');
+    setLoading(60);
+
+    try {
+        const { error } = await window.sb.auth.verifyOtp({ phone: '+' + phone, token: otp, type: 'sms' });
+        if (error) throw error;
+        setLoading(100);
+        showMsg('Вход выполнен! Перенаправление...');
+        setTimeout(() => window.location.href = 'cabinet.html', 1200);
+    } catch (e) {
+        showMsg('Неверный код: ' + e.message, 'error');
+        setLoading(0);
+    }
+}
+
+/* ── OAUTH ── */
+async function handleOAuth(provider) {
+    try {
+        await window.sb.auth.signInWithOAuth({
+            provider,
+            options: { redirectTo: window.location.origin + '/cabinet.html' }
+        });
+    } catch (e) {
+        showMsg('Ошибка OAuth: ' + e.message, 'error');
+    }
+}
+
+/* ── 2FA ── */
+function show2FA() {
+    const sec = document.getElementById('twofa-section');
+    sec.classList.add('show');
+    buildOTP('twofa-otp');
+}
+async function verify2FA() {
+    const code = getOTPValue('twofa-otp');
+    if (code.length !== 6) { showMsg('Введите код из приложения', 'error'); return; }
+    showMsg('2FA подтверждена! Перенаправление...');
+    setTimeout(() => window.location.href = 'cabinet.html', 1200);
+}
+
+/* ════════════════════════════════════
+   FORM SUBMIT HANDLERS
+════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+
+    /* — Login — */
+    document.getElementById('login-email-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const email    = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-password').value;
+
+        if (!email || !password) { showMsg('Заполните все поля', 'error'); return; }
+
+        const btn = document.getElementById('login-btn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:10px;"></i>Вход...';
+        setLoading(50);
+
+        try {
+            const { data, error } = await window.sb.auth.signInWithPassword({ email, password });
+            if (error) throw error;
+
+            setLoading(100);
+
+            if (data?.user?.factors?.length > 0) {
+                show2FA();
+            } else {
+                showMsg('Добро пожаловать! Перенаправление...');
+                setTimeout(() => window.location.href = 'cabinet.html', 1200);
+            }
+        } catch (err) {
+            showMsg('Ошибка входа: ' + (err.message || 'Проверьте данные'), 'error');
+            setLoading(0);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-bolt" style="margin-right:10px;"></i>Войти';
+            setTimeout(() => setLoading(0), 600);
+        }
+    });
+
+    /* — Register — */
+    document.getElementById('reg-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const name  = document.getElementById('reg-name').value.trim();
+        const email = document.getElementById('reg-email').value.trim();
+        const phone = document.getElementById('reg-phone').value.trim();
+        const pw    = document.getElementById('reg-password').value;
+        const pw2   = document.getElementById('reg-password2').value;
+
+        if (!name) { showMsg('Введите имя', 'error'); return; }
+        if (!email) { showMsg('Введите email', 'error'); return; }
+        if (pw.length < 6) { showMsg('Пароль минимум 6 символов', 'error'); return; }
+        if (pw !== pw2) { showMsg('Пароли не совпадают', 'error'); return; }
+
+        const btn = document.getElementById('reg-btn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:10px;"></i>Создание...';
+        setLoading(40);
+
+        try {
+            const { data: auth, error: authErr } = await window.sb.auth.signUp({
+                email, password: pw,
+                options: { data: { name, phone: phone || null } }
+            });
+            if (authErr) throw authErr;
+            setLoading(80);
+
+            if (auth?.user) {
+                await window.sb.from('profiles').insert([{
+                    id: auth.user.id, name, phone: phone || null, email,
+                    created_at: new Date().toISOString()
+                }]);
+            }
+            setLoading(100);
+            showMsg('Аккаунт создан! Проверьте email для подтверждения.');
+            setTimeout(() => window.location.href = 'cabinet.html', 2000);
+        } catch (err) {
+            showMsg(err.message || 'Ошибка регистрации', 'error');
+            setLoading(0);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-user-plus" style="margin-right:10px;"></i>Зарегистрироваться';
+            setTimeout(() => setLoading(0), 600);
+        }
+    });
+
+    /* — Reset password — */
+    document.getElementById('reset-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const email = document.getElementById('reset-email').value.trim();
+        if (!email) { showMsg('Введите email', 'error'); return; }
+        setLoading(60);
+
+        try {
+            const { error } = await window.sb.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + '/reset-password.html'
+            });
+            if (error) throw error;
+            setLoading(100);
+            showMsg('Ссылка для сброса отправлена на ' + email);
+            setTimeout(() => switchPanel('back'), 2200);
+        } catch (err) {
+            showMsg('Ошибка: ' + err.message, 'error');
+            setLoading(0);
+        } finally {
+            setTimeout(() => setLoading(0), 700);
+        }
+    });
+    
+    // Закрытие модального окна по Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeAdminModal();
+        }
+    });
+});
+</script>
+</body>
+</html>

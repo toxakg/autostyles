@@ -1,0 +1,210 @@
+
+body {
+    font-family: 'Open Sans', 'Roboto', sans-serif; /* Более современный шрифт */
+    line-height: 1.6;
+    color: #343a40; /* Мягкий черный (dark-gray) */
+    background-color: #f8f9fa; /* Светлый, нейтральный фон */
+    padding-top: 80px; /* Увеличим отступ под хедер */
+}
+
+/* Общий контейнер: Ограничивает ширину контента на больших экранах */
+.section__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+
+
+
+/* Стилизация навигации (должна быть в header.html, но дадим ей общие стили) */
+.nav__list {
+    display: flex;
+    align-items: center;
+    height: 100%; /* Убедимся, что занимает всю высоту хедера */
+}
+
+.nav__link {
+    color: #343a40; /* Цвет ссылок по умолчанию */
+    font-weight: 500;
+    padding: 10px 15px;
+    transition: color 0.3s ease;
+}
+
+header.scrolled .nav__link {
+    color: #ffffff; /* Белый текст при скролле */
+}
+
+.nav__link:hover {
+    color: #0056b3; /* Darker blue on hover */
+    /* Если хедер синий, можно сделать hover белым с подчеркиванием */
+    border-bottom: 2px solid #ffffff; 
+}
+
+
+/* ======= Стили заголовков ======= */
+.section__title {
+    font-family: 'Georgia', serif; /* Используем шрифт с засечками для акцента */
+    font-size: 2.5em;
+    color: #007bff;
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.section__title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: #007bff;
+    margin: 15px auto 0;
+    border-radius: 2px;
+}
+
+/* ======= Стили секций: "О компании" (About) ======= */
+.section--about {
+    background-color: #ffffff; /* Белый фон для основной информации */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 40px;
+    padding: 80px 20px;
+}
+
+.section__text {
+    font-size: 1.1em;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+/* ======= Стили секции "Наша команда" (Team) ======= */
+.section--team {
+    background-color: #f8f9fa; 
+    text-align: center;
+}
+
+.team {
+    justify-content: center;
+}
+
+.team__member {
+    flex: 0 0 calc(33.333% - 20px); /* Убедимся, что в ряд помещается 3 элемента */
+    max-width: 300px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.team__member:hover {
+    transform: translateY(-5px); /* Эффект при наведении */
+}
+
+.team__img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    border: 3px solid #007bff;
+}
+
+.team__name {
+    font-size: 1.2em;
+    color: #007bff;
+    margin-bottom: 5px;
+}
+
+.team__position {
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
+/* ======= Стили секции "Ценности" (Values) ======= */
+.section--values {
+    background-color: #e9ecef; /* Слегка темный фон */
+}
+
+.values {
+    justify-content: space-around;
+}
+
+.values__item {
+    flex: 0 0 calc(33.333% - 20px);
+    max-width: 300px;
+    padding: 25px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.values__item:hover {
+    background-color: #ffffff;
+}
+
+.values__title {
+    color: #007bff;
+    font-size: 1.3em;
+    margin-bottom: 10px;
+}
+
+/* ======= Стили секции "Галерея" (Gallery) ======= */
+.section--gallery {
+    background-color: #ffffff;
+}
+
+.gallery {
+    justify-content: center;
+}
+
+.gallery__img {
+    flex: 1 1 calc(33.333% - 10px); 
+    height: 250px; /* Фиксированная высота для единообразия */
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.gallery__img:hover {
+    transform: scale(1.05);
+    z-index: 10;
+}
+
+/* ======= Адаптивность (Media Queries) ======= */
+
+@media (max-width: 992px) {
+    .team__member, .values__item {
+        flex: 0 0 calc(50% - 20px); /* 2 элемента в ряд на планшетах */
+    }
+    .gallery__img {
+        flex: 1 1 calc(50% - 10px);
+    }
+}
+
+@media (max-width: 768px) {
+    .nav__list {
+        display: none; /* Скрываем меню на мобильных, предполагая, что будет "бургер" */
+    }
+
+    body {
+        padding-top: 60px; /* Уменьшаем отступ */
+    }
+    
+    header {
+        height: 60px; 
+    }
+
+    .section__title {
+        font-size: 2em;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .team__member, .values__item, .gallery__img {
+        flex: 1 1 100%; /* 1 элемент в ряд на телефонах */
+        max-width: 100%;
+    }
+}
