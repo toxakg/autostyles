@@ -466,30 +466,30 @@
         </div>
     </main>
 
-<!-- Виджет чата для пользовательского кабинета -->
+<!-- =================== Чат Виджет =================== -->
 <div class="chat-widget" id="chat-widget">
-    <div class="chat-header" onclick="toggleChat()">
-        <div class="chat-header-info">
-            <i class="fas fa-comment-dots"></i>
-            <span>Чат с мастером</span>
-            <span class="chat-unread-badge" id="chat-unread-badge" style="display:none;">1</span>
-        </div>
-        <i class="fas fa-chevron-down" id="chat-icon"></i>
+    <!-- В cabinet.html найдите строки с onclick="toggleChat()" и измените их: -->
+<div class="chat-header" id="chat-header">
+    <!-- Уберите onclick отсюда -->
+    <div class="chat-header-info">
+        <i class="fas fa-comment-dots"></i>
+        <span>Чат с мастером</span>
+        <span class="chat-unread-badge" id="chat-unread-badge" style="display:none;">0</span>
     </div>
-    <div class="chat-body" id="chat-body" style="display: none;">
+    <i class="fas fa-chevron-down" id="chat-icon"></i>
+</div>
+    <div class="chat-body" id="chat-body">
         <div class="messages-area" id="chat-messages-container">
-            <!-- Сообщения будут загружаться сюда -->
+            <!-- Сообщения будут добавляться сюда -->
         </div>
         <div class="chat-input">
-            <input type="text" id="chat-input-text" placeholder="Введите сообщение..."
-                onkeypress="if(event.key==='Enter') sendUserMessage()">
-            <button onclick="sendUserMessage()">
+            <input type="text" id="chat-input-text" placeholder="Введите сообщение...">
+            <button id="chat-send-btn">
                 <i class="fas fa-paper-plane"></i>
             </button>
         </div>
     </div>
 </div>
-
 
 
 

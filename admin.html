@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUTOSTYLES | Панель управления</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<!-- ПОДКЛЮЧЕНИЕ SUPABASE — через внешний файл -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="/js/supabaseClient.js"></script>
+<style>
+:root {
+  --neon: #ff4d00;
+  --neon2: #ff8800;
+  --gold: #c9a84c;
+  --bg:    #060910;
+  --bg2:   #0b0f1a;
+  --bg3:   #111827;
+  --surf:  rgba(13,18,30,0.95);
+  --surf2: rgba(20,28,46,0.7);
+  --border: rgba(255,77,0,0.2);
+  --border2: rgba(255,255,255,0.06);
+  --text:  #e2e8f4;
+  --muted: #5a6480;
+  --muted2:#8899bb;
+  --success:#00e5a0;
+  --warn:  #f59e0b;
+  --error: #ff3860;
+  --info:  #38bdf8;
+  --sb-w: 240px;
+  --sb-coll: 64px;
+  --hdr: 58px;
+  --radius: 4px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+::-webkit-scrollbar-thumb:hover{background:var(--neon);}
+a{color:inherit;text-decoration:none;}
+button{font-family:'Exo 2',sans-serif;cursor:pointer;}
+input,select,textarea{font-family:'Exo 2',sans-serif;color:var(--text);}
+.app{display:flex;height:100vh;overflow:hidden;}
+
+/* SIDEBAR */
+.sidebar{width:var(--sb-w);min-width:var(--sb-w);background:var(--surf);border-right:1px solid var(--border2);display:flex;flex-direction:column;transition:width .3s cubic-bezier(.4,0,.2,1),min-width .3s;position:relative;z-index:100;overflow:hidden;}
+.sidebar.collapsed{width:var(--sb-coll);min-width:var(--sb-coll);}
+.sidebar.collapsed .nav-label,.sidebar.collapsed .logo-text,.sidebar.collapsed .sidebar-bottom-label,.sidebar.collapsed .user-info{display:none;}
+.sidebar.collapsed .nav-item{justify-content:center;padding:10px 0;}
+.sidebar.collapsed .nav-item i{margin:0;}
+.sidebar-top{padding:16px 14px 12px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:10px;min-height:var(--hdr);}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#ff4d00,#c73800);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 16px rgba(255,77,0,.4);}
+.logo-icon i{font-size:16px;color:#fff;}
+.logo-text{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;line-height:1.3;}
+.logo-text span{display:block;font-family:'Exo 2',sans-serif;font-size:9px;letter-spacing:.25em;color:var(--neon);font-weight:400;}
+.nav{flex:1;padding:10px 0;overflow-y:auto;overflow-x:hidden;}
+.nav-section-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:10px 16px 4px;font-family:'Rajdhani',sans-serif;font-weight:600;white-space:nowrap;}
+.sidebar.collapsed .nav-section-label{opacity:0;height:0;padding:0;overflow:hidden;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:0;cursor:pointer;transition:all .2s;position:relative;white-space:nowrap;border-left:2px solid transparent;}
+.nav-item:hover{background:rgba(255,77,0,.06);}
+.nav-item.active{background:rgba(255,77,0,.1);border-left-color:var(--neon);color:var(--neon);}
+.nav-item i{width:18px;text-align:center;font-size:14px;flex-shrink:0;}
+.nav-item.active i{color:var(--neon);}
+.nav-label{font-size:13px;font-weight:500;letter-spacing:.03em;}
+.nav-badge{margin-left:auto;background:var(--neon);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;font-family:'Rajdhani',sans-serif;}
+.sidebar-bottom{padding:12px;border-top:1px solid var(--border2);}
+.user-card{display:flex;align-items:center;gap:10px;padding:10px;background:rgba(255,255,255,.03);border-radius:var(--radius);border:1px solid var(--border2);overflow:hidden;}
+.user-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#ff4d00,#ff8800);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;flex-shrink:0;}
+.user-info{overflow:hidden;}
+.user-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.user-role{font-size:9px;color:var(--neon);letter-spacing:.15em;text-transform:uppercase;font-family:'Rajdhani',sans-serif;}
+.collapse-btn{position:absolute;top:16px;right:-14px;width:28px;height:28px;background:var(--bg3);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted2);font-size:11px;transition:all .2s;z-index:101;}
+.collapse-btn:hover{border-color:var(--neon);color:var(--neon);}
+.sidebar.collapsed .collapse-btn i{transform:rotate(180deg);}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.header{height:var(--hdr);background:var(--surf);border-bottom:1px solid var(--border2);display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0;}
+.page-title{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;letter-spacing:.08em;flex:1;}
+.page-title span{color:var(--neon);}
+.header-search{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--radius);padding:6px 12px;width:200px;}
+.header-search i{color:var(--muted);font-size:12px;}
+.header-search input{background:none;border:none;outline:none;font-size:13px;color:var(--text);width:100%;}
+.header-search input::placeholder{color:var(--muted);}
+.header-actions{display:flex;align-items:center;gap:8px;}
+.hdr-btn{width:34px;height:34px;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted2);font-size:13px;transition:all .2s;position:relative;}
+.hdr-btn:hover{border-color:var(--neon);color:var(--neon);}
+.hdr-notif-dot{position:absolute;top:6px;right:6px;width:6px;height:6px;background:var(--neon);border-radius:50%;box-shadow:0 0 6px var(--neon);}
+.hdr-date{font-size:11px;color:var(--muted2);letter-spacing:.05em;font-family:'Rajdhani',sans-serif;font-weight:600;padding:6px 10px;background:rgba(255,255,255,.02);border:1px solid var(--border2);border-radius:var(--radius);}
+.conn-status{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:var(--radius);font-size:11px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:.08em;border:1px solid var(--border2);background:rgba(255,255,255,.02);}
+.conn-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.conn-status.connected .conn-dot{background:var(--success);box-shadow:0 0 6px var(--success);}
+.conn-status.disconnected .conn-dot{background:var(--error);box-shadow:0 0 6px var(--error);}
+.conn-status.connecting .conn-dot{background:var(--warn);animation:pulse 1s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+.content{flex:1;overflow-y:auto;padding:20px;background:var(--bg);}
+.section{display:none;}
+.section.active{display:block;animation:secIn .3s ease;}
+@keyframes secIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
+@media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+.kpi-card{background:var(--surf);border:1px solid var(--border2);border-radius:var(--radius);padding:18px 20px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s;}
+.kpi-card:hover{border-color:var(--border);transform:translateY(-1px);}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kpi-color,var(--neon));box-shadow:0 0 8px var(--kpi-color,var(--neon));}
+.kpi-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted2);font-family:'Rajdhani',sans-serif;font-weight:600;margin-bottom:8px;}
+.kpi-value{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:700;line-height:1;margin-bottom:6px;}
+.kpi-delta{font-size:11px;display:flex;align-items:center;gap:4px;}
+.kpi-delta.up{color:var(--success);}
+.kpi-delta.dn{color:var(--error);}
+.kpi-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:32px;opacity:.07;color:var(--kpi-color,var(--neon));}
+.charts-row{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:18px;}
+@media(max-width:1100px){.charts-row{grid-template-columns:1fr;}}
+.chart-card{background:var(--surf);border:1px solid var(--border2);border-radius:var(--radius);padding:18px 20px;}
+.chart-title{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.chart-title i{color:var(--neon);font-size:11px;}
+.chart-wrap{position:relative;height:200px;}
+.recent-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:1000px){.recent-row{grid-template-columns:1fr;}}
+
+/* SECTION HEADER */
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+.section-title{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;letter-spacing:.08em;flex:1;}
+.section-title small{display:block;font-size:10px;color:var(--muted2);letter-spacing:.15em;font-weight:400;margin-top:1px;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:var(--radius);font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.btn i{font-size:11px;}
+.btn-primary{background:var(--neon);color:#fff;box-shadow:0 2px 12px rgba(255,77,0,.35);}
+.btn-primary:hover{background:#ff6a00;box-shadow:0 4px 18px rgba(255,77,0,.5);transform:translateY(-1px);}
+.btn-secondary{background:rgba(255,255,255,.05);color:var(--muted2);border:1px solid var(--border2);}
+.btn-secondary:hover{background:rgba(255,255,255,.09);color:var(--text);}
+.btn-danger{background:rgba(255,56,96,.15);color:var(--error);border:1px solid rgba(255,56,96,.25);}
+.btn-danger:hover{background:rgba(255,56,96,.25);}
+.btn-success{background:rgba(0,229,160,.15);color:var(--success);border:1px solid rgba(0,229,160,.25);}
+.btn-success:hover{background:rgba(0,229,160,.25);}
+.btn-sm{padding:5px 10px;font-size:11px;}
+.btn-xs{padding:3px 8px;font-size:10px;}
+
+/* TOOLBAR */
+.toolbar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.search-box{display:flex;align-items:center;gap:8px;background:var(--surf);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 12px;min-width:200px;flex:1;max-width:320px;}
+.search-box i{color:var(--muted);font-size:12px;}
+.search-box input{background:none;border:none;outline:none;font-size:13px;color:var(--text);width:100%;}
+.search-box input::placeholder{color:var(--muted);}
+.filter-select{background:var(--surf);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 10px;font-size:12px;color:var(--muted2);outline:none;cursor:pointer;}
+.filter-select:focus{border-color:var(--neon);}
+.filter-select option{background:var(--bg3);}
+
+/* TABLE */
+.table-wrap{background:var(--surf);border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden;}
+.table-scroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead{background:rgba(255,255,255,.025);}
+th{padding:11px 14px;text-align:left;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted2);border-bottom:1px solid var(--border2);white-space:nowrap;cursor:pointer;user-select:none;}
+th:hover{color:var(--text);}
+th.sorted-asc::after{content:' ↑';color:var(--neon);}
+th.sorted-desc::after{content:' ↓';color:var(--neon);}
+th.no-sort{cursor:default;}
+td{padding:10px 14px;font-size:12px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+tr:hover td{background:rgba(255,255,255,.02);}
+tr:last-child td{border-bottom:none;}
+.td-actions{display:flex;align-items:center;gap:6px;}
+.action-btn{width:28px;height:28px;border-radius:var(--radius);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;transition:all .15s;}
+.action-btn.edit{background:rgba(56,189,248,.12);color:var(--info);}
+.action-btn.edit:hover{background:rgba(56,189,248,.22);}
+.action-btn.del{background:rgba(255,56,96,.12);color:var(--error);}
+.action-btn.del:hover{background:rgba(255,56,96,.22);}
+.action-btn.view{background:rgba(245,158,11,.12);color:var(--warn);}
+.action-btn.view:hover{background:rgba(245,158,11,.22);}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:10px;font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;}
+.badge-pending{background:rgba(245,158,11,.12);color:var(--warn);}
+.badge-confirmed{background:rgba(56,189,248,.12);color:var(--info);}
+.badge-completed{background:rgba(0,229,160,.12);color:var(--success);}
+.badge-cancelled{background:rgba(255,56,96,.12);color:var(--error);}
+.badge-active{background:rgba(0,229,160,.12);color:var(--success);}
+.badge-inactive{background:rgba(90,100,128,.2);color:var(--muted2);}
+.badge-user{background:rgba(56,189,248,.1);color:var(--info);}
+.badge-admin{background:rgba(255,77,0,.12);color:var(--neon);}
+.badge-in-progress{background:rgba(56,189,248,.12);color:var(--info);}
+.badge-paid{background:rgba(0,229,160,.12);color:var(--success);}
+.badge-refunded{background:rgba(201,168,76,.12);color:var(--gold);}
+
+/* PAGINATION */
+.pagination{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid var(--border2);font-size:12px;color:var(--muted2);}
+.page-btns{display:flex;gap:4px;}
+.page-btn{min-width:28px;height:28px;border:1px solid var(--border2);background:rgba(255,255,255,.02);border-radius:var(--radius);font-size:11px;color:var(--muted2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;padding:0 6px;font-family:'Rajdhani',sans-serif;font-weight:600;}
+.page-btn:hover:not(:disabled){border-color:var(--neon);color:var(--neon);}
+.page-btn.active{background:var(--neon);border-color:var(--neon);color:#fff;}
+.page-btn:disabled{opacity:.3;cursor:not-allowed;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;animation:ovIn .2s;}
+@keyframes ovIn{from{opacity:0;}to{opacity:1;}}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);width:100%;max-width:560px;max-height:90vh;display:flex;flex-direction:column;animation:modIn .25s cubic-bezier(.4,0,.2,1);position:relative;}
+.modal.modal-lg{max-width:720px;}
+@keyframes modIn{from{opacity:0;transform:scale(.96) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon),var(--neon2));box-shadow:0 0 10px var(--neon);border-radius:var(--radius) var(--radius) 0 0;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid var(--border2);}
+.modal-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:10px;}
+.modal-title i{color:var(--neon);font-size:14px;}
+.modal-close{width:28px;height:28px;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--radius);color:var(--muted2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .15s;}
+.modal-close:hover{border-color:var(--error);color:var(--error);}
+.modal-body{flex:1;overflow-y:auto;padding:20px 22px;}
+.modal-footer{display:flex;justify-content:flex-end;gap:8px;padding:14px 22px;border-top:1px solid var(--border2);}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-grid.cols-1{grid-template-columns:1fr;}
+.col-span-2{grid-column:span 2;}
+.field-group{display:flex;flex-direction:column;gap:5px;}
+.field-group label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted2);font-family:'Rajdhani',sans-serif;font-weight:600;}
+.field-group input,.field-group select,.field-group textarea{background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--radius);padding:9px 12px;font-size:13px;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;width:100%;}
+.field-group input:focus,.field-group select:focus,.field-group textarea:focus{border-color:var(--neon);box-shadow:0 0 0 3px rgba(255,77,0,.1);}
+.field-group select option{background:var(--bg3);color:var(--text);}
+.field-group textarea{resize:vertical;min-height:70px;line-height:1.5;}
+.field-group input::placeholder{color:var(--muted);}
+
+/* TOAST */
+.toast-wrap{position:fixed;bottom:24px;right:24px;z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+.toast{display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:12px 16px;font-size:13px;min-width:260px;max-width:340px;pointer-events:all;animation:tIn .3s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;}
+.toast::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--toast-color,var(--neon));}
+@keyframes tIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
+.toast-icon{font-size:14px;color:var(--toast-color,var(--neon));flex-shrink:0;}
+.toast-text{flex:1;line-height:1.4;}
+.toast-title{font-weight:600;font-size:13px;}
+.toast-msg{font-size:11px;color:var(--muted2);margin-top:1px;}
+
+/* CONFIRM */
+.confirm-modal{max-width:360px;}
+.confirm-body{padding:22px;text-align:center;}
+.confirm-icon{width:56px;height:56px;background:rgba(255,56,96,.1);border:1px solid rgba(255,56,96,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:22px;color:var(--error);}
+.confirm-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;letter-spacing:.05em;margin-bottom:6px;}
+.confirm-text{font-size:12px;color:var(--muted2);line-height:1.5;}
+
+/* MESSAGES */
+.messages-layout{display:grid;grid-template-columns:280px 1fr;gap:0;height:calc(100vh - var(--hdr) - 120px);background:var(--surf);border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden;}
+.msg-list{border-right:1px solid var(--border2);overflow-y:auto;}
+.msg-list-header{padding:14px 16px;border-bottom:1px solid var(--border2);font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);}
+.msg-item{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.03);transition:background .15s;}
+.msg-item:hover{background:rgba(255,255,255,.02);}
+.msg-item.active{background:rgba(255,77,0,.08);border-left:2px solid var(--neon);}
+.msg-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#38bdf8,#1e40af);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.msg-meta{flex:1;overflow:hidden;}
+.msg-from{font-size:12px;font-weight:600;margin-bottom:2px;}
+.msg-preview{font-size:11px;color:var(--muted2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.msg-time{font-size:9px;color:var(--muted);margin-top:2px;font-family:'Rajdhani',sans-serif;}
+.msg-unread{background:var(--neon);width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.chat-area{display:flex;flex-direction:column;}
+.chat-header{padding:14px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:12px;}
+.chat-name{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:.05em;}
+.chat-sub{font-size:10px;color:var(--muted2);}
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;}
+.chat-empty{flex:1;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;}
+.chat-bubble{max-width:70%;padding:10px 14px;border-radius:var(--radius);font-size:13px;line-height:1.5;}
+.chat-bubble.recv{background:rgba(255,255,255,.04);border:1px solid var(--border2);align-self:flex-start;}
+.chat-bubble.sent{background:rgba(255,77,0,.12);border:1px solid rgba(255,77,0,.2);align-self:flex-end;}
+.chat-ts{font-size:9px;color:var(--muted);margin-top:4px;font-family:'Rajdhani',sans-serif;}
+.chat-input-row{padding:14px 16px;border-top:1px solid var(--border2);display:flex;gap:8px;}
+.chat-input-row textarea{flex:1;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--radius);padding:8px 12px;font-size:13px;color:var(--text);outline:none;resize:none;height:38px;line-height:1.4;}
+.chat-input-row textarea:focus{border-color:var(--neon);}
+
+/* SETTINGS */
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.settings-card{background:var(--surf);border:1px solid var(--border2);border-radius:var(--radius);padding:20px;}
+.settings-card-title{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.settings-card-title i{color:var(--neon);}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border2);}
+.toggle-row:last-child{border-bottom:none;}
+.toggle-label{font-size:13px;}
+.toggle-desc{font-size:10px;color:var(--muted2);margin-top:2px;}
+.toggle-switch{width:36px;height:20px;background:rgba(255,255,255,.08);border-radius:10px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
+.toggle-switch.on{background:var(--neon);}
+.toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.3);}
+.toggle-switch.on::after{transform:translateX(16px);}
+
+/* MISC */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 20px;color:var(--muted);text-align:center;}
+.empty-state i{font-size:36px;margin-bottom:14px;opacity:.4;}
+.inline-spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.skeleton{background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.08) 50%,rgba(255,255,255,.04) 75%);background-size:200%;animation:skelAnim 1.4s ease infinite;border-radius:2px;height:12px;display:inline-block;vertical-align:middle;}
+@keyframes skelAnim{0%{background-position:200%;}100%{background-position:-200%;}}
+.recent-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.03);font-size:12px;}
+.recent-item:last-child{border-bottom:none;}
+</style>
+
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="collapse-btn" onclick="toggleSidebar()"><i class="fas fa-chevron-left"></i></div>
+  <div class="sidebar-top">
+    <div class="logo-icon"><i class="fas fa-car-side"></i></div>
+    <div class="logo-text">AUTOSTYLES <span>Admin Panel</span></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-section-label">Главная</div>
+    <div class="nav-item active" data-section="dashboard"><i class="fas fa-gauge-high"></i><span class="nav-label">Дашборд</span></div>
+    <div class="nav-section-label">Управление</div>
+    <div class="nav-item" data-section="appointments"><i class="fas fa-calendar-check"></i><span class="nav-label">Записи</span><span class="nav-badge" id="badge-appointments" style="display:none">0</span></div>
+    <div class="nav-item" data-section="orders"><i class="fas fa-receipt"></i><span class="nav-label">Заказы</span></div>
+    <div class="nav-item" data-section="services"><i class="fas fa-spray-can-sparkles"></i><span class="nav-label">Услуги</span></div>
+    <div class="nav-item" data-section="promotions"><i class="fas fa-tags"></i><span class="nav-label">Акции</span></div>
+    <div class="nav-item" data-section="bonuses"><i class="fas fa-coins"></i><span class="nav-label">Бонусы</span></div>
+    <div class="nav-section-label">Автомобили</div>
+    <div class="nav-item" data-section="cars"><i class="fas fa-car"></i><span class="nav-label">Автомобили</span></div>
+    <div class="nav-item" data-section="car_photos"><i class="fas fa-images"></i><span class="nav-label">Фото авто</span></div>
+    <div class="nav-item" data-section="maintenance"><i class="fas fa-wrench"></i><span class="nav-label">Напоминания</span></div>
+    <div class="nav-section-label">Клиенты</div>
+    <div class="nav-item" data-section="users"><i class="fas fa-users"></i><span class="nav-label">Пользователи</span></div>
+    <div class="nav-item" data-section="user_levels"><i class="fas fa-layer-group"></i><span class="nav-label">Уровни</span></div>
+    <div class="nav-item" data-section="messages"><i class="fas fa-comments"></i><span class="nav-label">Сообщения</span><span class="nav-badge" id="badge-messages" style="display:none">0</span></div>
+    <div class="nav-item" data-section="reviews"><i class="fas fa-star-half-stroke"></i><span class="nav-label">Отзывы</span></div>
+    <div class="nav-item" data-section="notifications"><i class="fas fa-bell"></i><span class="nav-label">Уведомления</span></div>
+    <div class="nav-section-label">Документы</div>
+    <div class="nav-item" data-section="documents"><i class="fas fa-file"></i><span class="nav-label">Документы</span></div>
+    <div class="nav-item" data-section="subscriptions"><i class="fas fa-calendar-alt"></i><span class="nav-label">Подписки</span></div>
+    <div class="nav-section-label">История</div>
+    <div class="nav-item" data-section="service_history"><i class="fas fa-history"></i><span class="nav-label">История услуг</span></div>
+    <div class="nav-item" data-section="cart"><i class="fas fa-shopping-cart"></i><span class="nav-label">Корзины</span></div>
+    <div class="nav-section-label">Система</div>
+    <div class="nav-item" data-section="settings"><i class="fas fa-gear"></i><span class="nav-label">Настройки</span></div>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="user-card">
+      <div class="user-avatar">AD</div>
+      <div class="user-info">
+        <div class="user-name">Администратор</div>
+        <div class="user-role">Super Admin</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <header class="header">
+    <div class="page-title" id="page-title">Дашборд <span>/ Обзор</span></div>
+    <div class="header-search">
+      <i class="fas fa-magnifying-glass"></i>
+      <input type="text" placeholder="Поиск..." id="global-search">
+    </div>
+    <div class="header-actions">
+      <div class="conn-status connecting" id="conn-status">
+        <div class="conn-dot"></div>
+        <span id="conn-label">Подключение...</span>
+      </div>
+      <div class="hdr-date" id="hdr-date"></div>
+      <div class="hdr-btn" onclick="loadAllData()" title="Обновить"><i class="fas fa-arrows-rotate" id="refresh-icon"></i></div>
+      <div class="hdr-btn" onclick="showSection('notifications')" title="Уведомления">
+        <i class="fas fa-bell"></i>
+        <div class="hdr-notif-dot" id="notif-dot" style="display:none;"></div>
+      </div>
+      <div class="hdr-btn" onclick="window.location.href='auth.html'" title="Выйти"><i class="fas fa-right-from-bracket"></i></div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="section active" id="section-dashboard">
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kpi-color:#ff4d00">
+          <div class="kpi-label">Всего записей</div>
+          <div class="kpi-value" id="kpi-appointments">—</div>
+          <div class="kpi-delta up"><i class="fas fa-calendar"></i> Всего в системе</div>
+          <i class="fas fa-calendar-check kpi-icon"></i>
+        </div>
+        <div class="kpi-card" style="--kpi-color:#00e5a0">
+          <div class="kpi-label">Выручка (сум)</div>
+          <div class="kpi-value" id="kpi-revenue">—</div>
+          <div class="kpi-delta up"><i class="fas fa-arrow-up"></i> Завершённые заказы</div>
+          <i class="fas fa-money-bill-wave kpi-icon"></i>
+        </div>
+        <div class="kpi-card" style="--kpi-color:#38bdf8">
+          <div class="kpi-label">Клиентов</div>
+          <div class="kpi-value" id="kpi-users">—</div>
+          <div class="kpi-delta up"><i class="fas fa-users"></i> Зарегистрировано</div>
+          <i class="fas fa-users kpi-icon"></i>
+        </div>
+        <div class="kpi-card" style="--kpi-color:#f59e0b">
+          <div class="kpi-label">Активных заказов</div>
+          <div class="kpi-value" id="kpi-orders">—</div>
+          <div class="kpi-delta"><i class="fas fa-circle"></i> В обработке</div>
+          <i class="fas fa-receipt kpi-icon"></i>
+        </div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-title"><i class="fas fa-chart-line"></i>Записи по месяцам</div>
+          <div class="chart-wrap"><canvas id="chart-appointments"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title"><i class="fas fa-chart-pie"></i>Статусы записей</div>
+          <div class="chart-wrap"><canvas id="chart-statuses"></canvas></div>
+        </div>
+      </div>
+      <div class="recent-row">
+        <div class="chart-card">
+          <div class="chart-title"><i class="fas fa-clock-rotate-left"></i>Последние записи</div>
+          <div id="recent-appointments"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title"><i class="fas fa-star"></i>Последние отзывы</div>
+          <div id="recent-reviews"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APPOINTMENTS -->
+    <div class="section" id="section-appointments">
+      <div class="section-header">
+        <div class="section-title">Записи <small>APPOINTMENTS MANAGEMENT</small></div>
+        <button class="btn btn-primary" onclick="openModal('appointment')"><i class="fas fa-plus"></i>Добавить запись</button>
+        <button class="btn btn-secondary" onclick="exportCSV('appointments')"><i class="fas fa-download"></i>CSV</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск по клиенту, телефону..." id="search-appointments" oninput="filterTable('appointments')"></div>
+        <select class="filter-select" id="filter-apt-status" onchange="filterTable('appointments')">
+          <option value="">Все статусы</option>
+          <option value="pending">Ожидание</option>
+          <option value="confirmed">Подтверждён</option>
+          <option value="in_progress">В работе</option>
+          <option value="completed">Выполнен</option>
+          <option value="cancelled">Отменён</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table id="tbl-appointments">
+            <thead><tr>
+              <th onclick="sortTable('appointments','id')">ID</th>
+              <th onclick="sortTable('appointments','client_name')">Клиент</th>
+              <th onclick="sortTable('appointments','client_phone')">Телефон</th>
+              <th>Услуга</th>
+              <th onclick="sortTable('appointments','scheduled_at')">Дата/Время</th>
+              <th onclick="sortTable('appointments','status')">Статус</th>
+              <th onclick="sortTable('appointments','total_price')">Сумма</th>
+              <th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-appointments"><tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pag-appointments"></div>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="section" id="section-orders">
+      <div class="section-header">
+        <div class="section-title">Заказы <small>ORDERS MANAGEMENT</small></div>
+        <button class="btn btn-secondary" onclick="exportCSV('orders')"><i class="fas fa-download"></i>CSV</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск по ID заказа..." id="search-orders" oninput="filterTable('orders')"></div>
+        <select class="filter-select" id="filter-order-status" onchange="filterTable('orders')">
+          <option value="">Все статусы</option>
+          <option value="pending">Ожидание</option>
+          <option value="paid">Оплачен</option>
+          <option value="cancelled">Отменён</option>
+          <option value="refunded">Возврат</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Запись</th><th>Клиент</th><th>Сумма</th><th>Статус</th><th>Создан</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-orders"><tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pag-orders"></div>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="section" id="section-services">
+      <div class="section-header">
+        <div class="section-title">Услуги <small>SERVICES MANAGEMENT</small></div>
+        <button class="btn btn-primary" onclick="openModal('service')"><i class="fas fa-plus"></i>Добавить услугу</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск по названию..." id="search-services" oninput="filterTable('services')"></div>
+      </div>
+      <div class="table-wrap" style="margin-bottom:16px;">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Название</th><th>Описание</th><th>Базовая цена</th><th>Длительность</th><th>Создан</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-services"><tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="section-header" style="margin-top:24px;">
+        <div class="section-title">Типы услуг <small>SERVICE TYPES</small></div>
+        <button class="btn btn-primary" onclick="openModal('service_type')"><i class="fas fa-plus"></i>Добавить тип</button>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Услуга</th><th>Название типа</th><th>Доп. цена</th><th>Длительность</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-service-types"><tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROMOTIONS -->
+    <div class="section" id="section-promotions">
+      <div class="section-header">
+        <div class="section-title">Акции и промокоды <small>PROMOTIONS MANAGEMENT</small></div>
+        <button class="btn btn-primary" onclick="openModal('promotion')"><i class="fas fa-plus"></i>Создать акцию</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск по коду..." id="search-promotions" oninput="filterTable('promotions')"></div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Код</th><th>Описание</th><th>Скидка %</th><th>Истекает</th><th>Создан</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-promotions"><tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- BONUSES -->
+    <div class="section" id="section-bonuses">
+      <div class="section-header">
+        <div class="section-title">Бонусы <small>BONUSES MANAGEMENT</small></div>
+        <button class="btn btn-primary" onclick="openModal('bonus')"><i class="fas fa-plus"></i>Начислить бонусы</button>
+        <button class="btn btn-secondary" onclick="exportCSV('bonuses')"><i class="fas fa-download"></i>CSV</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск по пользователю..." id="search-bonuses" oninput="filterTable('bonuses')"></div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Пользователь</th><th>Сумма</th><th>Истекает</th><th>Причина</th><th>Запись ID</th><th>Дата</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-bonuses"><tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARS -->
+    <div class="section" id="section-cars">
+      <div class="section-header">
+        <div class="section-title">Автомобили <small>CARS MANAGEMENT</small></div>
+        <button class="btn btn-primary" onclick="openModal('car')"><i class="fas fa-plus"></i>Добавить авто</button>
+        <button class="btn btn-secondary" onclick="exportCSV('cars')"><i class="fas fa-download"></i>CSV</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск по марке, модели..." id="search-cars" oninput="filterTable('cars')"></div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Владелец</th><th>Марка</th><th>Модель</th><th>Госномер</th><th>VIN</th><th>Год</th><th>Пробег</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-cars"><tr><td colspan="9" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAR PHOTOS -->
+    <div class="section" id="section-car_photos">
+      <div class="section-header">
+        <div class="section-title">Фотографии автомобилей <small>CAR PHOTOS</small></div>
+        <button class="btn btn-primary" onclick="openModal('car_photo')"><i class="fas fa-plus"></i>Добавить фото</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск..." id="search-car_photos" oninput="filterTable('car_photos')"></div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Автомобиль ID</th><th>Пользователь</th><th>Тип</th><th>Фото URL</th><th>Дата</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-car_photos"><tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAINTENANCE -->
+    <div class="section" id="section-maintenance">
+      <div class="section-header">
+        <div class="section-title">Напоминания о ТО <small>MAINTENANCE REMINDERS</small></div>
+        <button class="btn btn-primary" onclick="openModal('maintenance')"><i class="fas fa-plus"></i>Создать напоминание</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск..." id="search-maintenance" oninput="filterTable('maintenance')"></div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Автомобиль ID</th><th>Дата</th><th>Пробег</th><th>Сообщение</th><th>Канал</th><th>Отправлено</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-maintenance"><tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div class="section" id="section-users">
+      <div class="section-header">
+        <div class="section-title">Пользователи <small>USERS MANAGEMENT</small></div>
+        <button class="btn btn-secondary" onclick="exportCSV('profiles')"><i class="fas fa-download"></i>CSV</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск по имени, телефону..." id="search-users" oninput="filterTable('users')"></div>
+        <select class="filter-select" id="filter-user-role" onchange="filterTable('users')">
+          <option value="">Все роли</option>
+          <option value="user">Клиент</option>
+          <option value="admin">Администратор</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>UUID</th><th>Имя</th><th>Телефон</th><th>Роль</th><th>Уровень</th><th>День рождения</th><th>Зарегистрирован</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-users"><tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pag-users"></div>
+      </div>
+    </div>
+
+    <!-- USER LEVELS -->
+    <div class="section" id="section-user_levels">
+      <div class="section-header">
+        <div class="section-title">Уровни пользователей <small>USER LEVELS</small></div>
+        <button class="btn btn-primary" onclick="openModal('user_level')"><i class="fas fa-plus"></i>Добавить уровень</button>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Название</th><th>Мин. сумма</th><th>Скидка %</th><th>Преимущества</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-user_levels"><tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MESSAGES -->
+    <div class="section" id="section-messages">
+      <div class="section-header">
+        <div class="section-title">Сообщения <small>MESSAGES CENTER</small></div>
+        <button class="btn btn-primary" onclick="openModal('send_message')"><i class="fas fa-paper-plane"></i>Отправить</button>
+      </div>
+      <div class="messages-layout">
+        <div class="msg-list">
+          <div class="msg-list-header">Входящие</div>
+          <div id="msg-list-body"></div>
+        </div>
+        <div class="chat-area">
+          <div class="chat-header" id="chat-header">
+            <div><div class="chat-name">Выберите чат</div><div class="chat-sub">Нажмите на диалог слева</div></div>
+          </div>
+          <div class="chat-messages" id="chat-messages">
+            <div class="chat-empty"><i class="fas fa-comments" style="font-size:24px;margin-right:10px;opacity:.4;"></i>Выберите диалог</div>
+          </div>
+          <div class="chat-input-row">
+            <textarea id="chat-reply" placeholder="Ответить..."></textarea>
+            <button class="btn btn-primary" onclick="sendReply()"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVIEWS -->
+    <div class="section" id="section-reviews">
+      <div class="section-header">
+        <div class="section-title">Отзывы <small>REVIEWS MANAGEMENT</small></div>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск по комментарию..." id="search-reviews" oninput="filterTable('reviews')"></div>
+        <select class="filter-select" id="filter-review-rating" onchange="filterTable('reviews')">
+          <option value="">Все оценки</option>
+          <option value="5">⭐⭐⭐⭐⭐ 5</option>
+          <option value="4">⭐⭐⭐⭐ 4</option>
+          <option value="3">⭐⭐⭐ 3</option>
+          <option value="2">⭐⭐ 2</option>
+          <option value="1">⭐ 1</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Клиент</th><th>Запись</th><th>Оценка</th><th>Комментарий</th><th>Дата</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-reviews"><tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="section" id="section-notifications">
+      <div class="section-header">
+        <div class="section-title">Уведомления <small>NOTIFICATIONS MANAGEMENT</small></div>
+        <button class="btn btn-primary" onclick="openModal('notification')"><i class="fas fa-plus"></i>Создать</button>
+        <button class="btn btn-secondary" onclick="markAllRead()"><i class="fas fa-check-double"></i>Всё прочитано</button>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Пользователь</th><th>Заголовок</th><th>Сообщение</th><th>Тип</th><th>Прочитано</th><th>Дата</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-notifications"><tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCUMENTS -->
+    <div class="section" id="section-documents">
+      <div class="section-header">
+        <div class="section-title">Документы <small>DOCUMENTS</small></div>
+        <button class="btn btn-primary" onclick="openModal('document')"><i class="fas fa-plus"></i>Загрузить документ</button>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Пользователь</th><th>Запись</th><th>Файл URL</th><th>Тип</th><th>Дата</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-documents"><tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBSCRIPTIONS -->
+    <div class="section" id="section-subscriptions">
+      <div class="section-header">
+        <div class="section-title">Подписки <small>SUBSCRIPTIONS</small></div>
+        <button class="btn btn-primary" onclick="openModal('subscription')"><i class="fas fa-plus"></i>Добавить подписку</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск..." id="search-subscriptions" oninput="filterTable('subscriptions')"></div>
+        <select class="filter-select" id="filter-subscription-active" onchange="filterTable('subscriptions')">
+          <option value="">Все</option>
+          <option value="true">Активные</option>
+          <option value="false">Неактивные</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Пользователь</th><th>План</th><th>Цена</th><th>Продление</th><th>Активна</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-subscriptions"><tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVICE HISTORY -->
+    <div class="section" id="section-service_history">
+      <div class="section-header">
+        <div class="section-title">История услуг <small>SERVICE HISTORY</small></div>
+        <button class="btn btn-primary" onclick="openModal('service_history')"><i class="fas fa-plus"></i>Добавить запись</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Поиск по описанию..." id="search-service_history" oninput="filterTable('service_history')"></div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Запись</th><th>Автомобиль</th><th>Пользователь</th><th>Описание</th><th>Рекомендации</th><th>Дата</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-service_history"><tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- CART -->
+    <div class="section" id="section-cart">
+      <div class="section-header">
+        <div class="section-title">Корзины <small>CART ITEMS</small></div>
+        <button class="btn btn-secondary" onclick="exportCSV('cart_items')"><i class="fas fa-download"></i>CSV</button>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Пользователь</th><th>Услуга</th><th>Кол-во</th><th>Цена</th><th>Автомобиль</th><th>Дата</th><th class="no-sort">Действия</th>
+            </tr></thead>
+            <tbody id="tbody-cart_items"><tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted)"><span class="inline-spinner"></span> Загрузка...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="section" id="section-settings">
+      <div class="section-header">
+        <div class="section-title">Настройки <small>SYSTEM SETTINGS</small></div>
+        <button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-save"></i>Сохранить</button>
+      </div>
+      <div class="settings-grid">
+        <div class="settings-card">
+          <div class="settings-card-title"><i class="fas fa-building"></i>Информация о компании</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="field-group"><label>Название</label><input type="text" id="s-name" value="AUTOSTYLES Studio"></div>
+            <div class="field-group"><label>Адрес</label><input type="text" id="s-address" value="г. Бишкек, ул. Манаса 40"></div>
+            <div class="field-group"><label>Телефон</label><input type="text" id="s-phone" value="+996 555 000 000"></div>
+            <div class="field-group"><label>Email</label><input type="email" id="s-email" value="info@autostyles.kg"></div>
+            <div class="field-group"><label>Часы работы</label><input type="text" id="s-hours" value="Пн–Вс: 09:00 – 20:00"></div>
+          </div>
+        </div>
+        <div class="settings-card">
+          <div class="settings-card-title"><i class="fas fa-sliders"></i>Системные настройки</div>
+          <div class="toggle-row"><div><div class="toggle-label">Email уведомления</div><div class="toggle-desc">Отправлять клиентам письма</div></div><div class="toggle-switch on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">SMS уведомления</div><div class="toggle-desc">Через SMS-шлюз</div></div><div class="toggle-switch" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Онлайн-запись</div><div class="toggle-desc">Клиенты могут записываться онлайн</div></div><div class="toggle-switch on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Система бонусов</div><div class="toggle-desc">Начислять бонусные баллы</div></div><div class="toggle-switch on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">2FA для админов</div><div class="toggle-desc">Двухфакторная аутентификация</div></div><div class="toggle-switch" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+        <div class="settings-card">
+          <div class="settings-card-title"><i class="fas fa-database"></i>Supabase подключение</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div id="conn-info-box" style="padding:10px 14px;background:rgba(0,229,160,.06);border:1px solid rgba(0,229,160,.2);border-radius:var(--radius);font-size:12px;color:var(--success);display:flex;align-items:center;gap:8px;">
+              <i class="fas fa-circle-check"></i>Подключение через внешний supabaseClient.js
+            </div>
+            <button class="btn btn-secondary" onclick="loadAllData()"><i class="fas fa-arrows-rotate"></i>Перезагрузить данные</button>
+          </div>
+        </div>
+        <div class="settings-card">
+          <div class="settings-card-title"><i class="fas fa-chart-bar"></i>Статистика БД</div>
+          <div id="db-stats" style="display:flex;flex-direction:column;gap:8px;margin-top:4px;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<!-- MAIN MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOnBg(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-header">
+      <div class="modal-title"><i class="fas fa-circle-plus" id="modal-icon"></i><span id="modal-title-text">Добавить</span></div>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer" id="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()"><i class="fas fa-xmark"></i>Отмена</button>
+      <button class="btn btn-primary" id="modal-save-btn" onclick="saveModal()"><i class="fas fa-check"></i>Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="confirm-overlay">
+  <div class="modal confirm-modal">
+    <div class="modal-header">
+      <div class="modal-title"><i class="fas fa-triangle-exclamation" style="color:var(--error)"></i><span>Подтверждение</span></div>
+      <button class="modal-close" onclick="closeConfirm()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="confirm-body">
+      <div class="confirm-icon"><i class="fas fa-trash"></i></div>
+      <div class="confirm-title">Удалить запись?</div>
+      <div class="confirm-text" id="confirm-text">Это действие необратимо.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeConfirm()"><i class="fas fa-xmark"></i>Отмена</button>
+      <button class="btn btn-danger" id="confirm-ok"><i class="fas fa-trash"></i>Удалить</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<!-- ПОДКЛЮЧЕНИЕ СКРИПТОВ В ПРАВИЛЬНОМ ПОРЯДКЕ -->
+<!-- 1. Сначала Supabase библиотека -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<!-- 2. Затем наш клиент -->
+<script src="/js/supabaseClient.js"></script>
+<!-- 3. Потом админка -->
+<script src="/js/admin.js"></script>
+
+</body>
+</html>

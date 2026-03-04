@@ -1,0 +1,1072 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Темная тема (по умолчанию) */
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #111111;
+    --bg-card: rgba(18, 18, 18, 0.95);
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --accent: #00f2fe;
+    --accent-glow: 0 0 20px rgba(0, 242, 254, 0.3);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --input-bg: rgba(255, 255, 255, 0.05);
+    --error: #ff4d4d;
+    --success: #00ff88;
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+body.light-theme {
+    --bg-primary: #f5f5f5;
+    --bg-secondary: #ffffff;
+    --bg-card: rgba(255, 255, 255, 0.95);
+    --text-primary: #1a1a1a;
+    --text-secondary: #666666;
+    --accent: #0066ff;
+    --accent-glow: 0 0 20px rgba(0, 102, 255, 0.2);
+    --border-color: rgba(0, 0, 0, 0.1);
+    --input-bg: rgba(0, 0, 0, 0.02);
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: background-color 0.3s ease;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Фоновый элемент */
+.background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 100%);
+    z-index: 1;
+}
+
+.light-beam {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(0,242,254,0.1) 0%, transparent 50%);
+    animation: rotate 20s linear infinite;
+    z-index: 0;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Переключатель темы */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.theme-toggle button {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-size: 20px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle button:hover {
+    transform: scale(1.1);
+    box-shadow: var(--accent-glow);
+    border-color: var(--accent);
+}
+
+/* Основной контейнер */
+.container {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+}
+
+/* Карточка авторизации */
+.auth-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border-radius: 32px;
+    padding: 40px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    animation: slideUp 0.6s ease;
+    width: 100%;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Бренд */
+.brand {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo-glow {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, var(--accent), #8a2be2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: white;
+    box-shadow: var(--accent-glow);
+    position: relative;
+}
+
+.logo-glow::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, var(--accent), #8a2be2);
+    border-radius: 50%;
+    z-index: -1;
+    filter: blur(10px);
+    opacity: 0.5;
+}
+
+.brand h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #fff, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.brand-subtitle {
+    color: var(--text-secondary);
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+/* Переключатель форм */
+.toggle-container {
+    display: flex;
+    background: var(--input-bg);
+    border-radius: 50px;
+    padding: 4px;
+    margin-bottom: 40px;
+    position: relative;
+    border: 1px solid var(--border-color);
+}
+
+.toggle-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.toggle-btn.active {
+    color: var(--text-primary);
+}
+
+.toggle-slider {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    width: calc(50% - 4px);
+    background: linear-gradient(135deg, var(--accent), #8a2be2);
+    border-radius: 50px;
+    transition: transform 0.3s ease;
+    z-index: 1;
+    box-shadow: var(--accent-glow);
+}
+
+.toggle-slider.register {
+    transform: translateX(100%);
+}
+
+/* Формы */
+.auth-form {
+    display: none;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.4s ease;
+}
+
+.auth-form.active {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.auth-form h2 {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Социальный вход */
+.social-login {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.social-btn {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    background: var(--input-bg);
+    border-radius: 50px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.social-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--accent-glow);
+}
+
+.social-btn i {
+    font-size: 18px;
+}
+
+/* Разделитель */
+.divider {
+    text-align: center;
+    margin: 25px 0;
+    position: relative;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: calc(50% - 30px);
+    height: 1px;
+    background: var(--border-color);
+}
+
+.divider::before { left: 0; }
+.divider::after { right: 0; }
+
+.divider span {
+    background: var(--bg-card);
+    padding: 0 15px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* Поля ввода */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-field {
+    position: relative;
+    width: 100%;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 16px 20px 16px 50px;
+    border: 1px solid var(--border-color);
+    background: var(--input-bg);
+    border-radius: 16px;
+    font-size: 16px;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.input-field input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: var(--accent-glow);
+}
+
+.input-field label {
+    position: absolute;
+    left: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 16px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    background: transparent;
+    padding: 0 5px;
+}
+
+.input-field input:focus ~ label,
+.input-field input:not(:placeholder-shown) ~ label {
+    top: 0;
+    left: 15px;
+    font-size: 12px;
+    background: var(--bg-card);
+    padding: 0 8px;
+    color: var(--accent);
+}
+
+.input-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 18px;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+.input-field input:focus ~ .input-icon {
+    color: var(--accent);
+}
+
+.input-highlight {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    transition: width 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.input-field input:focus ~ .input-highlight {
+    width: 100%;
+}
+
+/* Переключатель видимости пароля */
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: var(--accent);
+}
+
+/* Индикатор силы пароля */
+.password-strength {
+    height: 4px;
+    background: var(--border-color);
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.strength-bar {
+    height: 100%;
+    width: 0;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.strength-bar.weak { width: 33.33%; background: #ff4d4d; }
+.strength-bar.medium { width: 66.66%; background: #ffa500; }
+.strength-bar.strong { width: 100%; background: #00ff88; }
+
+.strength-text {
+    font-size: 12px;
+    margin-top: 4px;
+    color: var(--text-secondary);
+}
+
+/* Ошибки */
+.error-message {
+    color: var(--error);
+    font-size: 12px;
+    margin-top: 4px;
+    padding-left: 16px;
+    min-height: 18px;
+}
+
+/* Опции формы */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* Чекбоксы */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    user-select: none;
+    position: relative;
+    padding-left: 30px;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+    border-color: var(--accent);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-text {
+    color: var(--text-secondary);
+}
+
+.policy-link {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.policy-link:hover {
+    text-decoration: underline;
+}
+
+/* Ссылка "Забыли пароль" */
+.forgot-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.forgot-link:hover {
+    color: var(--accent);
+}
+
+/* Кнопка отправки */
+.submit-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--accent), #8a2be2);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--accent-glow);
+}
+
+.submit-btn:hover::before {
+    left: 100%;
+}
+
+.submit-btn:active {
+    transform: scale(0.98);
+}
+
+.submit-btn i {
+    transition: transform 0.3s ease;
+}
+
+.submit-btn:hover i {
+    transform: translateX(5px);
+}
+
+.submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Секция добавления автомобиля */
+.car-section {
+    margin: 25px 0;
+}
+
+.car-toggle-btn {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px dashed var(--border-color);
+    border-radius: 16px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.car-toggle-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,242,254,0.05);
+}
+
+.car-fields {
+    display: none;
+    margin-top: 15px;
+    animation: slideDown 0.3s ease;
+}
+
+.car-fields.show {
+    display: block;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Уведомления */
+.notification-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 100%;
+    max-width: 400px;
+    pointer-events: none;
+}
+
+.notification {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: slideDown 0.3s ease;
+    box-shadow: var(--shadow);
+    pointer-events: auto;
+}
+
+.notification.success {
+    border-left: 4px solid var(--success);
+}
+
+.notification.error {
+    border-left: 4px solid var(--error);
+}
+
+.notification i {
+    font-size: 20px;
+}
+
+.notification.success i {
+    color: var(--success);
+}
+
+.notification.error i {
+    color: var(--error);
+}
+
+.notification-message {
+    flex: 1;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.notification-close {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.notification-close:hover {
+    color: var(--text-primary);
+}
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--bg-card);
+    border-radius: 32px;
+    width: 90%;
+    max-width: 400px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    animation: scaleIn 0.3s ease;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-header h3 {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: var(--text-primary);
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-body p {
+    margin-bottom: 24px;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.modal-btn {
+    padding: 14px;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-btn.primary {
+    background: linear-gradient(135deg, var(--accent), #8a2be2);
+    color: white;
+}
+
+.modal-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--accent-glow);
+}
+
+.modal-btn.secondary {
+    background: var(--input-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.modal-btn.secondary:hover {
+    border-color: var(--accent);
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 24px;
+    }
+    
+    .brand h1 {
+        font-size: 24px;
+    }
+    
+    .social-login {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-options {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    
+    .modal-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Стили для светлой темы */
+body.light-theme .background-container .overlay {
+    background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+}
+
+body.light-theme .light-beam {
+    background: radial-gradient(circle at 30% 50%, rgba(0,102,255,0.1) 0%, transparent 50%);
+}
+
+
+
+
+/* Кнопка назад */
+.back-button-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+}
+
+.back-button {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-size: 16px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: var(--shadow);
+}
+
+.back-button i {
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+.back-button:hover {
+    transform: translateX(-5px);
+    border-color: var(--accent);
+    box-shadow: var(--accent-glow);
+}
+
+.back-button:hover i {
+    transform: translateX(-3px);
+}
+
+.back-button:active {
+    transform: scale(0.95);
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+    .back-button-container {
+        top: 15px;
+        left: 15px;
+    }
+    
+    .back-button span {
+        display: none; /* Скрываем текст на мобильных, оставляем только иконку */
+    }
+    
+    .back-button {
+        padding: 12px;
+        border-radius: 50%;
+    }
+    
+    .back-button i {
+        margin: 0;
+    }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 480px) {
+    .back-button-container {
+        top: 10px;
+        left: 10px;
+    }
+}
+
+
+
+
+
+
+
+/* Кнопка быстрого входа для администратора */
+.admin-quick-login {
+    position: fixed;
+    top: 20px;
+    right: 80px; /* Сдвигаем влево, чтобы не пересекаться с переключателем темы */
+    z-index: 100;
+}
+
+.admin-btn {
+    background: linear-gradient(135deg, #ffd700, #ffa500);
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: #1a1a1a;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    border: 1px solid rgba(255, 215, 0, 0.5);
+}
+
+.admin-btn i {
+    font-size: 18px;
+    color: #1a1a1a;
+}
+
+.admin-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+    background: linear-gradient(135deg, #ffed4e, #ffb347);
+}
+
+.admin-btn:active {
+    transform: scale(0.95);
+}
+
+/* Быстрый доступ в форме входа */
+.quick-admin-access {
+    margin-top: 25px;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.quick-admin-access p {
+    color: var(--text-secondary);
+    font-size: 12px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.quick-admin-btn {
+    background: transparent;
+    border: 1px dashed #ffd700;
+    border-radius: 50px;
+    padding: 12px 24px;
+    cursor: pointer;
+    color: #ffd700;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+}
+
+.quick-admin-btn:hover {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: #ffd700;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+}
+
+.quick-admin-btn i {
+    font-size: 16px;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .admin-quick-login {
+        top: 15px;
+        right: 70px;
+    }
+    
+    .admin-btn {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+    
+    .admin-btn span {
+        display: none; /* На мобильных скрываем текст, оставляем иконку */
+    }
+    
+    .admin-btn {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        justify-content: center;
+        border-radius: 50%;
+    }
+    
+    .admin-btn i {
+        margin: 0;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-quick-login {
+        top: 10px;
+        right: 60px;
+    }
+}
