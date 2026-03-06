@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard — Supabase Auth</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Supabase JS -->
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0f;
+      --surface:   #111118;
+      --border:    #1e1e2e;
+      --accent:    #5b6af7;
+      --accent2:   #22d3ee;
+      --danger:    #f43f5e;
+      --success:   #10b981;
+      --warn:      #f59e0b;
+      --text:      #e2e8f0;
+      --muted:     #64748b;
+      --sidebar-w: 240px;
+      --header-h:  58px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--header-h);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 24px;
+      gap: 16px;
+    }
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px; font-weight: 800; letter-spacing: -0.5px;
+      background: linear-gradient(120deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-right: auto;
+    }
+    .header-badge {
+      font-size: 10px; padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    #conn-status {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; color: var(--muted);
+    }
+    #conn-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); transition: .3s; }
+    #conn-dot.ok  { background: var(--success); box-shadow: 0 0 8px var(--success); }
+    #conn-dot.err { background: var(--danger);  box-shadow: 0 0 8px var(--danger); }
+
+    /* ── LAYOUT ── */
+    .layout {
+      display: flex;
+      margin-top: var(--header-h);
+      min-height: calc(100vh - var(--header-h));
+    }
+
+    /* ── SIDEBAR ── */
+    aside {
+      width: var(--sidebar-w);
+      min-height: 100%;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 20px 0;
+      position: fixed;
+      top: var(--header-h); left: 0; bottom: 0;
+      overflow-y: auto;
+    }
+    .sidebar-section {
+      padding: 6px 16px 2px;
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 20px;
+      cursor: pointer; user-select: none;
+      color: var(--muted);
+      border-left: 2px solid transparent;
+      transition: all .15s;
+      font-size: 12px;
+    }
+    .nav-item:hover  { color: var(--text); background: rgba(91,106,247,.07); }
+    .nav-item.active { color: var(--accent); border-color: var(--accent); background: rgba(91,106,247,.1); }
+    .nav-item .icon { font-size: 14px; width: 18px; text-align: center; }
+    .nav-count {
+      margin-left: auto;
+      background: var(--border);
+      border-radius: 999px;
+      padding: 1px 7px;
+      font-size: 10px; color: var(--muted);
+    }
+    .nav-count.loaded { background: rgba(91,106,247,.2); color: var(--accent); }
+
+    /* ── MAIN ── */
+    main {
+      margin-left: var(--sidebar-w);
+      flex: 1; padding: 28px;
+      min-width: 0;
+    }
+
+    .page { display: none; animation: fadeIn .2s ease; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      display: flex; align-items: flex-end; gap: 14px;
+      margin-bottom: 22px;
+    }
+    .page-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px; font-weight: 700; letter-spacing: -0.5px;
+    }
+    .page-count {
+      font-size: 12px; color: var(--muted);
+      padding-bottom: 3px;
+    }
+    .btn {
+      margin-left: auto;
+      padding: 7px 16px; border-radius: 6px; border: none; cursor: pointer;
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      background: var(--accent); color: #fff;
+      transition: opacity .15s;
+    }
+    .btn:hover { opacity: .85; }
+    .btn.secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .btn.secondary:hover { color: var(--text); border-color: var(--muted); }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px; margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .stat-card .label { font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .stat-card .value { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 700; }
+    .stat-card .value.accent  { color: var(--accent); }
+    .stat-card .value.success { color: var(--success); }
+    .stat-card .value.warn    { color: var(--warn); }
+    .stat-card .value.danger  { color: var(--danger); }
+
+    /* ── SEARCH & FILTER ── */
+    .toolbar { display: flex; gap: 10px; margin-bottom: 16px; }
+    .search-box {
+      flex: 1; max-width: 320px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px 12px;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      outline: none; transition: border-color .15s;
+    }
+    .search-box:focus { border-color: var(--accent); }
+    .search-box::placeholder { color: var(--muted); }
+
+    /* ── TABLE ── */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: auto;
+      max-height: 600px;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 800px; }
+    thead th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--muted);
+      background: rgba(255,255,255,.02);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      cursor: pointer; user-select: none;
+      position: sticky; top: 0; background: var(--surface); z-index: 10;
+    }
+    thead th:hover { color: var(--text); }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(91,106,247,.04); }
+    tbody td { padding: 10px 14px; vertical-align: middle; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* ── CELL STYLES ── */
+    .cell-id {
+      font-size: 10px; color: var(--muted);
+      max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .cell-email { color: var(--accent2); }
+    .cell-role {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      font-size: 10px; letter-spacing: .5px;
+      background: rgba(91,106,247,.15); color: var(--accent);
+    }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px;
+    }
+    .badge.green  { background: rgba(16,185,129,.15); color: var(--success); }
+    .badge.red    { background: rgba(244,63,94,.15);  color: var(--danger); }
+    .badge.yellow { background: rgba(245,158,11,.15); color: var(--warn); }
+    .badge.blue   { background: rgba(91,106,247,.15); color: var(--accent); }
+    .badge.gray   { background: rgba(100,116,139,.15); color: var(--muted); }
+
+    /* ── LOADER ── */
+    .loader-wrap {
+      display: flex; align-items: center; justify-content: center;
+      padding: 60px 0; flex-direction: column; gap: 12px; color: var(--muted);
+    }
+    .spinner {
+      width: 28px; height: 28px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── ERROR ── */
+    .error-box {
+      background: rgba(244,63,94,.07);
+      border: 1px solid rgba(244,63,94,.25);
+      border-radius: 8px;
+      padding: 16px 20px;
+      color: var(--danger);
+      font-size: 12px;
+    }
+    .error-box b { display: block; margin-bottom: 4px; }
+
+    /* ── EMPTY ── */
+    .empty { padding: 50px 0; text-align: center; color: var(--muted); }
+
+    /* ── JSON VIEWER ── */
+    .json-cell { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-size: 11px; }
+
+    /* ── DATE ── */
+    .date-cell { white-space: nowrap; color: var(--muted); font-size: 11px; }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="logo">⬡ AdminDB</div>
+  <div class="header-badge">Supabase Auth</div>
+  <div id="conn-status">
+    <div id="conn-dot"></div>
+    <span id="conn-label">connecting...</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ── SIDEBAR ── -->
+  <aside>
+    <div class="sidebar-section">Auth Tables</div>
+    <div class="nav-item active" data-page="users">
+      <span class="icon">👤</span> users
+      <span class="nav-count" id="cnt-users">—</span>
+    </div>
+    <div class="nav-item" data-page="sessions">
+      <span class="icon">🔑</span> sessions
+      <span class="nav-count" id="cnt-sessions">—</span>
+    </div>
+    <div class="nav-item" data-page="identities">
+      <span class="icon">🪪</span> identities
+      <span class="nav-count" id="cnt-identities">—</span>
+    </div>
+    <div class="nav-item" data-page="mfa_factors">
+      <span class="icon">🛡</span> mfa_factors
+      <span class="nav-count" id="cnt-mfa_factors">—</span>
+    </div>
+    <div class="nav-item" data-page="refresh_tokens">
+      <span class="icon">♻️</span> refresh_tokens
+      <span class="nav-count" id="cnt-refresh_tokens">—</span>
+    </div>
+    <div class="sidebar-section" style="margin-top:12px">Audit</div>
+    <div class="nav-item" data-page="audit_log_entries">
+      <span class="icon">📋</span> audit_log
+      <span class="nav-count" id="cnt-audit_log_entries">—</span>
+    </div>
+    <div class="sidebar-section" style="margin-top:12px">SSO / OAuth</div>
+    <div class="nav-item" data-page="sso_providers">
+      <span class="icon">🔗</span> sso_providers
+      <span class="nav-count" id="cnt-sso_providers">—</span>
+    </div>
+    <div class="nav-item" data-page="oauth_clients">
+      <span class="icon">🔐</span> oauth_clients
+      <span class="nav-count" id="cnt-oauth_clients">—</span>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main>
+    <!-- ══ USERS ══ -->
+    <div class="page active" id="page-users">
+      <div class="page-header">
+        <div class="page-title">Users</div>
+        <div class="page-count" id="users-count"></div>
+        <button class="btn secondary" onclick="loadUsers()">↺ Refresh</button>
+      </div>
+      <div class="stats-row" id="users-stats"></div>
+      <div class="toolbar">
+        <input class="search-box" id="users-search" placeholder="Search by email, id, role…" oninput="filterUsers()">
+      </div>
+      <div id="users-body"></div>
+    </div>
+
+    <!-- ══ SESSIONS ══ -->
+    <div class="page" id="page-sessions">
+      <div class="page-header">
+        <div class="page-title">Sessions</div>
+        <div class="page-count" id="sessions-count"></div>
+        <button class="btn secondary" onclick="loadSessions()">↺ Refresh</button>
+      </div>
+      <div id="sessions-body"></div>
+    </div>
+
+    <!-- ══ IDENTITIES ══ -->
+    <div class="page" id="page-identities">
+      <div class="page-header">
+        <div class="page-title">Identities</div>
+        <div class="page-count" id="identities-count"></div>
+        <button class="btn secondary" onclick="loadIdentities()">↺ Refresh</button>
+      </div>
+      <div id="identities-body"></div>
+    </div>
+
+    <!-- ══ MFA FACTORS ══ -->
+    <div class="page" id="page-mfa_factors">
+      <div class="page-header">
+        <div class="page-title">MFA Factors</div>
+        <div class="page-count" id="mfa_factors-count"></div>
+        <button class="btn secondary" onclick="loadTable('mfa_factors')">↺ Refresh</button>
+      </div>
+      <div id="mfa_factors-body"></div>
+    </div>
+
+    <!-- ══ REFRESH TOKENS ══ -->
+    <div class="page" id="page-refresh_tokens">
+      <div class="page-header">
+        <div class="page-title">Refresh Tokens</div>
+        <div class="page-count" id="refresh_tokens-count"></div>
+        <button class="btn secondary" onclick="loadTable('refresh_tokens')">↺ Refresh</button>
+      </div>
+      <div id="refresh_tokens-body"></div>
+    </div>
+
+    <!-- ══ AUDIT LOG ══ -->
+    <div class="page" id="page-audit_log_entries">
+      <div class="page-header">
+        <div class="page-title">Audit Log</div>
+        <div class="page-count" id="audit_log_entries-count"></div>
+        <button class="btn secondary" onclick="loadTable('audit_log_entries')">↺ Refresh</button>
+      </div>
+      <div id="audit_log_entries-body"></div>
+    </div>
+
+    <!-- ══ SSO PROVIDERS ══ -->
+    <div class="page" id="page-sso_providers">
+      <div class="page-header">
+        <div class="page-title">SSO Providers</div>
+        <div class="page-count" id="sso_providers-count"></div>
+        <button class="btn secondary" onclick="loadTable('sso_providers')">↺ Refresh</button>
+      </div>
+      <div id="sso_providers-body"></div>
+    </div>
+
+    <!-- ══ OAUTH CLIENTS ══ -->
+    <div class="page" id="page-oauth_clients">
+      <div class="page-header">
+        <div class="page-title">OAuth Clients</div>
+        <div class="page-count" id="oauth_clients-count"></div>
+        <button class="btn secondary" onclick="loadTable('oauth_clients')">↺ Refresh</button>
+      </div>
+      <div id="oauth_clients-body"></div>
+    </div>
+  </main>
+</div>
+
+<script>
+// ═════════════════════════════════════════════════════════════════════════════
+// Supabase клиент инициализируется в отдельном файле ./js/supabaseClient.js
+// Код из этого файла должен быть таким:
+//
+// if (typeof supabase === 'undefined') {
+//     console.error('Supabase library not loaded!');
+// } else {
+//     window.sb = supabase.createClient(
+//         "https://oekrtypfqaierhkhulab.supabase.co",
+//         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9la3J0eXBmcWFpZXJoa2h1bGFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4NDgwMTYsImV4cCI6MjA3ODQyNDAxNn0.61ouoN7hBsGFibzrijeNG7i6HOcukDImbQjYRBZjQiA',
+//         { auth: { storageKey: 'supabase-auth-token', storage: window.localStorage, autoRefreshToken: true, persistSession: true } }
+//     );
+//     window.supabase = window.sb;
+//     console.log('✅ Supabase client initialized');
+// }
+// ═════════════════════════════════════════════════════════════════════════════
+
+// Дожидаемся загрузки DOM и подключения клиента
+document.addEventListener('DOMContentLoaded', async () => {
+  // Ждем инициализации Supabase клиента (максимум 3 секунды)
+  for (let i = 0; i < 30; i++) {
+    if (window.supabase || window.sb) {
+      // Устанавливаем глобальную переменную supabase
+      window.supabase = window.supabase || window.sb;
+      console.log('✅ Supabase client found');
+      break;
+    }
+    await new Promise(r => setTimeout(r, 100));
+  }
+  
+  if (!window.supabase) {
+    console.error('❌ Supabase client not initialized');
+    setConnErr('Supabase client not found');
+    return;
+  }
+  
+  // Проверяем подключение и загружаем начальные данные
+  await checkConnection();
+  if (window.supabase) {
+    await loadUsers(); // Загружаем users первой страницей
+  }
+});
+
+/* ══════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════ */
+const pageLoaded = {};
+
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    item.classList.add('active');
+    const key = item.dataset.page;
+    document.getElementById('page-' + key).classList.add('active');
+    if (!pageLoaded[key]) loadPage(key);
+  });
+});
+
+function loadPage(key) {
+  const loaders = {
+    users:             loadUsers,
+    sessions:          loadSessions,
+    identities:        loadIdentities,
+    mfa_factors:       () => loadTable('mfa_factors'),
+    refresh_tokens:    () => loadTable('refresh_tokens'),
+    audit_log_entries: () => loadTable('audit_log_entries'),
+    sso_providers:     () => loadTable('sso_providers'),
+    oauth_clients:     () => loadTable('oauth_clients')
+  };
+  if (loaders[key]) loaders[key]();
+  pageLoaded[key] = true;
+}
+
+/* ══════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════ */
+function fmtDate(d) {
+  if (!d) return '<span style="color:var(--muted)">—</span>';
+  try {
+    const dt = new Date(d);
+    if (isNaN(dt.getTime())) return '<span style="color:var(--muted)">—</span>';
+    return `<span class="date-cell">${dt.toLocaleDateString('ru')} ${dt.toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'})}</span>`;
+  } catch {
+    return '<span style="color:var(--muted)">—</span>';
+  }
+}
+
+function fmtId(v) {
+  if (!v) return '<span style="color:var(--muted)">—</span>';
+  return `<span class="cell-id" title="${v}">${String(v).slice(0,8)}…</span>`;
+}
+
+function fmtBool(v) {
+  return v
+    ? '<span class="badge green">true</span>'
+    : '<span class="badge gray">false</span>';
+}
+
+function fmtJson(v) {
+  if (!v) return '<span style="color:var(--muted)">—</span>';
+  try {
+    const s = typeof v === 'string' ? v : JSON.stringify(v);
+    return `<span class="json-cell" title="${s.replace(/"/g,'&quot;')}">${s.slice(0,50)}${s.length>50?'…':''}</span>`;
+  } catch {
+    return '<span style="color:var(--muted)">—</span>';
+  }
+}
+
+function setCount(id, n) {
+  const el = document.getElementById('cnt-' + id);
+  if (el) { 
+    el.textContent = n !== undefined ? n : '—'; 
+    if (n > 0) el.classList.add('loaded');
+  }
+}
+
+function setPageCount(id, n) {
+  const el = document.getElementById(id + '-count');
+  if (el) el.textContent = n !== undefined ? `${n} записей` : '';
+}
+
+function showLoader(id) {
+  const el = document.getElementById(id + '-body');
+  if (el) {
+    el.innerHTML = `
+      <div class="loader-wrap"><div class="spinner"></div><span>Загрузка…</span></div>`;
+  }
+}
+
+function showError(id, msg) {
+  const el = document.getElementById(id + '-body');
+  if (el) {
+    el.innerHTML = `
+      <div class="error-box"><b>Ошибка загрузки</b>${msg}</div>`;
+  }
+}
+
+function showEmpty(id) {
+  const el = document.getElementById(id + '-body');
+  if (el) {
+    el.innerHTML = `<div class="empty">Данных нет</div>`;
+  }
+}
+
+/* ══════════════════════════════════════════
+   CONNECTION CHECK
+══════════════════════════════════════════ */
+async function checkConnection() {
+  try {
+    // Пробуем выполнить простой запрос к users
+    const { error } = await window.supabase
+      .from('users')
+      .select('id')
+      .limit(1);
+    
+    if (error && error.code !== 'PGRST116') {
+      setConnErr(error.message);
+    } else {
+      setConnOk();
+    }
+  } catch (e) {
+    setConnErr(e.message);
+  }
+}
+
+function setConnOk() {
+  document.getElementById('conn-dot').className = 'ok';
+  document.getElementById('conn-label').textContent = 'connected';
+}
+
+function setConnErr(msg = 'error') {
+  document.getElementById('conn-dot').className = 'err';
+  document.getElementById('conn-label').textContent = msg.slice(0, 30);
+}
+
+/* ══════════════════════════════════════════
+   USERS
+══════════════════════════════════════════ */
+let allUsers = [];
+
+async function loadUsers() {
+  if (!window.supabase) {
+    showError('users', 'Supabase client not initialized');
+    return;
+  }
+
+  showLoader('users');
+  try {
+    // Используем прямой запрос к таблице users (требует RLS или сервисную роль)
+    const { data, error } = await window.supabase
+      .from('users')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(1000);
+
+    if (error) {
+      // Если нет доступа к users, пробуем auth.admin.listUsers
+      console.warn('Direct users query failed, trying admin API:', error);
+      
+      // Для auth.admin нужна сервисная роль, но попробуем
+      const { data: adminData, error: adminError } = await window.supabase.auth.admin.listUsers();
+      if (adminError) throw adminError;
+      allUsers = adminData.users || [];
+    } else {
+      allUsers = data || [];
+    }
+
+    setCount('users', allUsers.length);
+    setPageCount('users', allUsers.length);
+    renderUsersStats(allUsers);
+    renderUsers(allUsers);
+    setConnOk();
+  } catch(e) {
+    console.error('Users load error:', e);
+    showError('users', e.message);
+    setConnErr(e.message);
+  }
+}
+
+function renderUsersStats(users) {
+  if (!users.length) {
+    document.getElementById('users-stats').innerHTML = `
+      <div class="stat-card"><div class="label">Всего</div><div class="value">0</div></div>`;
+    return;
+  }
+
+  const confirmed = users.filter(u => u.email_confirmed_at || u.confirmed_at).length;
+  const anon      = users.filter(u => u.is_anonymous).length;
+  const sso       = users.filter(u => u.is_sso_user).length;
+  const banned    = users.filter(u => u.banned_until && new Date(u.banned_until) > new Date()).length;
+
+  document.getElementById('users-stats').innerHTML = `
+    <div class="stat-card"><div class="label">Всего</div><div class="value accent">${users.length}</div></div>
+    <div class="stat-card"><div class="label">Подтверждено</div><div class="value success">${confirmed}</div></div>
+    <div class="stat-card"><div class="label">Анонимных</div><div class="value warn">${anon}</div></div>
+    <div class="stat-card"><div class="label">SSO</div><div class="value">${sso}</div></div>
+    <div class="stat-card"><div class="label">Заблокировано</div><div class="value danger">${banned}</div></div>
+  `;
+}
+
+function renderUsers(users) {
+  if (!users.length) { showEmpty('users'); return; }
+  
+  const rows = users.map(u => `
+    <tr>
+      <td>${fmtId(u.id)}</td>
+      <td><span class="cell-email">${u.email || '<span style="color:var(--muted)">—</span>'}</span></td>
+      <td><span class="cell-role">${u.role || 'authenticated'}</span></td>
+      <td>${(u.email_confirmed_at || u.confirmed_at)
+        ? '<span class="badge green">✓ да</span>'
+        : '<span class="badge red">✗ нет</span>'}</td>
+      <td>${u.phone ? `<span style="color:var(--accent2)">${u.phone}</span>` : '<span style="color:var(--muted)">—</span>'}</td>
+      <td>${fmtBool(u.is_anonymous)}</td>
+      <td>${fmtBool(u.is_sso_user)}</td>
+      <td>${fmtDate(u.last_sign_in_at)}</td>
+      <td>${fmtDate(u.created_at)}</td>
+    </tr>`).join('');
+
+  document.getElementById('users-body').innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th><th>Email</th><th>Role</th><th>Email ✓</th>
+            <th>Phone</th><th>Anon</th><th>SSO</th>
+            <th>Последний вход</th><th>Создан</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+function filterUsers() {
+  const q = document.getElementById('users-search').value.toLowerCase();
+  if (!q) {
+    setPageCount('users', allUsers.length);
+    renderUsers(allUsers);
+    return;
+  }
+  
+  const filtered = allUsers.filter(u =>
+    (u.email || '').toLowerCase().includes(q) ||
+    (u.id || '').toLowerCase().includes(q) ||
+    (u.role || '').toLowerCase().includes(q) ||
+    (u.phone || '').toLowerCase().includes(q)
+  );
+  setPageCount('users', filtered.length);
+  renderUsers(filtered);
+}
+
+/* ══════════════════════════════════════════
+   SESSIONS
+══════════════════════════════════════════ */
+async function loadSessions() {
+  if (!window.supabase) { showError('sessions', 'No Supabase client'); return; }
+  
+  showLoader('sessions');
+  try {
+    const { data, error, count } = await window.supabase
+      .from('sessions')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .limit(500);
+
+    if (error) throw error;
+    
+    setCount('sessions', count ?? data?.length ?? 0);
+    setPageCount('sessions', data?.length ?? 0);
+    
+    if (!data?.length) { showEmpty('sessions'); return; }
+    
+    const rows = data.map(s => `
+      <tr>
+        <td>${fmtId(s.id)}</td>
+        <td>${fmtId(s.user_id)}</td>
+        <td><span class="badge blue">${s.aal || '—'}</span></td>
+        <td>${s.ip ? `<span style="color:var(--accent2)">${s.ip}</span>` : '—'}</td>
+        <td><span class="json-cell" title="${(s.user_agent||'').replace(/"/g,'')}">${(s.user_agent||'—').slice(0,40)}</span></td>
+        <td>${s.not_after
+          ? (new Date(s.not_after) > new Date()
+            ? '<span class="badge green">active</span>'
+            : '<span class="badge red">expired</span>')
+          : '<span class="badge gray">—</span>'}</td>
+        <td>${fmtDate(s.created_at)}</td>
+        <td>${fmtDate(s.updated_at)}</td>
+      </tr>`).join('');
+      
+    document.getElementById('sessions-body').innerHTML = `
+      <div class="table-wrap"><table>
+        <thead><tr><th>ID</th><th>User ID</th><th>AAL</th><th>IP</th><th>User Agent</th><th>Status</th><th>Создан</th><th>Обновлён</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table></div>`;
+  } catch(e) { 
+    console.error('Sessions error:', e);
+    showError('sessions', e.message); 
+  }
+}
+
+/* ══════════════════════════════════════════
+   IDENTITIES
+══════════════════════════════════════════ */
+async function loadIdentities() {
+  if (!window.supabase) { showError('identities', 'No Supabase client'); return; }
+  
+  showLoader('identities');
+  try {
+    const { data, error, count } = await window.supabase
+      .from('identities')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .limit(500);
+
+    if (error) throw error;
+    
+    setCount('identities', count ?? data?.length ?? 0);
+    setPageCount('identities', data?.length ?? 0);
+    
+    if (!data?.length) { showEmpty('identities'); return; }
+    
+    const rows = data.map(r => `
+      <tr>
+        <td>${fmtId(r.id)}</td>
+        <td>${fmtId(r.user_id)}</td>
+        <td><span class="badge blue">${r.provider}</span></td>
+        <td><span class="cell-email">${r.email || '—'}</span></td>
+        <td>${fmtJson(r.identity_data)}</td>
+        <td>${fmtDate(r.last_sign_in_at)}</td>
+        <td>${fmtDate(r.created_at)}</td>
+      </tr>`).join('');
+      
+    document.getElementById('identities-body').innerHTML = `
+      <div class="table-wrap"><table>
+        <thead><tr><th>ID</th><th>User ID</th><th>Provider</th><th>Email</th><th>Data</th><th>Посл. вход</th><th>Создан</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table></div>`;
+  } catch(e) { 
+    console.error('Identities error:', e);
+    showError('identities', e.message); 
+  }
+}
+
+/* ══════════════════════════════════════════
+   GENERIC TABLE LOADER
+══════════════════════════════════════════ */
+async function loadTable(tableName) {
+  if (!window.supabase) { showError(tableName, 'No Supabase client'); return; }
+  
+  showLoader(tableName);
+  try {
+    const { data, error, count } = await window.supabase
+      .from(tableName)
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false, nullsFirst: false })
+      .limit(500);
+
+    if (error) throw error;
+    
+    const rows = data || [];
+    setCount(tableName, count ?? rows.length);
+    setPageCount(tableName, rows.length);
+    
+    if (!rows.length) { showEmpty(tableName); return; }
+    
+    const cols = Object.keys(rows[0]).slice(0, 10); // Ограничиваем до 10 колонок
+    const thead = cols.map(c => `<th>${c}</th>`).join('');
+    
+    const tbody = rows.map(row =>
+      '<tr>' + cols.map(c => {
+        const v = row[c];
+        if (v === null || v === undefined) return '<td><span style="color:var(--muted)">null</span></td>';
+        if (typeof v === 'boolean') return `<td>${fmtBool(v)}</td>`;
+        if (typeof v === 'object')  return `<td>${fmtJson(v)}</td>`;
+        if (c.includes('_at') || c === 'created_at' || c === 'updated_at') return `<td>${fmtDate(v)}</td>`;
+        if (c === 'id' || c.includes('_id')) return `<td>${fmtId(v)}</td>`;
+        const s = String(v);
+        return `<td><span title="${s}">${s.slice(0,50)}${s.length>50?'…':''}</span></td>`;
+      }).join('') + '</tr>'
+    ).join('');
+    
+    document.getElementById(tableName + '-body').innerHTML = `
+      <div class="table-wrap"><table>
+        <thead><tr>${thead}</tr></thead>
+        <tbody>${tbody}</tbody>
+      </table></div>`;
+  } catch(e) { 
+    console.error(`${tableName} error:`, e);
+    showError(tableName, e.message); 
+  }
+}
+</script>
+   <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Подключение конфигурации Supabase (должен быть после скрипта supabase, но перед основным кодом) -->
+<script src="./js/supabaseClient.js"></script>
+</body>
+</html>

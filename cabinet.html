@@ -6,16 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Личный кабинет | Auto.Service</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* ===== CSS ВСТАВЛЕН INLINE ===== */
-        /* Подключите cabinet.css или используйте отдельный файл */
-    </style>
     <link rel="stylesheet" href="./css/cabinet.css">
 </head>
 
 <body>
 
-    <!-- Overlay для мобильного меню -->
     <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
     <!-- Боковое меню -->
@@ -29,39 +24,66 @@
 
         <nav class="menu">
             <div class="menu-item active" onclick="showSection('dashboard', this)">
-                <i class="fas fa-home"></i>
-                <span>Главная</span>
+                <i class="fas fa-home"></i><span>Главная</span>
             </div>
+            <!-- Найдите этот блок в меню и замените на: -->
+           <div class="menu-item has-dropdown" id="menu-notifications">
+    <div class="menu-item-header" onclick="showSection('notifications', this)">
+        <i class="fas fa-bell"></i>
+        <span>Уведомления</span>
+        <span class="menu-badge" id="menu-notifications-badge" style="display: none;">0</span>
+        <i class="fas fa-chevron-down dropdown-arrow"></i>
+    </div>
+    
+    <!-- Выпадающее превью уведомлений -->
+    <div class="dropdown-preview" id="notifications-preview">
+        <div class="preview-header">
+            <span>Последние уведомления</span>
+            <button class="preview-mark-read" onclick="markAllMenuNotificationsRead(event)">
+                <i class="fas fa-check-double"></i>
+            </button>
+        </div>
+        <div class="preview-list" id="notifications-preview-list">
+            <div class="preview-loading">
+                <span class="inline-spinner"></span> Загрузка...
+            </div>
+        </div>
+        <div class="preview-footer">
+            <button class="preview-view-all" onclick="showSection('notifications', event)">
+                Все уведомления
+            </button>
+        </div>
+    </div>
+</div>
             <div class="menu-item" onclick="showSection('booking', this)">
-                <i class="fas fa-calendar-plus"></i>
-                <span>Онлайн-запись</span>
+                <i class="fas fa-calendar-plus"></i><span>Онлайн-запись</span>
             </div>
             <div class="menu-item" onclick="showSection('cars', this)">
-                <i class="fas fa-car"></i>
-                <span>Мои авто</span>
+                <i class="fas fa-car"></i><span>Мои авто</span>
             </div>
             <div class="menu-item" onclick="showSection('history', this)">
-                <i class="fas fa-history"></i>
-                <span>История</span>
+                <i class="fas fa-history"></i><span>История</span>
+            </div>
+            <div class="menu-item" onclick="showSection('reminders', this)">
+                <i class="fas fa-bell"></i><span>Напоминания</span>
+                <span class="menu-badge" id="reminders-badge" style="display:none;">0</span>
             </div>
             <div class="menu-item" onclick="showSection('finance', this)">
-                <i class="fas fa-wallet"></i>
-                <span>Финансы</span>
+                <i class="fas fa-wallet"></i><span>Финансы</span>
+            </div>
+            <div class="menu-item" onclick="showSection('documents', this)">
+                <i class="fas fa-file-alt"></i><span>Документы</span>
             </div>
             <div class="menu-item" onclick="showSection('media', this)">
-                <i class="fas fa-camera"></i>
-                <span>Медиа отчеты</span>
+                <i class="fas fa-camera"></i><span>Медиа отчеты</span>
             </div>
             <div class="menu-item" onclick="showSection('settings', this)">
-                <i class="fas fa-cog"></i>
-                <span>Профиль</span>
+                <i class="fas fa-cog"></i><span>Профиль</span>
             </div>
         </nav>
 
         <div class="user-profile-mini">
-            <div class="avatar" id="user-avatar">
-                <i class="fas fa-user"></i>
-            </div>
+            <div class="avatar" id="user-avatar"><i class="fas fa-user"></i></div>
             <div class="user-info">
                 <div class="user-name" id="mini-name">Загрузка...</div>
                 <small class="user-level" id="mini-level">Уровень: Silver</small>
@@ -72,11 +94,8 @@
 
     <!-- Основной контент -->
     <main class="main">
-        <!-- Мобильная шапка -->
         <header class="mobile-header">
-            <div class="burger" onclick="toggleSidebar()">
-                <i class="fas fa-bars"></i>
-            </div>
+            <div class="burger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
             <h3 id="page-title">Главная</h3>
             <div class="header-actions">
                 <div class="notification-icon" onclick="toggleNotifications()">
@@ -90,33 +109,29 @@
         <div class="notifications-panel" id="notifications-panel">
             <div class="notifications-header">
                 <h4>Уведомления</h4>
-                <button class="close-btn" onclick="toggleNotifications()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="notifications-list" id="notifications-list">
-                <div class="notification-item">
-                    <i class="fas fa-info-circle"></i>
-                    <div>
-                        <p>Добро пожаловать в личный кабинет!</p>
-                        <small>Сегодня</small>
-                    </div>
+                <div style="display:flex;gap:5px;">
+                    <button class="btn-mark-all" onclick="markAllRead()" title="Отметить все прочитанными">
+                        <i class="fas fa-check-double"></i>
+                    </button>
+                    <button class="close-btn" onclick="toggleNotifications()">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             </div>
+            <div class="notifications-list" id="notifications-list"></div>
         </div>
 
         <div class="content-area">
 
-            <!-- ГЛАВНАЯ -->
+            <!-- ========== ГЛАВНАЯ ========== -->
             <section id="dashboard" class="section active">
                 <div class="welcome-banner">
+
                     <div class="welcome-content">
                         <h2>Добро пожаловать, <span id="welcome-name">Клиент</span>!</h2>
                         <p>Управляйте своими автомобилями и услугами в одном месте</p>
                     </div>
-                    <div class="welcome-icon">
-                        <i class="fas fa-car-side"></i>
-                    </div>
+                    <div class="welcome-icon"><i class="fas fa-car-side"></i></div>
                 </div>
 
                 <!-- Статус текущего заказа -->
@@ -155,28 +170,27 @@
                 <div class="card loyalty-card">
                     <div class="loyalty-header">
                         <div class="loyalty-info">
-                            <h3>Уровень: <span id="level-name">Silver</span></h3>
+                            <h3>
+                                Уровень: <span id="level-name">Silver</span>
+                                <span class="level-badge" id="level-badge">Silver</span>
+                            </h3>
                             <div class="loyalty-benefits">
                                 <div class="benefit">
                                     <i class="fas fa-percent"></i>
-                                    <div>
-                                        <strong id="level-discount">5%</strong>
-                                        <small>Скидка</small>
-                                    </div>
+                                    <div><strong id="level-discount">5%</strong><small>Скидка</small></div>
                                 </div>
                                 <div class="benefit">
                                     <i class="fas fa-coins"></i>
-                                    <div>
-                                        <strong>3%</strong>
-                                        <small>Кэшбек</small>
-                                    </div>
+                                    <div><strong>3%</strong><small>Кэшбек</small></div>
+                                </div>
+                                <div class="benefit" id="level-benefits-extra" style="display:none;">
+                                    <i class="fas fa-gift"></i>
+                                    <div><strong id="level-perks">—</strong><small>Привилегии</small></div>
                                 </div>
                             </div>
                         </div>
                         <div class="bonus-display">
-                            <div class="bonus-icon">
-                                <i class="fas fa-star"></i>
-                            </div>
+                            <div class="bonus-icon"><i class="fas fa-star"></i></div>
                             <div class="bonus-amount">
                                 <h1 id="bonus-balance">0</h1>
                                 <small>бонусов</small>
@@ -185,11 +199,11 @@
                     </div>
                     <div class="loyalty-progress">
                         <div class="progress-info">
-                            <small>До уровня Gold</small>
+                            <small id="next-level-label">До уровня Gold</small>
                             <small><span id="points-needed">5000</span> бонусов</small>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" id="loyalty-progress" style="width: 40%"></div>
+                            <div class="progress-fill" id="loyalty-progress" style="width:40%"></div>
                         </div>
                     </div>
                 </div>
@@ -199,38 +213,48 @@
                     <h3>Быстрые действия</h3>
                     <div class="actions-grid">
                         <div class="action-card" onclick="showSection('booking', null)">
-                            <i class="fas fa-calendar-check"></i>
-                            <span>Записаться</span>
+                            <i class="fas fa-calendar-check"></i><span>Записаться</span>
                         </div>
                         <div class="action-card" onclick="showSection('cars', null)">
-                            <i class="fas fa-plus-circle"></i>
-                            <span>Добавить авто</span>
+                            <i class="fas fa-plus-circle"></i><span>Добавить авто</span>
                         </div>
                         <div class="action-card" onclick="showSection('history', null)">
-                            <i class="fas fa-history"></i>
-                            <span>История</span>
+                            <i class="fas fa-history"></i><span>История</span>
+                        </div>
+                        <div class="action-card" onclick="showSection('reminders', null)">
+                            <i class="fas fa-bell"></i><span>Напоминания</span>
+                        </div>
+                        <div class="action-card" onclick="showSection('documents', null)">
+                            <i class="fas fa-file-alt"></i><span>Документы</span>
                         </div>
                         <div class="action-card" onclick="toggleChat()">
-                            <i class="fas fa-comments"></i>
-                            <span>Написать</span>
+                            <i class="fas fa-comments"></i><span>Написать</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Подписки -->
                 <div class="card">
-                    <h3><i class="fas fa-crown"></i> Мои подписки</h3>
+                    <div class="section-header" style="margin-bottom:16px;">
+                        <h3><i class="fas fa-crown"></i> Мои подписки</h3>
+                    </div>
                     <div id="subscriptions-list" class="subscriptions-container">
                         <div class="empty-state">
                             <i class="fas fa-inbox"></i>
                             <p>Нет активных подписок</p>
-                            <small>Оформите подписку на мойку или ТО для экономии</small>
+                            <small>Оформите подписку для экономии</small>
                         </div>
                     </div>
                 </div>
+
+                <!-- Ближайшие напоминания на главной -->
+                <div class="card" id="upcoming-reminders-card" style="display:none;">
+                    <h3><i class="fas fa-bell" style="color:var(--warning)"></i> Ближайшие ТО</h3>
+                    <div id="upcoming-reminders-list"></div>
+                </div>
             </section>
 
-            <!-- ОНЛАЙН-ЗАПИСЬ -->
+            <!-- ========== ОНЛАЙН-ЗАПИСЬ ========== -->
             <section id="booking" class="section">
                 <h2><i class="fas fa-calendar-plus"></i> Запись на сервис</h2>
                 <div class="card booking-form">
@@ -261,14 +285,19 @@
                         <select id="booking-service" class="form-control">
                             <option value="" disabled selected>Загрузка услуг...</option>
                         </select>
-                        <div class="input-group">
+                        <div class="input-group" style="margin-top:12px;margin-bottom:0;">
                             <label>Вариант услуги</label>
                             <select id="booking-service-type" class="form-control">
-                                <option value="">Выберите вариант</option>
+                                <option value="">— без варианта —</option>
                             </select>
                         </div>
                         <div class="service-price" id="service-price-display" style="display:none;">
                             Стоимость: <strong id="service-price">0</strong> сом
+                            <span id="promo-discount-info" style="color:var(--success);margin-left:8px;display:none;">
+                                (скидка <span id="promo-discount-value">0</span>%)
+                            </span>
+                            <br><small id="final-price-label" style="display:none;">Итого: <strong
+                                    id="final-price">0</strong> сом</small>
                         </div>
                     </div>
 
@@ -277,23 +306,38 @@
                         <input type="datetime-local" id="booking-date" class="form-control">
                     </div>
 
+                    <!-- ПРОМОКОД -->
+                    <div class="input-group">
+                        <label><i class="fas fa-tag"></i> Промокод (необязательно)</label>
+                        <div class="promo-input-wrap">
+                            <input type="text" id="booking-promo" class="form-control" placeholder="Введите промокод"
+                                style="text-transform:uppercase;">
+                            <button class="btn btn-secondary promo-apply-btn" onclick="applyPromoCode()">
+                                <i class="fas fa-check"></i> Применить
+                            </button>
+                        </div>
+                        <div id="promo-result" class="promo-result" style="display:none;"></div>
+                    </div>
+
                     <div class="input-group">
                         <label><i class="fas fa-comment"></i> Комментарий (необязательно)</label>
-                        <textarea id="booking-note" rows="4" class="form-control"
+                        <textarea id="booking-note" rows="3" class="form-control"
                             placeholder="Опишите проблему или пожелания..."></textarea>
                     </div>
+
                     <div class="input-group">
                         <label><i class="fas fa-phone"></i> Номер телефона</label>
                         <input type="tel" id="booking-phone" class="form-control" placeholder="+996 (___) __-__-__"
                             maxlength="19" required>
                     </div>
+
                     <button class="btn btn-primary btn-large" onclick="createAppointment()">
                         <i class="fas fa-check-circle"></i> Подтвердить запись
                     </button>
                 </div>
             </section>
 
-            <!-- МОИ АВТО -->
+            <!-- ========== МОИ АВТО ========== -->
             <section id="cars" class="section">
                 <div class="section-header">
                     <h2><i class="fas fa-warehouse"></i> Мой гараж</h2>
@@ -309,24 +353,22 @@
                 </div>
             </section>
 
-            <!-- ИСТОРИЯ -->
+            <!-- ========== ИСТОРИЯ ========== -->
             <section id="history" class="section">
                 <h2><i class="fas fa-history"></i> История обслуживания</h2>
                 <div class="filter-tabs">
-                    <!-- FIX: убран параметр event из onclick -->
-                    <button class="tab-btn active" onclick="filterHistory('all')">Все</button>
-                    <button class="tab-btn" onclick="filterHistory('completed')">Завершено</button>
-                    <button class="tab-btn" onclick="filterHistory('in_progress')">В работе</button>
-                    <button class="tab-btn" onclick="filterHistory('pending')">Ожидает</button>
+                    <button class="tab-btn active" onclick="filterHistory('all', this)">Все</button>
+                    <button class="tab-btn" onclick="filterHistory('completed', this)">Завершено</button>
+                    <button class="tab-btn" onclick="filterHistory('in_progress', this)">В работе</button>
+                    <button class="tab-btn" onclick="filterHistory('pending', this)">Ожидает</button>
+                    <button class="tab-btn" onclick="filterHistory('confirmed', this)">Подтверждён</button>
                 </div>
                 <div id="history-container" class="history-list"></div>
 
-                <h3 style="margin-top: 30px;"><i class="fas fa-lightbulb"></i> Рекомендации</h3>
+                <h3 style="margin-top:30px;"><i class="fas fa-lightbulb"></i> Рекомендации</h3>
                 <div class="recommendations-grid">
                     <div class="card recommendation-card warning">
-                        <div class="recommendation-icon">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
+                        <div class="recommendation-icon"><i class="fas fa-exclamation-triangle"></i></div>
                         <div class="recommendation-content">
                             <h4>Скоро ТО</h4>
                             <p>Судя по пробегу, рекомендуем замену масла через 500 км.</p>
@@ -335,9 +377,7 @@
                         </div>
                     </div>
                     <div class="card recommendation-card info">
-                        <div class="recommendation-icon">
-                            <i class="fas fa-info-circle"></i>
-                        </div>
+                        <div class="recommendation-icon"><i class="fas fa-info-circle"></i></div>
                         <div class="recommendation-content">
                             <h4>Сезонная замена шин</h4>
                             <p>Зима близко! Успейте записаться на шиномонтаж.</p>
@@ -348,40 +388,57 @@
                 </div>
             </section>
 
-            <!-- ФИНАНСЫ -->
+            <!-- ========== НАПОМИНАНИЯ ТО ========== -->
+            <section id="reminders" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-bell"></i> Напоминания ТО</h2>
+                    <button class="btn btn-primary" onclick="openReminderModal()">
+                        <i class="fas fa-plus"></i> Добавить напоминание
+                    </button>
+                </div>
+                <p class="section-description">Настройте напоминания о техническом обслуживании вашего автомобиля</p>
+                <div id="reminders-container" class="reminders-list">
+                    <div class="empty-state">
+                        <i class="fas fa-bell-slash"></i>
+                        <p>Нет активных напоминаний</p>
+                        <small>Добавьте напоминание о замене масла, шин или плановом ТО</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== ФИНАНСЫ ========== -->
             <section id="finance" class="section">
                 <h2><i class="fas fa-chart-line"></i> Финансы</h2>
-
                 <div class="finance-stats">
                     <div class="stat-card">
-                        <div class="stat-icon blue">
-                            <i class="fas fa-money-bill-wave"></i>
-                        </div>
+                        <div class="stat-icon blue"><i class="fas fa-money-bill-wave"></i></div>
                         <div class="stat-content">
                             <h3 id="total-spent">0 сом</h3>
                             <p>Всего потрачено</p>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon green">
-                            <i class="fas fa-percentage"></i>
-                        </div>
+                        <div class="stat-icon green"><i class="fas fa-percentage"></i></div>
                         <div class="stat-content">
                             <h3 id="total-saved">0 сом</h3>
                             <p>Сэкономлено</p>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon purple">
-                            <i class="fas fa-receipt"></i>
-                        </div>
+                        <div class="stat-icon purple"><i class="fas fa-receipt"></i></div>
                         <div class="stat-content">
                             <h3 id="total-orders">0</h3>
                             <p>Всего заказов</p>
                         </div>
                     </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange"><i class="fas fa-star"></i></div>
+                        <div class="stat-content">
+                            <h3 id="finance-bonuses">0</h3>
+                            <p>Бонусов накоплено</p>
+                        </div>
+                    </div>
                 </div>
-
                 <div class="card">
                     <h3>История транзакций</h3>
                     <div id="orders-list" class="transactions-list">
@@ -393,18 +450,34 @@
                 </div>
             </section>
 
-            <!-- МЕДИА ОТЧЕТЫ -->
+            <!-- ========== ДОКУМЕНТЫ ========== -->
+            <section id="documents" class="section">
+                <h2><i class="fas fa-file-alt"></i> Мои документы</h2>
+                <p class="section-description">Акты выполненных работ, счета и другие документы по вашим заказам</p>
+                <div class="documents-filter">
+                    <button class="filter-btn active" onclick="filterDocuments('all', this)">Все</button>
+                    <button class="filter-btn" onclick="filterDocuments('invoice', this)">Счета</button>
+                    <button class="filter-btn" onclick="filterDocuments('act', this)">Акты</button>
+                    <button class="filter-btn" onclick="filterDocuments('warranty', this)">Гарантии</button>
+                </div>
+                <div id="documents-container" class="documents-list">
+                    <div class="empty-state">
+                        <i class="fas fa-folder-open"></i>
+                        <p>Документы пока не добавлены</p>
+                        <small>Документы появятся после завершения первого заказа</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== МЕДИА ОТЧЕТЫ ========== -->
             <section id="media" class="section">
                 <h2><i class="fas fa-images"></i> Фото/Видео отчеты</h2>
                 <p class="section-description">Прозрачность работы: смотрите фото До/После процесса обслуживания</p>
-
                 <div class="media-filters">
-                    <!-- FIX: убран параметр event из onclick -->
-                    <button class="filter-btn active" onclick="filterMedia('all')">Все</button>
-                    <button class="filter-btn" onclick="filterMedia('before')">До</button>
-                    <button class="filter-btn" onclick="filterMedia('after')">После</button>
+                    <button class="filter-btn active" onclick="filterMedia('all', this)">Все</button>
+                    <button class="filter-btn" onclick="filterMedia('before', this)">До</button>
+                    <button class="filter-btn" onclick="filterMedia('after', this)">После</button>
                 </div>
-
                 <div class="gallery-grid" id="gallery-container">
                     <div class="empty-state">
                         <i class="fas fa-camera"></i>
@@ -414,7 +487,7 @@
                 </div>
             </section>
 
-            <!-- ПРОФИЛЬ -->
+            <!-- ========== ПРОФИЛЬ ========== -->
             <section id="settings" class="section">
                 <h2><i class="fas fa-user-cog"></i> Настройки профиля</h2>
 
@@ -427,104 +500,116 @@
                         <button class="btn btn-secondary" id="change-photo-btn">
                             <i class="fas fa-camera"></i> Изменить фото
                         </button>
+                        <!-- Карточка уровня -->
+                        <div class="level-info-card" id="profile-level-card">
+                            <div class="level-icon"><i class="fas fa-trophy"></i></div>
+                            <div>
+                                <strong id="profile-level-name">Silver</strong>
+                                <small id="profile-level-desc">Скидка 5% на все услуги</small>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="input-group">
                         <label><i class="fas fa-user"></i> Имя</label>
                         <input type="text" id="profile-name" class="form-control" placeholder="Введите имя">
                     </div>
-
                     <div class="input-group">
                         <label><i class="fas fa-envelope"></i> Email</label>
                         <input type="email" id="profile-email" class="form-control" readonly>
                     </div>
-
                     <div class="input-group">
                         <label><i class="fas fa-phone"></i> Телефон</label>
                         <input type="tel" id="profile-phone" class="form-control" placeholder="+996 XXX XXX XXX">
                     </div>
-
                     <div class="input-group">
                         <label><i class="fas fa-birthday-cake"></i> Дата рождения</label>
                         <input type="date" id="profile-birthday" class="form-control">
                     </div>
-
                     <button class="btn btn-primary" onclick="saveProfile()">
                         <i class="fas fa-save"></i> Сохранить изменения
                     </button>
                 </div>
 
+                <!-- Статистика профиля -->
+                <div class="card">
+                    <h3><i class="fas fa-chart-bar"></i> Моя статистика</h3>
+                    <div class="profile-stats-grid">
+                        <div class="profile-stat">
+                            <i class="fas fa-car" style="color:var(--primary)"></i>
+                            <strong id="stat-cars">0</strong>
+                            <small>Автомобилей</small>
+                        </div>
+                        <div class="profile-stat">
+                            <i class="fas fa-calendar-check" style="color:var(--success)"></i>
+                            <strong id="stat-orders">0</strong>
+                            <small>Заказов</small>
+                        </div>
+                        <div class="profile-stat">
+                            <i class="fas fa-star" style="color:var(--warning)"></i>
+                            <strong id="stat-bonuses">0</strong>
+                            <small>Бонусов</small>
+                        </div>
+                        <div class="profile-stat">
+                            <i class="fas fa-heart" style="color:var(--danger)"></i>
+                            <strong id="stat-reviews">0</strong>
+                            <small>Отзывов</small>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card danger-zone">
                     <h3><i class="fas fa-exclamation-triangle"></i> Опасная зона</h3>
-                    <p>Выход из аккаунта</p>
+                    <p>Выход из аккаунта завершит текущую сессию</p>
                     <button class="btn btn-danger" onclick="logout()">
                         <i class="fas fa-sign-out-alt"></i> Выйти из аккаунта
                     </button>
                 </div>
             </section>
 
-        </div>
+        </div><!-- /.content-area -->
     </main>
 
-<!-- =================== Чат Виджет =================== -->
-<div class="chat-widget" id="chat-widget">
-    <!-- В cabinet.html найдите строки с onclick="toggleChat()" и измените их: -->
-<div class="chat-header" id="chat-header">
-    <!-- Уберите onclick отсюда -->
-    <div class="chat-header-info">
-        <i class="fas fa-comment-dots"></i>
-        <span>Чат с мастером</span>
-        <span class="chat-unread-badge" id="chat-unread-badge" style="display:none;">0</span>
-    </div>
-    <i class="fas fa-chevron-down" id="chat-icon"></i>
-</div>
-    <div class="chat-body" id="chat-body">
-        <div class="messages-area" id="chat-messages-container">
-            <!-- Сообщения будут добавляться сюда -->
+    <!-- =================== Чат =================== -->
+    <div class="chat-widget" id="chat-widget">
+        <div class="chat-header" id="chat-header">
+            <div class="chat-header-info">
+                <i class="fas fa-comment-dots"></i>
+                <span>Чат с мастером</span>
+                <span class="chat-unread-badge" id="chat-unread-badge" style="display:none;">0</span>
+            </div>
+            <i class="fas fa-chevron-down" id="chat-icon"></i>
         </div>
-        <div class="chat-input">
-            <input type="text" id="chat-input-text" placeholder="Введите сообщение...">
-            <button id="chat-send-btn">
-                <i class="fas fa-paper-plane"></i>
-            </button>
+        <div class="chat-body" id="chat-body">
+            <div class="messages-area" id="chat-messages-container"></div>
+            <div class="chat-input">
+                <input type="text" id="chat-input-text" placeholder="Введите сообщение...">
+                <button id="chat-send-btn"><i class="fas fa-paper-plane"></i></button>
+            </div>
         </div>
     </div>
-</div>
-
-
-
 
     <!-- Кнопка поддержки -->
-    <div class="support-fab" onclick="toggleSupport()">
-        <i class="fas fa-headset"></i>
-    </div>
-
-    <!-- Меню поддержки -->
+    <div class="support-fab" onclick="toggleSupport()"><i class="fas fa-headset"></i></div>
     <div class="support-menu" id="support-menu">
         <a href="https://wa.me/0555730615" target="_blank" class="support-link whatsapp">
-            <i class="fab fa-whatsapp"></i>
-            <span>WhatsApp</span>
+            <i class="fab fa-whatsapp"></i><span>WhatsApp</span>
         </a>
         <a href="https://t.me/toha_kg" target="_blank" class="support-link telegram">
-            <i class="fab fa-telegram"></i>
-            <span>Telegram</span>
+            <i class="fab fa-telegram"></i><span>Telegram</span>
         </a>
         <a href="tel:+996555730615" class="support-link phone">
-            <i class="fas fa-phone"></i>
-            <span>Позвонить</span>
+            <i class="fas fa-phone"></i><span>Позвонить</span>
         </a>
     </div>
 
-    <!-- Модальное окно добавления авто -->
+    <!-- ========== Модал: Добавить авто ========== -->
     <div class="modal" id="car-modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3><i class="fas fa-car"></i> Добавить автомобиль</h3>
-                <button class="close-btn" onclick="closeModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
             </div>
-
             <div class="modal-body">
                 <div class="input-group">
                     <label>Марка</label>
@@ -536,7 +621,7 @@
                 </div>
                 <div class="input-group">
                     <label>Год выпуска</label>
-                    <input type="number" id="car-year" class="form-control" placeholder="2020" min="1900" max="2025">
+                    <input type="number" id="car-year" class="form-control" placeholder="2020" min="1900" max="2030">
                 </div>
                 <div class="input-group">
                     <label>Гос. номер</label>
@@ -551,11 +636,82 @@
                     <input type="text" id="car-vin" class="form-control" placeholder="17 символов" maxlength="17">
                 </div>
             </div>
-
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeModal()">Отмена</button>
                 <button class="btn btn-primary" id="save-car-btn" onclick="saveCar()">
                     <i class="fas fa-plus"></i> Добавить
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== Модал: Напоминание ========== -->
+    <div class="modal" id="reminder-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-bell"></i> Добавить напоминание</h3>
+                <button class="close-btn" onclick="closeReminderModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label><i class="fas fa-car"></i> Автомобиль</label>
+                    <select id="reminder-car" class="form-control">
+                        <option value="" disabled selected>Выберите автомобиль</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-comment-alt"></i> Описание</label>
+                    <input type="text" id="reminder-message" class="form-control"
+                        placeholder="Замена масла, ТО, шиномонтаж...">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-calendar"></i> Дата напоминания</label>
+                    <input type="date" id="reminder-date" class="form-control">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-tachometer-alt"></i> Пробег (км, опционально)</label>
+                    <input type="number" id="reminder-mileage" class="form-control" placeholder="60000">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeReminderModal()">Отмена</button>
+                <button class="btn btn-primary" onclick="saveReminder()">
+                    <i class="fas fa-bell"></i> Добавить
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== Модал: Оставить отзыв ========== -->
+    <div class="modal" id="review-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-star"></i> Оставить отзыв</h3>
+                <button class="close-btn" onclick="closeReviewModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom:16px;color:var(--text-muted);" id="review-service-name">Оцените качество
+                    обслуживания</p>
+                <div class="star-rating" id="star-rating">
+                    <i class="fas fa-star star" data-value="1"></i>
+                    <i class="fas fa-star star" data-value="2"></i>
+                    <i class="fas fa-star star" data-value="3"></i>
+                    <i class="fas fa-star star" data-value="4"></i>
+                    <i class="fas fa-star star" data-value="5"></i>
+                </div>
+                <p class="rating-label" id="rating-label">Выберите оценку</p>
+                <div class="input-group" style="margin-top:16px;">
+                    <label><i class="fas fa-comment"></i> Комментарий (необязательно)</label>
+                    <textarea id="review-comment" rows="4" class="form-control"
+                        placeholder="Расскажите об опыте обслуживания..."></textarea>
+                </div>
+                <input type="hidden" id="review-appointment-id">
+                <input type="hidden" id="review-rating-value" value="0">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeReviewModal()">Отмена</button>
+                <button class="btn btn-primary" onclick="submitReview()">
+                    <i class="fas fa-paper-plane"></i> Отправить отзыв
                 </button>
             </div>
         </div>

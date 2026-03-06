@@ -244,32 +244,48 @@ tr:last-child td{border-bottom:none;}
 .confirm-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;letter-spacing:.05em;margin-bottom:6px;}
 .confirm-text{font-size:12px;color:var(--muted2);line-height:1.5;}
 
-/* MESSAGES */
-.messages-layout{display:grid;grid-template-columns:280px 1fr;gap:0;height:calc(100vh - var(--hdr) - 120px);background:var(--surf);border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden;}
-.msg-list{border-right:1px solid var(--border2);overflow-y:auto;}
-.msg-list-header{padding:14px 16px;border-bottom:1px solid var(--border2);font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);}
-.msg-item{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.03);transition:background .15s;}
+/* MESSAGES - ОБНОВЛЕННЫЙ РАЗДЕЛ */
+.messages-layout{display:grid;grid-template-columns:280px 1fr;gap:0;height:calc(100vh - var(--hdr) - 140px);background:var(--surf);border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden;}
+.msg-list{display:flex;flex-direction:column;border-right:1px solid var(--border2);background:var(--surf);height:100%;overflow:hidden;}
+.msg-list-header{padding:14px 16px;border-bottom:1px solid var(--border2);font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);display:flex;justify-content:space-between;align-items:center;}
+.msg-list-content{flex:1;overflow-y:auto;min-height:0;padding:4px 0;}
+.msg-item{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.03);transition:background .15s;position:relative;}
 .msg-item:hover{background:rgba(255,255,255,.02);}
 .msg-item.active{background:rgba(255,77,0,.08);border-left:2px solid var(--neon);}
 .msg-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#38bdf8,#1e40af);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.msg-avatar.admin{background:linear-gradient(135deg,#ff4d00,#ff8800);}
 .msg-meta{flex:1;overflow:hidden;}
-.msg-from{font-size:12px;font-weight:600;margin-bottom:2px;}
+.msg-from{font-size:12px;font-weight:600;margin-bottom:2px;display:flex;align-items:center;gap:4px;}
+.msg-from small{font-size:8px;color:var(--neon);font-weight:400;}
 .msg-preview{font-size:11px;color:var(--muted2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .msg-time{font-size:9px;color:var(--muted);margin-top:2px;font-family:'Rajdhani',sans-serif;}
 .msg-unread{background:var(--neon);width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px;}
-.chat-area{display:flex;flex-direction:column;}
-.chat-header{padding:14px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:12px;}
+.msg-attachment{color:var(--muted);font-size:9px;margin-left:4px;}
+.chat-area{display:flex;flex-direction:column;background:var(--surf2);height:100%;overflow:hidden;}
+.chat-header{padding:14px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;background:var(--surf);}
+.chat-header-info{display:flex;align-items:center;gap:12px;}
 .chat-name{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:.05em;}
 .chat-sub{font-size:10px;color:var(--muted2);}
-.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;}
-.chat-empty{flex:1;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;}
-.chat-bubble{max-width:70%;padding:10px 14px;border-radius:var(--radius);font-size:13px;line-height:1.5;}
-.chat-bubble.recv{background:rgba(255,255,255,.04);border:1px solid var(--border2);align-self:flex-start;}
-.chat-bubble.sent{background:rgba(255,77,0,.12);border:1px solid rgba(255,77,0,.2);align-self:flex-end;}
-.chat-ts{font-size:9px;color:var(--muted);margin-top:4px;font-family:'Rajdhani',sans-serif;}
-.chat-input-row{padding:14px 16px;border-top:1px solid var(--border2);display:flex;gap:8px;}
-.chat-input-row textarea{flex:1;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--radius);padding:8px 12px;font-size:13px;color:var(--text);outline:none;resize:none;height:38px;line-height:1.4;}
+.chat-actions{display:flex;gap:6px;}
+.chat-messages{flex:1;overflow-y:auto;min-height:0;padding:20px;display:flex;flex-direction:column;gap:12px;background:var(--bg);}
+.chat-empty{flex:1;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;flex-direction:column;gap:10px;}
+.chat-bubble-wrapper{display:flex;flex-direction:column;max-width:70%;}
+.chat-bubble-wrapper.sent{align-self:flex-end;}
+.chat-bubble-wrapper.recv{align-self:flex-start;}
+.chat-bubble{position:relative;padding:10px 14px;border-radius:var(--radius);font-size:13px;line-height:1.5;word-wrap:break-word;}
+.chat-bubble.sent{background:rgba(255,77,0,.12);border:1px solid rgba(255,77,0,.2);}
+.chat-bubble.recv{background:rgba(255,255,255,.04);border:1px solid var(--border2);}
+.chat-bubble.with-attachment{padding-bottom:24px;}
+.chat-attachment{position:absolute;bottom:4px;right:8px;font-size:9px;color:var(--muted);display:flex;align-items:center;gap:3px;}
+.chat-ts{font-size:9px;color:var(--muted);margin-top:2px;font-family:'Rajdhani',sans-serif;text-align:right;}
+.chat-input-row{padding:14px 16px;border-top:1px solid var(--border2);display:flex;gap:8px;background:var(--surf);align-items:flex-end;}
+.chat-input-row textarea{flex:1;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 12px;font-size:13px;color:var(--text);outline:none;resize:none;min-height:38px;max-height:120px;line-height:1.4;transition:border-color .2s;}
 .chat-input-row textarea:focus{border-color:var(--neon);}
+.chat-input-actions{display:flex;gap:4px;}
+.chat-input-btn{width:38px;height:38px;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;color:var(--muted2);cursor:pointer;transition:all .2s;}
+.chat-input-btn:hover{border-color:var(--neon);color:var(--neon);}
+.chat-input-btn.send{background:var(--neon);color:#fff;border-color:var(--neon);}
+.chat-input-btn.send:hover{background:#ff6a00;}
 
 /* SETTINGS */
 .settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
@@ -381,7 +397,7 @@ tr:last-child td{border-bottom:none;}
           <i class="fas fa-calendar-check kpi-icon"></i>
         </div>
         <div class="kpi-card" style="--kpi-color:#00e5a0">
-          <div class="kpi-label">Выручка (сум)</div>
+          <div class="kpi-label">Выручка (сом)</div>
           <div class="kpi-value" id="kpi-revenue">—</div>
           <div class="kpi-delta up"><i class="fas fa-arrow-up"></i> Завершённые заказы</div>
           <i class="fas fa-money-bill-wave kpi-icon"></i>
@@ -470,9 +486,9 @@ tr:last-child td{border-bottom:none;}
         <select class="filter-select" id="filter-order-status" onchange="filterTable('orders')">
           <option value="">Все статусы</option>
           <option value="pending">Ожидание</option>
-          <option value="paid">Оплачен</option>
+          <option value="completed">Завершено</option>
+          <option value="in_progress">В работе</option>
           <option value="cancelled">Отменён</option>
-          <option value="refunded">Возврат</option>
         </select>
       </div>
       <div class="table-wrap">
@@ -675,27 +691,49 @@ tr:last-child td{border-bottom:none;}
       </div>
     </div>
 
-    <!-- MESSAGES -->
+    <!-- MESSAGES - ОБНОВЛЕННЫЙ РАЗДЕЛ -->
     <div class="section" id="section-messages">
       <div class="section-header">
         <div class="section-title">Сообщения <small>MESSAGES CENTER</small></div>
-        <button class="btn btn-primary" onclick="openModal('send_message')"><i class="fas fa-paper-plane"></i>Отправить</button>
+        <button class="btn btn-primary" onclick="openModal('send_message')"><i class="fas fa-paper-plane"></i>Новое сообщение</button>
+        <button class="btn btn-secondary" onclick="refreshMessages()"><i class="fas fa-rotate"></i>Обновить</button>
       </div>
       <div class="messages-layout">
         <div class="msg-list">
-          <div class="msg-list-header">Входящие</div>
-          <div id="msg-list-body"></div>
+          <div class="msg-list-header">
+            <span>Входящие</span>
+            <span class="badge badge-inactive" id="total-unread">0</span>
+          </div>
+          <div class="msg-list-content" id="msg-list-body">
+            <!-- Динамически загружаемые диалоги -->
+          </div>
         </div>
         <div class="chat-area">
           <div class="chat-header" id="chat-header">
-            <div><div class="chat-name">Выберите чат</div><div class="chat-sub">Нажмите на диалог слева</div></div>
+            <div class="chat-header-info">
+              <div class="chat-avatar" id="chat-avatar"></div>
+              <div>
+                <div class="chat-name" id="chat-name">Выберите чат</div>
+                <div class="chat-sub" id="chat-sub">Нажмите на диалог слева</div>
+              </div>
+            </div>
+            <div class="chat-actions">
+              <button class="action-btn view" onclick="openModal('message_details')" title="Детали"><i class="fas fa-eye"></i></button>
+              <button class="action-btn del" onclick="confirmDeleteMessage()" title="Удалить чат"><i class="fas fa-trash"></i></button>
+            </div>
           </div>
           <div class="chat-messages" id="chat-messages">
-            <div class="chat-empty"><i class="fas fa-comments" style="font-size:24px;margin-right:10px;opacity:.4;"></i>Выберите диалог</div>
+            <div class="chat-empty">
+              <i class="fas fa-comments" style="font-size:36px;opacity:.4;"></i>
+              <span>Выберите диалог для просмотра</span>
+            </div>
           </div>
           <div class="chat-input-row">
-            <textarea id="chat-reply" placeholder="Ответить..."></textarea>
-            <button class="btn btn-primary" onclick="sendReply()"><i class="fas fa-paper-plane"></i></button>
+            <textarea id="chat-reply" placeholder="Введите сообщение... (Enter для отправки, Shift+Enter для новой строки)"></textarea>
+            <div class="chat-input-actions">
+              <button class="chat-input-btn" onclick="attachFile()" title="Прикрепить файл"><i class="fas fa-paperclip"></i></button>
+              <button class="chat-input-btn send" onclick="sendReply()" title="Отправить (Enter)"><i class="fas fa-paper-plane"></i></button>
+            </div>
           </div>
         </div>
       </div>

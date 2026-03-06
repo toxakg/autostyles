@@ -14,7 +14,9 @@ const STATE = {
   modalEditId: null,
   confirmCallback: null,
   activeChat: null,
+  chats: {},         // Сообщения для каждого чата
   charts: {},
+  notificationsState:{},
 };
 
 // ─── SUPABASE ──────────────────────────────────────────────────────────────────
@@ -39,6 +41,7 @@ function getDB() {
 document.addEventListener('DOMContentLoaded', async () => {
   initDate();
   initNavigation();
+  initChatEvents();
   await checkConnection();
   await loadAllData();
 });
@@ -50,6 +53,23 @@ function initDate() {
   el.textContent = now.toLocaleDateString('ru-RU', {
     weekday: 'short', day: '2-digit', month: 'short', year: 'numeric'
   });
+}
+
+function initChatEvents() {
+  const textarea = document.getElementById('chat-reply');
+  if (textarea) {
+    textarea.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendReply();
+      }
+    });
+    
+    textarea.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    });
+  }
 }
 
 // ─── НАВИГАЦИЯ ────────────────────────────────────────────────────────────────
@@ -97,7 +117,9 @@ function showSection(name) {
     titleEl.innerHTML = parts[0] + (parts[1] ? ` <span>/ ${parts[1]}</span>` : '');
   }
 
-  if (name === 'messages') renderMessageList();
+  if (name === 'messages') {
+    renderMessageList();
+  }
 }
 
 // ─── ПРОВЕРКА ПОДКЛЮЧЕНИЯ ─────────────────────────────────────────────────────
@@ -492,78 +514,118 @@ function renderUserLevels() {
 }
 
 // ════════════════════════════════════════════════════════════════════════════════
-// 11. MESSAGES
+// 11. MESSAGES - ИСПРАВЛЕННАЯ ВЕРСИЯ
 // ════════════════════════════════════════════════════════════════════════════════
 function renderMessageList() {
   const all = STATE.data['messages'] || [];
   const body = document.getElementById('msg-list-body');
   if (!body) return;
 
-  // Группировка по user_id
-  const byUser = {};
-  all.forEach(m => {
-    const uid = m.direction === 'client_to_staff' ? m.user_id : (m.receiver_id || m.user_id);
-    if (!byUser[uid]) byUser[uid] = [];
-    byUser[uid].push(m);
-  });
-
-  const users = Object.entries(byUser);
-  if (!users.length) {
-    body.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px;">Сообщений нет</div>';
+  // Получаем список уникальных пользователей (от кого есть сообщения)
+  const uniqueUsers = [...new Set(all.map(m => m.user_id).filter(Boolean))];
+  
+  if (!uniqueUsers.length) {
+    body.innerHTML = '<div class="empty-state" style="padding:20px;"><i class="fas fa-comments"></i><span>Нет диалогов</span></div>';
     return;
   }
 
-  body.innerHTML = users.map(([uid, msgs]) => {
-    const last = msgs[msgs.length - 1];
-    const name = getUserName(uid);
-    const initials = name.split(' ').map(w => w[0]).join('').substring(0,2).toUpperCase() || '??';
-    const unread = msgs.filter(m => m.direction === 'client_to_staff').length;
+  // Для каждого пользователя получаем последнее сообщение и количество непрочитанных
+  const chats = uniqueUsers.map(uid => {
+    const userMessages = all.filter(m => m.user_id === uid);
+    const lastMsg = userMessages.sort((a, b) => 
+      new Date(b.created_at) - new Date(a.created_at)
+    )[0];
+    
+    const unreadCount = userMessages.filter(m => 
+      m.direction === 'client_to_staff' && !m.is_read
+    ).length;
+
+    return {
+      userId: uid,
+      lastMsg,
+      unreadCount,
+      userName: getUserName(uid)
+    };
+  }).sort((a, b) => new Date(b.lastMsg?.created_at) - new Date(a.lastMsg?.created_at));
+
+  body.innerHTML = chats.map(chat => {
+    const initials = chat.userName.split(' ').map(w => w[0]).join('').substring(0,2).toUpperCase() || '??';
+    const isActive = STATE.activeChat === chat.userId;
+    
     return `
-      <div class="msg-item ${STATE.activeChat === uid ? 'active' : ''}" onclick="openChat('${uid}')">
-        <div class="msg-avatar" style="background:${strColor(uid)}">${initials}</div>
+      <div class="msg-item ${isActive ? 'active' : ''}" onclick="openChat('${chat.userId}')">
+        <div class="msg-avatar" style="background:${strColor(chat.userId)}">${initials}</div>
         <div class="msg-meta">
-          <div class="msg-from">${name}</div>
-          <div class="msg-preview">${esc(last.message?.substring(0,40) || '')}</div>
-          <div class="msg-time">${fmtDateTime(last.created_at)}</div>
+          <div class="msg-from">
+            ${chat.userName}
+            ${chat.unreadCount > 0 ? `<small>+${chat.unreadCount}</small>` : ''}
+          </div>
+          <div class="msg-preview">${esc(chat.lastMsg?.message?.substring(0,40) || '')}</div>
+          <div class="msg-time">${fmtDateTime(chat.lastMsg?.created_at)}</div>
         </div>
-        ${unread ? `<div class="msg-unread"></div>` : ''}
+        ${chat.unreadCount > 0 ? `<div class="msg-unread"></div>` : ''}
       </div>`;
   }).join('');
+
+  // Обновляем счетчик непрочитанных в заголовке
+  const totalUnread = chats.reduce((sum, chat) => sum + chat.unreadCount, 0);
+  const badge = document.getElementById('total-unread');
+  if (badge) {
+    badge.textContent = totalUnread;
+    badge.style.display = totalUnread > 0 ? 'inline-block' : 'none';
+  }
 }
 
 function openChat(uid) {
   STATE.activeChat = uid;
   renderMessageList();
 
-  const messages = (STATE.data['messages'] || []).filter(m =>
-    m.user_id === uid || m.receiver_id === uid
-  ).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+  // Получаем все сообщения этого пользователя
+  const messages = (STATE.data['messages'] || [])
+    .filter(m => m.user_id === uid)
+    .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
 
-  const hdr = document.getElementById('chat-header');
-  const chatEl = document.getElementById('chat-messages');
-  const name = getUserName(uid);
-
-  if (hdr) hdr.innerHTML = `
-    <div>
-      <div class="chat-name">${name}</div>
-      <div class="chat-sub">${uid.substring(0,16)}…</div>
-    </div>`;
-
-  if (!chatEl) return;
+  // Обновляем шапку чата
+  const chatHeader = document.getElementById('chat-header');
+  const chatName = document.getElementById('chat-name');
+  const chatSub = document.getElementById('chat-sub');
   
-  if (messages.length === 0) {
-    chatEl.innerHTML = '<div class="chat-empty">Нет сообщений в этом диалоге</div>';
+  if (chatName) chatName.textContent = getUserName(uid);
+  if (chatSub) chatSub.textContent = uid.substring(0,16) + '…';
+
+  // Рендерим сообщения
+  renderChatMessages(messages);
+}
+
+function renderChatMessages(messages) {
+  const chatEl = document.getElementById('chat-messages');
+  if (!chatEl) return;
+
+  if (!messages || messages.length === 0) {
+    chatEl.innerHTML = '<div class="chat-empty"><i class="fas fa-comments" style="font-size:36px;opacity:.4;"></i><span>Нет сообщений в этом диалоге</span></div>';
     return;
   }
-  
+
   chatEl.innerHTML = messages.map(m => {
     const isSent = m.direction === 'staff_to_client';
+    const hasAttachment = m.attachment_url || m.attachment_type;
+    
     return `
-      <div class="chat-bubble ${isSent ? 'sent' : 'recv'}">
-        ${esc(m.message)}
+      <div class="chat-bubble-wrapper ${isSent ? 'sent' : 'recv'}">
+        <div class="chat-bubble ${isSent ? 'sent' : 'recv'} ${hasAttachment ? 'with-attachment' : ''}">
+          ${esc(m.message || '')}
+          ${hasAttachment ? `
+            <div class="chat-attachment">
+              <i class="fas fa-paperclip"></i>
+              <span>Вложение</span>
+            </div>
+          ` : ''}
+        </div>
         <div class="chat-ts">${fmtDateTime(m.created_at)}</div>
       </div>`;
   }).join('');
+
+  // Скроллим вниз
   chatEl.scrollTop = chatEl.scrollHeight;
 }
 
@@ -578,15 +640,103 @@ async function sendReply() {
       user_id: STATE.activeChat,
       message: text,
       direction: 'staff_to_client',
+      created_at: new Date().toISOString()
     });
+    
     if (error) throw error;
+    
+    // Очищаем поле ввода
     ta.value = '';
+    ta.style.height = '38px';
+    
+    // Обновляем данные
     await fetchTable('messages');
-    openChat(STATE.activeChat);
+    
+    // Перерисовываем чат
+    const messages = (STATE.data['messages'] || [])
+      .filter(m => m.user_id === STATE.activeChat)
+      .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    
+    renderChatMessages(messages);
+    renderMessageList(); // Обновляем список диалогов
+    
     showToast('success', 'Отправлено', 'Сообщение доставлено');
   } catch (e) {
     showToast('error', 'Ошибка', e.message);
   }
+}
+
+function attachFile() {
+  if (!STATE.activeChat) {
+    showToast('warn', 'Внимание', 'Сначала выберите чат');
+    return;
+  }
+  
+  // Создаем скрытый input для выбора файла
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*,.pdf,.doc,.docx';
+  
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    // TODO: Загрузка файла в Supabase Storage
+    showToast('info', 'Загрузка', 'Функция загрузки файлов в разработке');
+  };
+  
+  input.click();
+}
+
+function refreshMessages() {
+  fetchTable('messages').then(() => {
+    renderMessageList();
+    if (STATE.activeChat) {
+      const messages = (STATE.data['messages'] || [])
+        .filter(m => m.user_id === STATE.activeChat)
+        .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+      renderChatMessages(messages);
+    }
+    showToast('success', 'Обновлено', 'Сообщения обновлены');
+  });
+}
+
+function confirmDeleteMessage() {
+  if (!STATE.activeChat) {
+    showToast('warn', 'Внимание', 'Выберите чат для удаления');
+    return;
+  }
+  
+  document.getElementById('confirm-text').textContent = 
+    `Удалить весь диалог с пользователем ${getUserName(STATE.activeChat)}? Все сообщения будут удалены безвозвратно.`;
+  
+  const overlay = document.getElementById('confirm-overlay');
+  overlay.classList.add('open');
+
+  document.getElementById('confirm-ok').onclick = async () => {
+    closeConfirm();
+    try {
+      const db = getDB();
+      const { error } = await db.from('messages')
+        .delete()
+        .eq('user_id', STATE.activeChat);
+      
+      if (error) throw error;
+      
+      await fetchTable('messages');
+      STATE.activeChat = null;
+      renderMessageList();
+      
+      const chatEl = document.getElementById('chat-messages');
+      if (chatEl) {
+        chatEl.innerHTML = '<div class="chat-empty"><i class="fas fa-comments" style="font-size:36px;opacity:.4;"></i><span>Выберите диалог для просмотра</span></div>';
+      }
+      
+      showToast('success', 'Удалено', 'Чат успешно удален');
+    } catch (e) {
+      showToast('error', 'Ошибка удаления', e.message);
+    }
+  };
 }
 
 // ════════════════════════════════════════════════════════════════════════════════
@@ -766,18 +916,19 @@ function renderCartItems() {
 // ─── DASHBOARD ────────────────────────────────────────────────────────────────
 function renderDashboard() {
   const apts = STATE.data['appointments'] || [];
-  const orders = STATE.data['orders'] || [];
   const users = STATE.data['profiles'] || [];
 
-  const revenue = orders
-    .filter(o => o.status === 'paid' || o.status === 'completed')
-    .reduce((s, o) => s + (+o.total_price || 0), 0);
-  const activeOrders = orders.filter(o => o.status === 'pending').length;
+  const revenue = apts
+    .filter(a => a.status === 'completed')
+    .reduce((s, a) => s + (+a.total_price || 0), 0);
+  const activeAppointments = apts.filter(a => 
+    a.status === 'pending' || a.status === 'confirmed' || a.status === 'in_progress'
+  ).length;
 
   setText('kpi-appointments', apts.length.toLocaleString('ru-RU'));
   setText('kpi-revenue', fmtMoney(revenue, false));
   setText('kpi-users', users.length.toLocaleString('ru-RU'));
-  setText('kpi-orders', activeOrders.toLocaleString('ru-RU'));
+  setText('kpi-orders', activeAppointments.toLocaleString('ru-RU'));
 
   renderChartAppointments(apts);
   renderChartStatuses(apts);
@@ -1376,6 +1527,7 @@ async function saveModal() {
         user_id: payload.user_id,
         message: payload.message,
         direction: 'staff_to_client',
+        created_at: new Date().toISOString()
       });
       if (error) throw error;
       await fetchTable('messages');
@@ -1620,6 +1772,308 @@ function strColor(str) {
   return `hsl(${hue}, 55%, 35%)`;
 }
 
+
+
+
+// Состояние уведомлений в меню
+let menuNotificationsState = {
+    unreadCount: 0,
+    previewOpen: false
+};
+
+// Загрузить превью уведомлений для меню
+async function loadNotificationsPreview() {
+    const previewList = document.getElementById('notifications-preview-list');
+    if (!previewList) return;
+    
+    // Показываем загрузку
+    previewList.innerHTML = `
+        <div class="preview-loading">
+            <span class="inline-spinner"></span> Загрузка...
+        </div>
+    `;
+    
+    try {
+        const db = getDB();
+        
+        // Проверяем подключение к БД
+        if (!db) {
+            throw new Error('Нет подключения к базе данных');
+        }
+        
+        // Получаем данные из таблицы notifications
+        const { data, error } = await db
+            .from('notifications')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(5);
+        
+        if (error) {
+            console.error('Ошибка запроса:', error);
+            throw error;
+        }
+        
+        console.log('Получены уведомления:', data); // Для отладки
+        
+        if (!data || data.length === 0) {
+            previewList.innerHTML = `
+                <div class="preview-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <span>Нет новых уведомлений</span>
+                </div>
+            `;
+            return;
+        }
+        
+        previewList.innerHTML = data.map(n => {
+            const iconClass = getNotificationIconClass(n.type || 'info');
+            const timeAgo = formatTimeAgo(n.created_at);
+            const isUnread = !n.is_read;
+            
+            return `
+                <div class="preview-item ${isUnread ? 'unread' : ''}" 
+                     onclick="markMenuNotificationRead(${n.id}, event)">
+                    <div class="preview-icon ${iconClass.class}">
+                        <i class="fas ${iconClass.icon}"></i>
+                    </div>
+                    <div class="preview-content">
+                        <div class="preview-title">${esc(n.title || 'Без заголовка')}</div>
+                        <div class="preview-message">${esc(n.message || '')}</div>
+                        <div class="preview-time">${timeAgo}</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+    } catch (e) {
+        console.error('Ошибка загрузки превью уведомлений:', e);
+        previewList.innerHTML = `
+            <div class="preview-empty">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Ошибка загрузки: ${e.message}</span>
+            </div>
+        `;
+    }
+}
+
+// Обновить бейдж в меню
+function updateMenuNotificationsBadge() {
+    const badge = document.getElementById('menu-notifications-badge');
+    if (!badge) return;
+    
+    // Получаем количество непрочитанных из глобального состояния
+    const unreadCount = notificationsState?.unreadCount || 0;
+    
+    if (unreadCount > 0) {
+        badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+        badge.style.display = 'flex';
+        badge.classList.add('new');
+        
+        setTimeout(() => badge.classList.remove('new'), 500);
+    } else {
+        badge.style.display = 'none';
+    }
+}
+
+// Отметить уведомление как прочитанное из превью
+async function markMenuNotificationRead(id, event) {
+    event.stopPropagation();
+    
+    try {
+        const db = getDB();
+        const { error } = await db
+            .from('notifications')
+            .update({ is_read: true })
+            .eq('id', id);
+        
+        if (error) throw error;
+        
+        // Обновляем глобальное состояние
+        if (notificationsState) {
+            const notif = notificationsState.list.find(n => n.id === id);
+            if (notif) {
+                notif.is_read = true;
+                notificationsState.unreadCount = Math.max(0, notificationsState.unreadCount - 1);
+            }
+        }
+        
+        // Обновляем превью и бейдж
+        await loadNotificationsPreview();
+        updateMenuNotificationsBadge();
+        
+        // Обновляем основную таблицу если открыта
+        if (document.getElementById('section-notifications')?.classList.contains('active')) {
+            renderNotifications();
+        }
+        
+    } catch (e) {
+        console.error('Ошибка при отметке уведомления:', e);
+        showToast('error', 'Ошибка', 'Не удалось отметить уведомление');
+    }
+}
+
+// Отметить все как прочитанные из меню
+async function markAllMenuNotificationsRead(event) {
+    if (event) event.stopPropagation();
+    
+    try {
+        const db = getDB();
+        const { error } = await db
+            .from('notifications')
+            .update({ is_read: true })
+            .eq('is_read', false);
+        
+        if (error) throw error;
+        
+        // Обновляем глобальное состояние
+        if (notificationsState) {
+            notificationsState.list.forEach(n => { n.is_read = true; });
+            notificationsState.unreadCount = 0;
+        }
+        
+        // Обновляем превью и бейдж
+        await loadNotificationsPreview();
+        updateMenuNotificationsBadge();
+        
+        // Обновляем основную таблицу если открыта
+        if (document.getElementById('section-notifications')?.classList.contains('active')) {
+            renderNotifications();
+        }
+        
+        showToast('success', 'Готово', 'Все уведомления отмечены прочитанными');
+        
+    } catch (e) {
+        console.error('Ошибка при отметке всех уведомлений:', e);
+        showToast('error', 'Ошибка', 'Не удалось отметить все уведомления');
+    }
+}
+
+// Обновленная функция для открытия меню
+function toggleNotificationsMenu(event) {
+    if (event) event.stopPropagation();
+    
+    const menuItem = document.getElementById('menu-notifications');
+    if (!menuItem) return;
+    
+    // Переключаем класс active
+    menuItem.classList.toggle('active');
+    
+    // Если открываем меню, загружаем данные
+    if (menuItem.classList.contains('active')) {
+        loadNotificationsPreview();
+    }
+}
+
+// Обновляем функцию showSection для обработки меню
+function showSection(sectionName, element) {
+    // Скрываем все секции
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    
+    // Показываем нужную секцию
+    const section = document.getElementById(`section-${sectionName}`);
+    if (section) section.classList.add('active');
+    
+    // Обновляем активный пункт меню
+    document.querySelectorAll('.menu-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // Если элемент - это кнопка в превью, не меняем активность меню
+    if (element && element.classList.contains('preview-view-all')) {
+        // Ничего не делаем с меню
+    } else if (element) {
+        // Ищем родительский menu-item
+        const menuItem = element.closest('.menu-item');
+        if (menuItem) {
+            menuItem.classList.add('active');
+        }
+    }
+    
+    // Обновляем заголовок страницы
+    updatePageTitle(sectionName);
+    
+    // Если открыли секцию уведомлений, обновляем их
+    if (sectionName === 'notifications') {
+        loadNotifications();
+    }
+}
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Инициализация меню уведомлений...');
+    
+    // Добавляем обработчик для пункта меню
+    const menuItem = document.getElementById('menu-notifications');
+    if (menuItem) {
+        const header = menuItem.querySelector('.menu-item-header');
+        if (header) {
+            header.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleNotificationsMenu(e);
+            });
+        }
+        
+        console.log('Меню уведомлений инициализировано');
+    }
+    
+    // Загружаем уведомления через 1 секунду
+    setTimeout(() => {
+        if (typeof notificationsState !== 'undefined' && notificationsState.list) {
+            updateMenuNotificationsBadge();
+            loadNotificationsPreview();
+        } else {
+            console.log('Ожидание загрузки notificationsState...');
+            // Пробуем еще раз через 2 секунды
+            setTimeout(() => {
+                if (notificationsState) {
+                    updateMenuNotificationsBadge();
+                    loadNotificationsPreview();
+                }
+            }, 2000);
+        }
+    }, 1000);
+});
+
+// Обновляем функцию renderNotifications для синхронизации
+if (typeof renderNotifications === 'function') {
+    const originalRenderNotifications = renderNotifications;
+    renderNotifications = function() {
+        originalRenderNotifications();
+        updateMenuNotificationsBadge();
+        if (document.getElementById('menu-notifications')?.classList.contains('active')) {
+            loadNotificationsPreview();
+        }
+    };
+}
+
+// Добавляем функцию для тестирования (можно удалить после отладки)
+async function testNotifications() {
+    console.log('Тестирование уведомлений...');
+    console.log('notificationsState:', notificationsState);
+    console.log('menu-notifications element:', document.getElementById('menu-notifications'));
+    
+    await loadNotificationsPreview();
+    
+    // Показываем тестовое уведомление
+    showToast('info', 'Тест', 'Проверка уведомлений');
+}
+
+// Делаем функции глобальными
+window.loadNotificationsPreview = loadNotificationsPreview;
+window.updateMenuNotificationsBadge = updateMenuNotificationsBadge;
+window.markMenuNotificationRead = markMenuNotificationRead;
+window.markAllMenuNotificationsRead = markAllMenuNotificationsRead;
+window.toggleNotificationsMenu = toggleNotificationsMenu;
+window.testNotifications = testNotifications; // Для отладки
+
+
+
+
+
+
+
+
+
 // Делаем функции доступными глобально для onclick атрибутов
 window.openModal = openModal;
 window.closeModal = closeModal;
@@ -1638,3 +2092,6 @@ window.markAllRead = markAllRead;
 window.sendReply = sendReply;
 window.openChat = openChat;
 window.saveSettings = saveSettings;
+window.attachFile = attachFile;
+window.refreshMessages = refreshMessages;
+window.confirmDeleteMessage = confirmDeleteMessage;
