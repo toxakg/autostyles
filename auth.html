@@ -39,7 +39,7 @@
     </div>
     <!-- Кнопка входа в админ-панель -->
     <div class="admin-quick-login">
-        <button class="admin-btn" onclick="quickAdminLogin()" aria-label="Вход для администратора">
+        <button class="admin-btn" onclick="showAdminLoginModal()" aria-label="Вход для администратора">
             <i class="fas fa-crown"></i>
             <span>Админ</span>
         </button>
@@ -245,6 +245,53 @@
                         <span>Зарегистрироваться</span>
                         <i class="fas fa-arrow-right"></i>
                     </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для входа администратора -->
+    <div class="modal" id="adminLoginModal">
+        <div class="modal-content admin-modal">
+            <div class="modal-header">
+                <div class="modal-header-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <h3>Вход для администратора</h3>
+                <button class="modal-close" onclick="closeAdminModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="adminEmail" placeholder=" " required autocomplete="off">
+                            <label for="adminEmail">Email администратора</label>
+                            <div class="input-highlight"></div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="adminPassword" placeholder=" " required autocomplete="off">
+                            <label for="adminPassword">Пароль</label>
+                            <button type="button" class="password-toggle" onclick="togglePassword('adminPassword', this)">
+                                <i class="far fa-eye"></i>
+                            </button>
+                            <div class="input-highlight"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="modal-btn secondary" onclick="closeAdminModal()">Отмена</button>
+                        <button type="submit" class="modal-btn primary" id="adminLoginSubmit">
+                            <span>Войти</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

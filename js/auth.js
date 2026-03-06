@@ -628,163 +628,132 @@ document.addEventListener('keydown', function(e) {
 
 
 // ==================== БЫСТРЫЙ ВХОД АДМИНИСТРАТОРА ====================
-window.quickAdminLogin = async function() {
-    // Данные администратора
-    const adminEmail = "autostyles.kg@gmail.com";
-    const adminPassword = "admin003";
-    
-    // Показываем уведомление о процессе входа
-    showNotification('Выполняется вход для администратора...', 'info');
-    
-    // Находим и подсвечиваем кнопку
-    const adminBtn = document.querySelector('.admin-btn');
-    if (adminBtn) {
-        adminBtn.style.transform = 'scale(0.95)';
+
+// Функция для открытия модального окна администратора
+window.showAdminLoginModal = function() {
+    const modal = document.getElementById('adminLoginModal');
+    if (modal) {
+        modal.classList.add('show');
+        
+        // Очищаем поля ввода
+        document.getElementById('adminEmail').value = '';
+        document.getElementById('adminPassword').value = '';
+        
+        // Фокусируемся на поле email
         setTimeout(() => {
-            adminBtn.style.transform = '';
-        }, 200);
-    }
-    
-    // Заполняем форму входа (для наглядности)
-    const emailInput = document.getElementById('loginEmail');
-    const passwordInput = document.getElementById('loginPassword');
-    
-    if (emailInput && passwordInput) {
-        // Анимированное заполнение полей
-        emailInput.value = '';
-        passwordInput.value = '';
-        
-        // Поочередно заполняем поля с задержкой для эффекта
-        setTimeout(() => {
-            emailInput.value = adminEmail;
-            emailInput.dispatchEvent(new Event('input', { bubbles: true }));
-            
-            // Подсвечиваем поле
-            emailInput.style.borderColor = '#ffd700';
-            emailInput.style.boxShadow = '0 0 15px rgba(255, 215, 0, 0.5)';
-            
-            setTimeout(() => {
-                emailInput.style.borderColor = '';
-                emailInput.style.boxShadow = '';
-            }, 500);
-        }, 300);
-        
-        setTimeout(() => {
-            passwordInput.value = adminPassword;
-            passwordInput.dispatchEvent(new Event('input', { bubbles: true }));
-            
-            // Подсвечиваем поле
-            passwordInput.style.borderColor = '#ffd700';
-            passwordInput.style.boxShadow = '0 0 15px rgba(255, 215, 0, 0.5)';
-            
-            setTimeout(() => {
-                passwordInput.style.borderColor = '';
-                passwordInput.style.boxShadow = '';
-            }, 500);
-        }, 600);
-        
-        // Переключаемся на форму входа, если активна регистрация
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-        const loginToggle = document.getElementById('loginToggle');
-        const registerToggle = document.getElementById('registerToggle');
-        const slider = document.getElementById('toggleSlider');
-        
-        if (!loginForm.classList.contains('active')) {
-            loginToggle.click();
-        }
-        
-        // Автоматический вход через 1 секунду
-        setTimeout(async () => {
-            try {
-                // Блокируем кнопку входа
-                const submitBtn = document.getElementById('loginSubmit');
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Вход...';
-                }
-                
-                // Выполняем вход через Supabase
-                const { data, error } = await window.sb.auth.signInWithPassword({
-                    email: adminEmail,
-                    password: adminPassword
-                });
-                
-                if (error) throw error;
-                
-                // Проверяем роль пользователя
-                const { data: profile, error: profileError } = await window.sb
-                    .from('profiles')
-                    .select('role')
-                    .eq('id', data.user.id)
-                    .single();
-                
-                if (profileError) {
-                    console.warn('Could not fetch profile:', profileError);
-                }
-                
-                // Успешный вход
-                showNotification('✅ Успешный вход! Перенаправление в админ-панель...', 'success');
-                
-                // Специальное уведомление для администратора
-                setTimeout(() => {
-                    showNotification('👑 Добро пожаловать, Администратор!', 'success');
-                }, 500);
-                
-                // Перенаправление в админ-панель
-                setTimeout(() => {
-                    // Проверяем роль и перенаправляем соответственно
-                    if (profile && profile.role === 'admin') {
-                        window.location.href = '/admin.html'; // Замените на URL админ-панели
-                    } else {
-                        window.location.href = '/admin.html'; // Обычная панель пользователя
-                    }
-                }, 1500);
-                
-            } catch (error) {
-                console.error('Admin login error:', error);
-                
-                // Более детальная обработка ошибок
-                let errorMessage = 'Ошибка входа';
-                
-                if (error.message.includes('Invalid login credentials')) {
-                    errorMessage = 'Неверные данные администратора';
-                } else if (error.message.includes('Email not confirmed')) {
-                    errorMessage = 'Email не подтвержден';
-                } else {
-                    errorMessage = error.message;
-                }
-                
-                showNotification(`❌ ${errorMessage}`, 'error');
-                
-                // Разблокируем кнопку
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<span>Войти</span><i class="fas fa-arrow-right"></i>';
-                }
-            }
-        }, 1200);
-    } else {
-        // Если поля не найдены, пробуем прямой вход
-        try {
-            const { data, error } = await window.sb.auth.signInWithPassword({
-                email: adminEmail,
-                password: adminPassword
-            });
-            
-            if (error) throw error;
-            
-            showNotification('✅ Успешный вход в админ-панель!', 'success');
-            
-            setTimeout(() => {
-                window.location.href = '/admin.html'; // Замените на URL админ-панели
-            }, 1000);
-            
-        } catch (error) {
-            showNotification(`❌ ${error.message}`, 'error');
-        }
+            document.getElementById('adminEmail').focus();
+        }, 100);
     }
 }
+
+// Функция для закрытия модального окна
+window.closeAdminModal = function() {
+    const modal = document.getElementById('adminLoginModal');
+    if (modal) {
+        modal.classList.remove('show');
+        
+        // Очищаем поля при закрытии
+        document.getElementById('adminEmail').value = '';
+        document.getElementById('adminPassword').value = '';
+    }
+}
+
+// Обработка входа администратора
+window.handleAdminLogin = async function(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById('adminEmail').value.trim();
+    const password = document.getElementById('adminPassword').value;
+    
+    // Валидация
+    if (!email || !password) {
+        showNotification('Введите email и пароль', 'error');
+        return;
+    }
+    
+    if (!validateEmail(email)) {
+        showNotification('Введите корректный email', 'error');
+        return;
+    }
+    
+    // Блокируем кнопку
+    const submitBtn = document.getElementById('adminLoginSubmit');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Вход...';
+    
+    try {
+        // Вход через Supabase
+        const { data, error } = await window.sb.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+        
+        if (error) throw error;
+        
+        // Проверяем роль администратора
+        const { data: profile, error: profileError } = await window.sb
+            .from('profiles')
+            .select('role')
+            .eq('id', data.user.id)
+            .single();
+        
+        if (profileError) throw profileError;
+        
+        if (profile.role !== 'admin') {
+            // Если не админ, выходим из системы
+            await window.sb.auth.signOut();
+            showNotification('У вас нет прав администратора', 'error');
+            
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+            return;
+        }
+        
+        // Успешный вход
+        showNotification('✅ Успешный вход! Перенаправление...', 'success');
+        
+        // Закрываем модальное окно
+        closeAdminModal();
+        
+        setTimeout(() => {
+            showNotification('👑 Добро пожаловать, Администратор!', 'success');
+        }, 500);
+        
+        setTimeout(() => {
+            window.location.href = '/admin.html';
+        }, 1500);
+        
+    } catch (error) {
+        console.error('Admin login error:', error);
+        
+        let errorMessage = 'Ошибка входа';
+        if (error.message.includes('Invalid login credentials')) {
+            errorMessage = 'Неверный email или пароль';
+        } else {
+            errorMessage = error.message;
+        }
+        
+        showNotification(`❌ ${errorMessage}`, 'error');
+        
+        // Разблокируем кнопку
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+    }
+}
+
+// Добавляем горячие клавиши для быстрого открытия модального окна администратора (Ctrl+Alt+A)
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.altKey && e.key === 'a') {
+        e.preventDefault();
+        showAdminLoginModal();
+    }
+});
+
+// Добавляем подсказку о горячих клавишах
+setTimeout(() => {
+    console.log('💡 Tip: Press Ctrl+Alt+A for admin login');
+}, 3000);
 
 // Дополнительная функция для проверки прав администратора
 async function checkAdminAccess() {
