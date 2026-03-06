@@ -1,139 +1,292 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ — Детейлинг-центр</title>
+    <title>FAQ — Детейлинг-центр Premier Detail</title>
     <style>
         /* === Переменные для цветовой схемы === */
         :root {
-            --bg-color: #121212;
-            --surface-color: #1e1e1e;
-            --answer-color: #282828;
-            --border-color: #333;
+            --bg-color: #0a0a0a;
+            --surface-color: #161616;
+            --surface-hover: #1f1f1f;
+            --answer-color: #1e1e1e;
+            --border-color: #2a2a2a;
             --highlight-color: #00c3ff;
-            --text-color: #f5f5f5;
-            --text-secondary-color: #ccc;
-            --shadow-color: rgba(0, 0, 0, 0.7);
-            --neon-shadow: 0 0 15px rgba(0, 195, 255, 0.5);
-            --accent-gradient: linear-gradient(45deg, var(--highlight-color), #00ffff);
-            --cta-gradient: linear-gradient(90deg, #00c3ff, #0077ff);
+            --highlight-hover: #33d1ff;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-muted: #808080;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --neon-glow: 0 0 20px rgba(0, 195, 255, 0.3);
+            --accent-gradient: linear-gradient(135deg, #00c3ff, #00ffaa);
+            --cta-gradient: linear-gradient(135deg, #00c3ff, #0077be);
+            --error-color: #ff4444;
+            --success-color: #00c851;
         }
 
-        /* === Премиальный скроллбар (Webkit) === */
+        /* === Премиальный скроллбар === */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 10px;
         }
 
         ::-webkit-scrollbar-track {
             background: var(--bg-color);
+            border-left: 1px solid var(--border-color);
         }
 
         ::-webkit-scrollbar-thumb {
             background: var(--highlight-color);
-            border-radius: 4px;
+            border-radius: 5px;
+            transition: background 0.3s;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #00e0ff;
+            background: var(--highlight-hover);
+        }
+
+        /* === Базовые стили === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             margin: 0;
-            font-family: "Segoe UI", Roboto, Arial, sans-serif;
-            background: linear-gradient(rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.9)),
-                url("/img/faq.jfif") no-repeat center center fixed;
-            background-size: cover;
-            color: var(--text-color);
+            font-family: 'Inter', 'Segoe UI', Roboto, -apple-system, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-primary);
             padding: 40px 20px;
             display: flex;
             justify-content: center;
-            overflow-x: hidden;
+            align-items: flex-start;
             min-height: 100vh;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        /* === Контейнер и Заголовок === */
-        .faq-container {
-            max-width: 850px;
+        /* === Фоновый эффект === */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 195, 255, 0.03) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(0, 255, 170, 0.03) 0%, transparent 30%),
+                repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 10px);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* === Основной контейнер === */
+        .faq-wrapper {
+            max-width: 900px;
             width: 100%;
-            margin: auto;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* === Шапка страницы === */
+        .faq-header {
+            text-align: center;
+            margin-bottom: 60px;
             position: relative;
         }
 
-        .faq-container h2 {
-            text-align: center;
-            font-size: 2.5rem;
+        .faq-header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #fff, #00c3ff, #00ffaa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(0, 195, 255, 0.3)); }
+            50% { filter: drop-shadow(0 0 20px rgba(0, 255, 170, 0.5)); }
+        }
+
+        .faq-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--accent-gradient);
+            border-radius: 3px;
+        }
+
+        .faq-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 20px auto 0;
+            line-height: 1.6;
+        }
+
+        /* === Поиск по вопросам === */
+        .faq-search {
             margin-bottom: 40px;
+            position: relative;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .faq-search input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .faq-search input:focus {
+            border-color: var(--highlight-color);
+            box-shadow: var(--neon-glow);
+            background: var(--surface-hover);
+        }
+
+        .faq-search input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+
+        .search-reset {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 5px;
+            display: none;
+            transition: color 0.3s;
+        }
+
+        .search-reset:hover {
             color: var(--highlight-color);
-            text-shadow: var(--neon-shadow);
-            font-weight: 700;
-            opacity: 0;
-            animation: fadeInDown 1s ease-out forwards;
         }
 
-        @keyframes fadeInDown {
-            0% {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .search-reset.visible {
+            display: block;
         }
 
-        /* === Анимация появления пунктов FAQ === */
+        /* === Категории вопросов === */
+        .faq-categories {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover {
+            border-color: var(--highlight-color);
+            color: var(--highlight-color);
+            transform: translateY(-2px);
+        }
+
+        .category-btn.active {
+            background: var(--highlight-color);
+            color: var(--bg-color);
+            border-color: var(--highlight-color);
+        }
+
+        /* === Элемент FAQ === */
         .faq-item {
             background: var(--surface-color);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            margin-bottom: 18px;
+            border-radius: 16px;
+            margin-bottom: 16px;
             overflow: hidden;
-            box-shadow: 0 6px 15px var(--shadow-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 1;
+            transform: translateY(0);
+            position: relative;
+        }
+
+        .faq-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--accent-gradient);
             opacity: 0;
-            transform: translateY(20px);
-            animation: slideInUp 0.6s ease-out forwards;
+            transition: opacity 0.3s;
         }
 
-        /* Задаем задержки для каждого пункта */
-        .faq-item:nth-child(1) { animation-delay: 0.1s; }
-        .faq-item:nth-child(2) { animation-delay: 0.2s; }
-        .faq-item:nth-child(3) { animation-delay: 0.3s; }
-        .faq-item:nth-child(4) { animation-delay: 0.4s; }
-        .faq-item:nth-child(5) { animation-delay: 0.5s; }
-        .faq-item:nth-child(6) { animation-delay: 0.6s; }
-        .faq-item:nth-child(7) { animation-delay: 0.7s; }
-        .faq-item:nth-child(8) { animation-delay: 0.8s; }
-        .faq-item:nth-child(9) { animation-delay: 0.9s; }
-
-        @keyframes slideInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Эффект при наведении */
         .faq-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px var(--shadow-color);
+            transform: translateX(5px);
+            border-color: var(--highlight-color);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
         }
 
-        /* Эффект для активного элемента */
+        .faq-item:hover::before {
+            opacity: 1;
+        }
+
         .faq-item.active {
             border-color: var(--highlight-color);
-            box-shadow: 0 0 30px rgba(0, 195, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 195, 255, 0.15);
         }
 
-        /* === Вопрос и Ответ === */
+        .faq-item.active::before {
+            opacity: 1;
+        }
+
+        .faq-item.hidden {
+            display: none;
+        }
+
+        /* === Вопрос === */
         .faq-question {
-            padding: 20px 24px;
+            padding: 22px 24px;
             cursor: pointer;
             font-weight: 600;
             font-size: 1.15rem;
@@ -143,77 +296,59 @@
             position: relative;
             background: var(--surface-color);
             transition: background 0.3s;
+            user-select: none;
+        }
+
+        .faq-question:hover {
+            background: var(--surface-hover);
         }
 
         .faq-item.active .faq-question {
-            background: #2a2a2a;
+            background: var(--surface-hover);
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 0 24px;
-            background: var(--answer-color);
+        .question-text {
+            flex: 1;
+            padding-right: 20px;
         }
 
-        .faq-answer p {
-            padding: 20px 0;
-            margin: 0;
-            font-size: 1rem;
-            line-height: 1.6;
-            color: var(--text-secondary-color);
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.3s 0.2s, transform 0.3s 0.2s;
-        }
-
-        .faq-item.active .faq-answer {
-            max-height: 500px;
-        }
-
-        .faq-item.active .faq-answer p {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* === Иконка Переключения === */
+        /* === Иконка переключения === */
         .toggle-icon {
             width: 24px;
             height: 24px;
             position: relative;
             transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             flex-shrink: 0;
-            margin-left: 15px;
         }
 
         .toggle-icon::before,
         .toggle-icon::after {
             content: '';
             position: absolute;
-            background-color: var(--highlight-color);
-            transition: all 0.3s ease;
+            background: var(--highlight-color);
             border-radius: 2px;
+            transition: all 0.3s ease;
         }
 
         .toggle-icon::before {
-            width: 100%;
-            height: 3px;
+            width: 14px;
+            height: 2px;
             top: 50%;
-            left: 0;
-            transform: translateY(-50%);
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         .toggle-icon::after {
-            width: 3px;
-            height: 100%;
-            top: 0;
+            width: 2px;
+            height: 14px;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
         }
 
         .faq-item.active .toggle-icon::after {
-            transform: translateX(-50%) rotate(90deg);
+            transform: translate(-50%, -50%) rotate(90deg);
             opacity: 0;
         }
 
@@ -221,53 +356,87 @@
             transform: rotate(180deg);
         }
 
-        /* === Эффект градиентного текста для выделения === */
+        /* === Ответ === */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--answer-color);
+        }
+
+        .faq-answer-content {
+            padding: 0 24px 24px 24px;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.4s 0.1s;
+        }
+
+        .faq-item.active .faq-answer-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .faq-answer-content p {
+            margin-bottom: 15px;
+        }
+
+        .faq-answer-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .faq-answer-content strong {
+            color: var(--highlight-color);
+            font-weight: 600;
+        }
+
+        .faq-answer-content ul {
+            margin: 10px 0 10px 20px;
+        }
+
+        .faq-answer-content li {
+            margin-bottom: 5px;
+        }
+
+        /* === Выделенный текст === */
         .faq-highlight {
             background: var(--accent-gradient);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
             font-weight: 700;
-            text-shadow: 0 0 5px rgba(0, 195, 255, 0.5);
-            animation: shimmer 3s infinite linear;
+            position: relative;
+            display: inline-block;
         }
 
-        @keyframes shimmer {
-            0% {
-                background-position: -200% 0;
-            }
-            100% {
-                background-position: 200% 0;
-            }
+        /* === Счетчик результатов === */
+        .faq-stats {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 30px;
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
         }
 
-        /* Дополнительный фон */
-        .faq-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            background: radial-gradient(circle at center, rgba(0, 195, 255, 0.05) 0%, transparent 50%);
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.5;
-        }
-
-        /* === Плавающая кнопка "Записаться" (CTA) === */
-        .cta-container {
+        /* === Плавающая CTA кнопка === */
+        .cta-floating {
             position: fixed;
             bottom: 30px;
             right: 30px;
             z-index: 1000;
+            animation: slideInRight 0.6s ease-out 1s forwards, float 3s ease-in-out infinite 1.6s;
             opacity: 0;
-            animation: fadeIn 1s ease-out forwards 1.2s, float 3s ease-in-out infinite 2s;
+            transform: translateX(30px);
         }
 
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+        @keyframes slideInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         @keyframes float {
@@ -278,20 +447,20 @@
         .cta-button {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 15px 30px;
+            gap: 12px;
+            padding: 16px 32px;
             font-size: 1.1rem;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
-            color: var(--text-color);
+            letter-spacing: 1px;
+            color: var(--bg-color);
             background: var(--cta-gradient);
             border: none;
             border-radius: 50px;
             cursor: pointer;
             text-decoration: none;
-            box-shadow: 0 5px 20px rgba(0, 195, 255, 0.6);
+            box-shadow: 0 5px 20px rgba(0, 195, 255, 0.4);
             transition: all 0.3s ease;
-            letter-spacing: 1px;
             position: relative;
             overflow: hidden;
         }
@@ -312,7 +481,7 @@
         }
 
         .cta-button:hover {
-            box-shadow: 0 8px 30px rgba(0, 195, 255, 0.9);
+            box-shadow: 0 8px 30px rgba(0, 195, 255, 0.6);
             transform: scale(1.05);
         }
 
@@ -320,287 +489,674 @@
             transform: scale(0.98);
         }
 
-        .btn-icon {
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
+        .cta-icon {
+            font-size: 1.3rem;
+            transition: transform 0.3s;
         }
 
-        .cta-button:hover .btn-icon {
-            transform: translateX(3px);
+        .cta-button:hover .cta-icon {
+            transform: translateX(5px);
         }
 
-        /* === Пульсирующий индикатор === */
         .pulse-dot {
             position: absolute;
             top: -5px;
             right: -5px;
             width: 12px;
             height: 12px;
-            background: #ff3366;
+            background: var(--error-color);
             border-radius: 50%;
+            border: 2px solid var(--surface-color);
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
             0% {
                 transform: scale(0.8);
-                box-shadow: 0 0 0 0 rgba(255, 51, 102, 0.7);
+                box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.4);
             }
             70% {
                 transform: scale(1);
-                box-shadow: 0 0 0 10px rgba(255, 51, 102, 0);
+                box-shadow: 0 0 0 10px rgba(255, 68, 68, 0);
             }
             100% {
                 transform: scale(0.8);
-                box-shadow: 0 0 0 0 rgba(255, 51, 102, 0);
+                box-shadow: 0 0 0 0 rgba(255, 68, 68, 0);
             }
+        }
+
+        /* === Хлебные крошки === */
+        .breadcrumbs {
+            margin-bottom: 30px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumbs a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumbs a:hover {
+            color: var(--highlight-color);
+        }
+
+        .breadcrumbs span {
+            color: var(--highlight-color);
+        }
+
+        .separator {
+            margin: 0 10px;
+            color: var(--text-muted);
+        }
+
+        /* === Кнопка "Наверх" === */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--highlight-color);
+            color: var(--bg-color);
+            transform: translateY(-5px);
         }
 
         /* === Адаптивность === */
         @media (max-width: 768px) {
-            .faq-container h2 {
-                font-size: 2rem;
+            body {
+                padding: 20px 15px;
             }
-            
+
+            .faq-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .faq-subtitle {
+                font-size: 1rem;
+                padding: 0 15px;
+            }
+
             .faq-question {
                 padding: 18px 20px;
-                font-size: 1.1rem;
+                font-size: 1rem;
             }
-            
-            .cta-container {
+
+            .cta-floating {
                 bottom: 20px;
                 right: 20px;
             }
-            
+
             .cta-button {
                 padding: 12px 24px;
                 font-size: 1rem;
             }
+
+            .back-to-top {
+                bottom: 20px;
+                left: 20px;
+            }
         }
 
         @media (max-width: 480px) {
-            body {
-                padding: 20px 15px;
+            .faq-header h1 {
+                font-size: 2rem;
             }
-            
-            .faq-container h2 {
-                font-size: 1.8rem;
+
+            .faq-categories {
+                gap: 8px;
             }
-            
-            .faq-question {
-                padding: 16px 18px;
-                font-size: 1rem;
+
+            .category-btn {
+                padding: 8px 16px;
+                font-size: 0.8rem;
             }
-            
-            .faq-answer p {
-                padding: 16px 0;
+
+            .cta-floating {
+                left: 20px;
+                right: 20px;
+                bottom: 20px;
             }
-            
-            .cta-container {
-                bottom: 15px;
-                right: 15px;
-                left: 15px;
-                text-align: center;
-            }
-            
+
             .cta-button {
                 width: 100%;
                 justify-content: center;
             }
+        }
+
+        /* === Анимация загрузки === */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-left: 10px;
+            border: 2px solid var(--highlight-color);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* === Сообщение об ошибке === */
+        .error-message {
+            text-align: center;
+            padding: 40px;
+            color: var(--error-color);
+            display: none;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        .retry-btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: var(--surface-color);
+            border: 1px solid var(--error-color);
+            border-radius: 5px;
+            color: var(--error-color);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .retry-btn:hover {
+            background: var(--error-color);
+            color: var(--bg-color);
+        }
+
+        /* === Пустой результат поиска === */
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            display: none;
+        }
+
+        .no-results.visible {
+            display: block;
+        }
+
+        .reset-search {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: var(--surface-color);
+            border: 1px solid var(--highlight-color);
+            border-radius: 5px;
+            color: var(--highlight-color);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .reset-search:hover {
+            background: var(--highlight-color);
+            color: var(--bg-color);
         }
     </style>
 </head>
 
 <body>
 
-    <div class="faq-container">
-        <h2>ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ</h2>
-        <p style="text-align: center; color: #aaa; margin-top: -30px; margin-bottom: 50px; opacity: 0; animation: fadeIn 1s ease-out forwards 0.5s;">
-            Ответы на самые популярные вопросы о премиальном уходе за автомобилем.
-        </p>
+    <div class="faq-wrapper">
+        <!-- Хлебные крошки -->
+        <div class="breadcrumbs">
+            <a href="/">Главная</a>
+            <span class="separator">›</span>
+            <a href="/services">Услуги</a>
+            <span class="separator">›</span>
+            <span>FAQ</span>
+        </div>
 
-        <div class="faq-item">
-            <div class="faq-question">
-                Какие гарантийные обязательства предоставляет центр?
-                <span class="toggle-icon"></span>
+        <!-- Шапка -->
+        <div class="faq-header">
+            <h1>Часто задаваемые вопросы</h1>
+            <p class="faq-subtitle">
+                Ответы на самые популярные вопросы о премиальном уходе за автомобилем. 
+                Не нашли ответ? Свяжитесь с нами напрямую!
+            </p>
+        </div>
+
+        <!-- Поиск -->
+        <div class="faq-search">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="faqSearch" placeholder="Поиск по вопросам...">
+            <button class="search-reset" id="searchReset">✕</button>
+        </div>
+
+        <!-- Категории -->
+        <div class="faq-categories">
+            <button class="category-btn active" data-category="all">Все вопросы</button>
+            <button class="category-btn" data-category="guarantee">Гарантия</button>
+            <button class="category-btn" data-category="services">Услуги</button>
+            <button class="category-btn" data-category="payment">Оплата</button>
+            <button class="category-btn" data-category="timing">Сроки</button>
+        </div>
+
+        <!-- Список вопросов -->
+        <div class="faq-list" id="faqList">
+            <!-- Гарантия -->
+            <div class="faq-item" data-category="guarantee">
+                <div class="faq-question">
+                    <span class="question-text">Какие гарантийные обязательства предоставляет центр?</span>
+                    <span class="toggle-icon"></span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>
+                            Мы предоставляем <strong class="faq-highlight">официальную гарантию</strong> на все виды работ и материалы. 
+                            Сроки гарантии варьируются от <strong class="faq-highlight">1 года до 3 лет</strong> в зависимости от типа услуги:
+                        </p>
+                        <ul>
+                            <li><strong>Керамическое покрытие</strong> — гарантия до 3 лет</li>
+                            <li><strong>Защитная пленка</strong> — гарантия до 2 лет</li>
+                            <li><strong>Химчистка салона</strong> — гарантия 1 год</li>
+                            <li><strong>Полировка кузова</strong> — гарантия 1 год</li>
+                        </ul>
+                        <p>
+                            Мы всегда проводим тщательный осмотр и составляем детальный акт приема-передачи 
+                            с указанием всех условий гарантийного обслуживания.
+                        </p>
+                    </div>
+                </div>
             </div>
-            <div class="faq-answer">
-                <p>
-                    Мы предоставляем <strong class="faq-highlight">официальную гарантию</strong> на все виды работ и материалы. 
-                    Сроки гарантии варьируются от <strong class="faq-highlight">1 года до 3 лет</strong> в зависимости от типа услуги
-                    (например, на керамические покрытия). Мы всегда проводим тщательный осмотр и составляем 
-                    детальный акт приема-передачи с указанием всех условий.
-                </p>
+
+            <!-- Услуги -->
+            <div class="faq-item" data-category="services">
+                <div class="faq-question">
+                    <span class="question-text">Можно ли заказать выездной детейлинг?</span>
+                    <span class="toggle-icon"></span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>
+                            Да, мы предлагаем услуги <strong class="faq-highlight">выездного детейлинга</strong> для клиентов премиум-класса. 
+                            Наши мастера приедут к вам в удобное время и место с полным набором профессионального оборудования.
+                        </p>
+                        <p><strong>Условия для выездного обслуживания:</strong></p>
+                        <ul>
+                            <li>Закрытое отапливаемое помещение (температура не ниже +15°C)</li>
+                            <li>Наличие электропитания 220В</li>
+                            <li>Подвод воды (или возможность разместить запас воды 200-300л)</li>
+                            <li>Хорошее освещение</li>
+                        </ul>
+                        <p>Минимальная стоимость выездного обслуживания — от 15 000 ₽.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Оплата -->
+            <div class="faq-item" data-category="payment">
+                <div class="faq-question">
+                    <span class="question-text">Какие способы оплаты доступны?</span>
+                    <span class="toggle-icon"></span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>
+                            В нашем центре доступны следующие способы оплаты:
+                        </p>
+                        <ul>
+                            <li><strong>Банковские карты:</strong> Visa, MasterCard, МИР, American Express</li>
+                            <li><strong>Мобильные платежи:</strong> Apple Pay, Google Pay, Samsung Pay</li>
+                            <li><strong>Наличные</strong> (при наличии чека)</li>
+                            <li><strong>Безналичный расчет</strong> для юридических лиц (с НДС и без НДС)</li>
+                            <li><strong>Оплата частями</strong> от 3 до 12 месяцев</li>
+                        </ul>
+                        <p>Все платежи защищены, мы выдаем чек и гарантийный талон.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Сроки -->
+            <div class="faq-item" data-category="timing">
+                <div class="faq-question">
+                    <span class="question-text">Сколько времени занимает детейлинг?</span>
+                    <span class="toggle-icon"></span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>
+                            Время выполнения работ зависит от выбранных услуг и состояния автомобиля:
+                        </p>
+                        <ul>
+                            <li><strong>Экспресс-детейлинг</strong> — 3-4 часа</li>
+                            <li><strong>Полный детейлинг-комплекс</strong> — 1-2 дня</li>
+                            <li><strong>Полировка кузова</strong> — 1-2 дня</li>
+                            <li><strong>Нанесение керамики</strong> — 2-3 дня</li>
+                            <li><strong>Оклейка пленкой</strong> — 3-5 дней</li>
+                            <li><strong>Химчистка салона</strong> — 6-8 часов</li>
+                        </ul>
+                        <p>
+                            Точные сроки согласовываются после осмотра автомобиля. 
+                            Мы всегда держим вас в курсе статуса выполнения работ.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Детилинг vs мойка -->
+            <div class="faq-item" data-category="services">
+                <div class="faq-question">
+                    <span class="question-text">Чем детейлинг отличается от обычной мойки?</span>
+                    <span class="toggle-icon"></span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>
+                            <strong>Детейлинг</strong> — это комплексный подход к уходу за автомобилем, включающий:
+                        </p>
+                        <ul>
+                            <li>Многоэтапную бесконтактную мойку с использованием pH-нейтральной химии</li>
+                            <li>Глубокую очистку всех поверхностей (включая труднодоступные места)</li>
+                            <li>Полировку кузова для удаления царапин и восстановления блеска</li>
+                            <li>Нанесение защитных покрытий (воск, керамика, кварц)</li>
+                            <li>Чистку и обработку салона паром и специальными составами</li>
+                        </ul>
+                        <p>
+                            <strong>Обычная мойка</strong> удаляет только поверхностные загрязнения и часто оставляет микроповреждения ЛКП.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Запись -->
+            <div class="faq-item" data-category="services">
+                <div class="faq-question">
+                    <span class="question-text">Нужна ли предварительная запись?</span>
+                    <span class="toggle-icon"></span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>
+                            <strong>Да, мы работаем строго по предварительной записи</strong>. Это гарантирует, что:
+                        </p>
+                        <ul>
+                            <li>Мастер будет готов к вашему приезду</li>
+                            <li>Автомобиль получит достаточно времени для качественной обработки</li>
+                            <li>Вы не будете ждать в очереди</li>
+                        </ul>
+                        <p>
+                            Записаться можно по телефону, через WhatsApp или форму на сайте. 
+                            В экстренных случаях возможен прием без записи при наличии свободного места.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Керамика -->
+            <div class="faq-item" data-category="guarantee">
+                <div class="faq-question">
+                    <span class="question-text">Какой срок службы керамического покрытия?</span>
+                    <span class="toggle-icon"></span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>
+                            Срок службы зависит от класса керамики и условий эксплуатации:
+                        </p>
+                        <ul>
+                            <li><strong>Бюджетная керамика</strong> — 6-12 месяцев</li>
+                            <li><strong>Премиум керамика (9H)</strong> — 2-3 года</li>
+                            <li><strong>Профессиональная керамика с сертификатом</strong> — до 5 лет</li>
+                        </ul>
+                        <p>
+                            Мы используем только сертифицированные материалы от ведущих производителей 
+                            (Gyeon, Koch Chemie, CarPro) и предоставляем официальную гарантию.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Парковка -->
+            <div class="faq-item" data-category="services">
+                <div class="faq-question">
+                    <span class="question-text">Можно ли оставить авто на несколько дней?</span>
+                    <span class="toggle-icon"></span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>
+                            Да, для выполнения сложных работ (полировка, оклейка пленкой, полная химчистка) 
+                            вы можете оставить автомобиль у нас на несколько дней.
+                        </p>
+                        <p><strong>Условия хранения:</strong></p>
+                        <ul>
+                            <li>Охраняемая закрытая территория</li>
+                            <li>Видеонаблюдение 24/7</li>
+                            <li>Сигнализация и пожарная безопасность</li>
+                            <li>Автомобиль хранится в чистом боксе</li>
+                        </ul>
+                        <p>По желанию предоставляем фотоотчет о ходе работ.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Стоимость -->
+            <div class="faq-item" data-category="payment">
+                <div class="faq-question">
+                    <span class="question-text">Сколько стоит полировка кузова?</span>
+                    <span class="toggle-icon"></span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>
+                            Стоимость полировки рассчитывается индивидуально и зависит от:
+                        </p>
+                        <ul>
+                            <li><strong>Класса автомобиля:</strong> B-класс, C-класс, бизнес-класс, премиум, внедорожники</li>
+                            <li><strong>Состояния ЛКП:</strong> легкие голограммы, средние царапины, глубокие дефекты</li>
+                            <li><strong>Типа полировки:</strong> восстановительная, защитная, абразивная</li>
+                            <li><strong>Площади работ:</strong> кузов полностью, отдельные элементы</li>
+                        </ul>
+                        <p>
+                            <strong>Примерные цены:</strong> от 15 000 ₽ (седаны) до 35 000 ₽ (внедорожники). 
+                            Точную стоимость назовем после бесплатного осмотра.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="faq-item">
-            <div class="faq-question">
-                Можно ли заказать выездной детейлинг?
-                <span class="toggle-icon"></span>
-            </div>
-            <div class="faq-answer">
-                <p>
-                    Да, мы предлагаем услуги <strong class="faq-highlight">выездного детейлинга</strong> для клиентов
-                    премиум-класса. Наши мастера приедут к вам в удобное время и место с полным набором 
-                    профессионального оборудования. Обратите внимание, что для выездного обслуживания
-                    необходимы определенные условия: закрытое помещение, наличие электропитания и водоснабжения.
-                </p>
-            </div>
+        <!-- Статистика -->
+        <div class="faq-stats" id="faqStats">
+            Показано 9 из 9 вопросов
         </div>
 
-        <div class="faq-item">
-            <div class="faq-question">
-                Есть ли возможность оплаты картой или безналичным расчетом?
-                <span class="toggle-icon"></span>
-            </div>
-            <div class="faq-answer">
-                <p>
-                    Да, в нашем центре принимаются <strong class="faq-highlight">все основные виды банковских карт</strong> (Visa, MasterCard, МИР), а также
-                    доступна оплата через мобильные приложения и безналичный расчет для юридических лиц.
-                    Мы обеспечиваем максимальное удобство при оплате.
-                </p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                Сколько времени занимает полный комплекс детейлинг-услуг?
-                <span class="toggle-icon"></span>
-            </div>
-            <div class="faq-answer">
-                <p>
-                    Время зависит от выбранных услуг. Например, <strong class="faq-highlight">детейлинг-мойка</strong>
-                    занимает в среднем от <strong class="faq-highlight">1,5 до 3 часов</strong>. Более сложные процедуры, такие как
-                    полировка или нанесение керамики, могут потребовать от одного до двух полных дней. 
-                    Мы всегда заранее согласовываем <strong class="faq-highlight">точные сроки</strong> с клиентом.
-                </p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                В чем ключевое отличие детейлинга от обычной автомойки?
-                <span class="toggle-icon"></span>
-            </div>
-            <div class="faq-answer">
-                <p>
-                    Детейлинг — это <strong class="faq-highlight">многоэтапная, скрупулезная и бережная очистка</strong>
-                    всех поверхностей (кузов, салон, диски, подкапотное пространство). Мы используем 
-                    профессиональную химию и технологии, которые не только очищают, но и <strong
-                        class="faq-highlight">восстанавливают и защищают</strong> материалы. Обычная мойка же
-                    фокусируется на быстром удалении поверхностной грязи, часто оставляя микроповреждения ЛКП.
-                </p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                Необходима ли предварительная запись на обслуживание?
-                <span class="toggle-icon"></span>
-            </div>
-            <div class="faq-answer">
-                <p>
-                    <strong class="faq-highlight">Да, мы настоятельно рекомендуем записываться заранее</strong>
-                    по телефону или через сайт. Это гарантирует, что мы сможем уделить вашему автомобилю 
-                    необходимое количество времени без спешки. Прием без записи возможен, но только
-                    при наличии свободных мест.
-                </p>
-            </div>
-        </div>
-        
-        <div class="faq-item">
-            <div class="faq-question">
-                Каков срок гарантии на защитные керамические покрытия?
-                <span class="toggle-icon"></span>
-            </div>
-            <div class="faq-answer">
-                <p>
-                    Срок службы зависит от типа выбранного состава и правил эксплуатации. Обычно это от 
-                    <strong class="faq-highlight">12 до 36 месяцев</strong>. Мы работаем только с сертифицированными
-                    продуктами и предоставляем <strong class="faq-highlight">официальную гарантию</strong> от производителя
-                    и нашего центра.
-                </p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                Можно ли оставить автомобиль в центре на несколько дней?
-                <span class="toggle-icon"></span>
-            </div>
-            <div class="faq-answer">
-                <p>
-                    Конечно. Для проведения комплексных или многодневных работ (например, оклейка 
-                    антигравийной пленкой или полная химчистка) вы можете оставить свой автомобиль. 
-                    Наш центр оборудован <strong class="faq-highlight">охраняемой территорией и видеонаблюдением 24/7</strong>,
-                    обеспечивая полную сохранность вашего транспортного средства.
-                </p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                Сколько стоит профессиональная полировка кузова?
-                <span class="toggle-icon"></span>
-            </div>
-            <div class="faq-answer">
-                <p>
-                    Стоимость полировки индивидуальна и зависит от <strong class="faq-highlight">класса и размера автомобиля</strong>, 
-                    а также от <strong class="faq-highlight">состояния лакокрасочного покрытия (ЛКП)</strong>.
-                    Вам необходимо записаться на бесплатный осмотр, чтобы мы могли точно оценить объем работ
-                    и предоставить финальный расчет.
-                </p>
-            </div>
+        <!-- Сообщение "Ничего не найдено" -->
+        <div class="no-results" id="noResults">
+            <p>😕 По вашему запросу ничего не найдено</p>
+            <button class="reset-search" id="resetSearchBtn">Сбросить фильтр</button>
         </div>
     </div>
 
-    <div class="cta-container">
-        <a href="index.html#zapis" class="cta-button">
-            <span class="btn-icon">📝</span>
+    <!-- Плавающая CTA кнопка -->
+    <div class="cta-floating">
+        <a href="index.html#wrapform-section" class="cta-button">
+            <span class="cta-icon">📋</span>
             Записаться на осмотр
             <span class="pulse-dot"></span>
         </a>
     </div>
 
-    <script>
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                const currentItem = question.parentElement;
-                const isActive = currentItem.classList.contains('active');
+    <!-- Кнопка "Наверх" -->
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
 
-                // Закрываем все открытые элементы
-                document.querySelectorAll('.faq-item.active').forEach(activeItem => {
-                    if (activeItem !== currentItem) {
-                        activeItem.classList.remove('active');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            const searchInput = document.getElementById('faqSearch');
+            const searchReset = document.getElementById('searchReset');
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            const faqStats = document.getElementById('faqStats');
+            const noResults = document.getElementById('noResults');
+            const resetSearchBtn = document.getElementById('resetSearchBtn');
+            const backToTop = document.getElementById('backToTop');
+
+            let activeCategory = 'all';
+            let searchQuery = '';
+
+            // === Переключение FAQ ===
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Закрываем все открытые элементы
+                    if (!item.classList.contains('active')) {
+                        faqItems.forEach(otherItem => {
+                            otherItem.classList.remove('active');
+                        });
+                    }
+                    
+                    // Открываем/закрываем текущий
+                    item.classList.toggle('active');
+                });
+            });
+
+            // === Поиск ===
+            function filterItems() {
+                let visibleCount = 0;
+
+                faqItems.forEach(item => {
+                    const questionText = item.querySelector('.question-text').textContent.toLowerCase();
+                    const answerText = item.querySelector('.faq-answer-content').textContent.toLowerCase();
+                    const itemCategory = item.dataset.category;
+                    
+                    const matchesSearch = searchQuery === '' || 
+                        questionText.includes(searchQuery) || 
+                        answerText.includes(searchQuery);
+                    
+                    const matchesCategory = activeCategory === 'all' || itemCategory === activeCategory;
+                    
+                    if (matchesSearch && matchesCategory) {
+                        item.classList.remove('hidden');
+                        visibleCount++;
+                    } else {
+                        item.classList.add('hidden');
                     }
                 });
+
+                // Обновляем статистику
+                faqStats.textContent = `Показано ${visibleCount} из ${faqItems.length} вопросов`;
                 
-                // Открываем/закрываем текущий элемент
-                currentItem.classList.toggle('active', !isActive);
+                // Показываем/скрываем сообщение "ничего не найдено"
+                if (visibleCount === 0) {
+                    noResults.classList.add('visible');
+                } else {
+                    noResults.classList.remove('visible');
+                }
+                
+                // Показываем кнопку сброса поиска
+                if (searchQuery !== '') {
+                    searchReset.classList.add('visible');
+                } else {
+                    searchReset.classList.remove('visible');
+                }
+            }
+
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase().trim();
+                filterItems();
             });
-        });
 
-        // Добавляем анимацию при скролле
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+            searchReset.addEventListener('click', () => {
+                searchInput.value = '';
+                searchQuery = '';
+                filterItems();
+            });
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animationPlayState = 'running';
+            // === Категории ===
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Обновляем активную категорию
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    activeCategory = btn.dataset.category;
+                    filterItems();
+                });
+            });
+
+            // === Сброс поиска ===
+            resetSearchBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                searchQuery = '';
+                
+                // Сбрасываем категорию на "все"
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                document.querySelector('[data-category="all"]').classList.add('active');
+                activeCategory = 'all';
+                
+                filterItems();
+            });
+
+            // === Кнопка "Наверх" ===
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
                 }
             });
-        }, observerOptions);
 
-        // Наблюдаем за элементами FAQ
-        document.querySelectorAll('.faq-item').forEach(item => {
-            observer.observe(item);
+            backToTop.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // === Открываем первый вопрос для примера (опционально) ===
+            // faqItems[0].classList.add('active');
+
+            // === Анимация при скролле ===
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            faqItems.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'all 0.5s ease';
+                observer.observe(item);
+            });
         });
     </script>
 
 </body>
-
 </html>

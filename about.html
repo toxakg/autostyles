@@ -1,264 +1,561 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>О компании — AUTOSTYLES</title>
+  <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/about.css">
-  <link rel="stylesheet" href="css/services.css">
-   <link rel="stylesheet" href="/css/footer.css">
-    <title>О компании</title>
-    <style>
-        /* ======= Базовые стили ======= */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: "Roboto", sans-serif;
-            line-height: 1.6;
-            color: #111;
-            background-color: #1b3a04;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            padding-top: 70px; /* отступ под фиксированный хедер */
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        ul, ol {
-            list-style: none;
-        }
-
-        img {
-            max-width: 100%;
-            display: block;
-            height: auto;
-        }
-
-        main {
-            min-height: 100vh;
-        }
-
-        /* ======= Header ======= */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 70px;
-            background-color: transparent;
-            transition: background-color 0.3s ease;
-            z-index: 1000;
-        }
-
-        header.scrolled {
-            background-color: #007bff;
-        }
-
-        /* ======= Пример стилей секций ======= */
-        .section {
-            padding: 60px 20px;
-        }
-
-        .section__title {
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-
-        .section__text {
-            margin-bottom: 15px;
-        }
-
-        .team {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .team__member {
-            flex: 1 1 200px;
-            text-align: center;
-        }
-
-        .values {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .values__item {
-            flex: 1 1 200px;
-            text-align: center;
-        }
-
-        .gallery {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .gallery__img {
-            flex: 1 1 200px;
-        }
-    </style>
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
-
-     <!-- Header будет подгружен сюда -->
   <div id="header-placeholder"></div>
 
-    <!-- О компании -->
-    <section id="about" class="section section--about">
-        <div class="section__container section__container--about">
-            <h2 class="section__title">О компании</h2>
-            <p class="section__text">
-                Наша компания — это эксперт в области детейлинга автомобилей. Мы предоставляем
-                полный спектр профессиональных услуг по уходу за автомобилями, включая полировку кузова,
-                химчистку салона, защитные покрытия и реставрацию лакокрасочного покрытия. Мы используем только
-                лучшие материалы и новейшие технологии, чтобы гарантировать безупречный результат.
-            </p>
-            <p class="section__text">
-                Наши специалисты обладают многолетним опытом и регулярно проходят обучение,
-                чтобы соответствовать самым высоким стандартам качества. Мы гордимся индивидуальным подходом
-                к каждому клиенту и стремимся к тому, чтобы ваш автомобиль выглядел как новый.
-            </p>
-            <p class="section__text">
-                Мы работаем как с частными клиентами, так и с корпоративными автопарками,
-                предлагая гибкие условия сотрудничества. Наша цель — превзойти ожидания каждого клиента
-                и создать безупречный внешний вид вашего автомобиля.
-            </p>
+  <main>
+
+    <!-- ══════════════════════════════════════
+         HERO — О КОМПАНИИ
+    ══════════════════════════════════════ -->
+    <section class="about-hero">
+      <div class="about-hero__bg"></div>
+      <div class="about-hero__overlay"></div>
+      <div class="about-hero__content">
+        <span class="about-hero__label">О нас</span>
+        <h1 class="about-hero__title">
+          Эксперты детейлинга<br>
+          <span class="about-hero__accent">с 2009 года</span>
+        </h1>
+        <p class="about-hero__sub">
+          Доверие 3 000+ клиентов. Сертифицированные мастера.<br>Материалы премиум-класса.
+        </p>
+        <div class="about-hero__stats">
+          <div class="about-hero__stat"><span>15</span>лет опыта</div>
+          <div class="about-hero__stat"><span>40</span>мастеров</div>
+          <div class="about-hero__stat"><span>5</span>филиалов</div>
+          <div class="about-hero__stat"><span>3 000+</span>клиентов</div>
         </div>
+      </div>
     </section>
 
-    <!-- Наша команда -->
-    <section id="team" class="sect01 section--team">
-        <div class="section__container">
-            <h2 class="section__title">Наша команда</h2>
-            <div class="team">
-                <div class="team__member">
-                    <img src="https://avatars.mds.yandex.net/i?id=7b055dea8413521aedeff3346eae69402575ac64-3708990-images-thumbs&n=13"
-                        alt="Сотрудник 1" class="team__img">
-                    <h3 class="team__name">Иван Иванов</h3>
-                    <p class="team__position">Специалист по полировке и кузовному ремонту</p>
-                </div>
-                <div class="team__member">
-                    <img src="https://avatars.mds.yandex.net/i?id=4cdd68978c19f17366c8571057713f5756c3f4e3-4012861-images-thumbs&n=13"
-                        alt="Сотрудник 2" class="team__img">
-                    <h3 class="team__name">Алексей Петров</h3>
-                    <p class="team__position">Мастер по интерьеру и салону</p>
-                </div>
-                <div class="team__member">
-                    <img src="https://avatars.mds.yandex.net/i?id=60de4a63fe810a8a8a69e745d340032949c56141-12209413-images-thumbs&n=13"
-                        alt="Сотрудник 3" class="team__img">
-                    <h3 class="team__name">Максим Огородник</h3>
-                    <p class="team__position">Менеджер по работе с клиентами</p>
-                </div>
+    <!-- ══════════════════════════════════════
+         О КОМПАНИИ — текст
+    ══════════════════════════════════════ -->
+    <section id="about" class="about-story">
+      <div class="ab-container">
+        <div class="about-story__grid">
+          <div class="about-story__text" data-reveal>
+            <span class="ab-label">История</span>
+            <h2 class="ab-title">Больше, чем просто мойка</h2>
+            <p>Наша компания — эксперт в области детейлинга автомобилей. Мы предоставляем полный спектр профессиональных услуг по уходу за автомобилями, включая полировку кузова, химчистку салона, защитные покрытия и реставрацию лакокрасочного покрытия.</p>
+            <p>Мы используем только лучшие материалы и новейшие технологии, чтобы гарантировать безупречный результат. Наши специалисты регулярно проходят обучение, чтобы соответствовать самым высоким стандартам качества.</p>
+            <p>Работаем как с частными клиентами, так и с корпоративными автопарками, предлагая гибкие условия сотрудничества. Наша цель — превзойти ожидания каждого клиента.</p>
+            <a href="#cta" class="ab-btn">Записаться на консультацию <i class="fas fa-arrow-right"></i></a>
+          </div>
+          <div class="about-story__imgs" data-reveal>
+            <div class="about-story__img-big">
+              <img src="https://avatars.mds.yandex.net/i?id=b95a05029dcc8007733ec5de983b2da01fe1c7a3-5368846-images-thumbs&n=13" alt="Детейлинг">
             </div>
-        </div>
-    </section>
-
-    <!-- Ценности компании -->
-    <section id="values" class="section section--values">
-        <div class="section__container">
-            <h2 class="section__title">Наши ценности</h2>
-            <div class="values">
-                <div class="values__item">
-                    <h3 class="values__title">Качество</h3>
-                    <p class="values__text">Мы гарантируем высокий уровень всех услуг, что подтверждается множеством
-                        довольных клиентов.</p>
-                </div>
-                <div class="values__item">
-                    <h3 class="values__title">Ответственность</h3>
-                    <p class="values__text">Мы всегда выполняем работу в срок и с максимальной внимательностью к
-                        деталям.</p>
-                </div>
-                <div class="values__item">
-                    <h3 class="values__title">Инновации</h3>
-                    <p class="values__text">Мы постоянно внедряем новые технологии и используем только современные
-                        материалы.</p>
-                </div>
+            <div class="about-story__img-small">
+              <img src="https://avatars.mds.yandex.net/i?id=cbbec1425d57c7cd6d0434498dde9ab881b492de-12482641-images-thumbs&n=13" alt="Работа мастера">
+              <div class="about-story__badge">
+                <i class="fas fa-award"></i>
+                <span>Gyeon<br>Certified</span>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- Галерея работ -->
-    <section id="gallery" class="section section--gallery">
-        <div class="section__container">
-            <h2 class="section__title">Наши работы</h2>
-            <div class="gallery">
-                <img src="https://avatars.mds.yandex.net/i?id=b95a05029dcc8007733ec5de983b2da01fe1c7a3-5368846-images-thumbs&n=13"
-                    alt="Работа 1" class="gallery__img">
-                <img src="https://avatars.mds.yandex.net/i?id=cbbec1425d57c7cd6d0434498dde9ab881b492de-12482641-images-thumbs&n=13"
-                    alt="Работа 2" class="gallery__img">
-                <img src="https://avatars.mds.yandex.net/i?id=ea579f44185e508739edc83f5a169d9d706bfb15-9657618-images-thumbs&n=13"
-                    alt="Работа 3" class="gallery__img">
+    <!-- ══════════════════════════════════════
+         1. ПРЕИМУЩЕСТВА
+    ══════════════════════════════════════ -->
+    <section id="advantages" class="advantages">
+      <div class="ab-container">
+        <div class="ab-section-head" data-reveal>
+          <span class="ab-label">Почему мы</span>
+          <h2 class="ab-title">Конкурентные преимущества</h2>
+          <p class="ab-sub">Мы не просто моем машины — мы возвращаем им жизнь</p>
+        </div>
+        <div class="advantages__grid">
+          <div class="adv-card" data-reveal data-delay="0">
+            <div class="adv-card__icon"><i class="fas fa-microscope"></i></div>
+            <h3>Диагностика ЛКП</h3>
+            <p>Перед работой снимаем показания толщиномером и pH-метром. Вы знаете состояние машины до и после — в цифрах.</p>
+            <div class="adv-card__tag">Точные измерения</div>
+          </div>
+          <div class="adv-card adv-card--accent" data-reveal data-delay="100">
+            <div class="adv-card__icon"><i class="fas fa-gem"></i></div>
+            <h3>Материалы Gyeon, CarPro</h3>
+            <p>Только сертифицированные составы мировых брендов. Керамика и защита служат в 2–3 раза дольше масс-маркета.</p>
+            <div class="adv-card__tag">Премиум класс</div>
+          </div>
+          <div class="adv-card" data-reveal data-delay="200">
+            <div class="adv-card__icon"><i class="fas fa-file-contract"></i></div>
+            <h3>Фиксированная цена</h3>
+            <p>Заключаем договор с прописанной стоимостью. Никаких доплат «по ходу дела» — вы защищены на 100%.</p>
+            <div class="adv-card__tag">Прозрачно</div>
+          </div>
+          <div class="adv-card" data-reveal data-delay="300">
+            <div class="adv-card__icon"><i class="fas fa-camera"></i></div>
+            <h3>Онлайн-фотоотчёт</h3>
+            <p>20–40 фото каждого этапа работы в личный кабинет в реальном времени. Ваш автомобиль всегда под контролем.</p>
+            <div class="adv-card__tag">24/7 доступ</div>
+          </div>
+          <div class="adv-card adv-card--accent" data-reveal data-delay="400">
+            <div class="adv-card__icon"><i class="fas fa-shield-alt"></i></div>
+            <h3>Гарантия в договоре</h3>
+            <p>До 5 лет на керамику, до 10 лет на плёнку. Письменная гарантия, а не устные обещания.</p>
+            <div class="adv-card__tag">До 10 лет</div>
+          </div>
+          <div class="adv-card" data-reveal data-delay="500">
+            <div class="adv-card__icon"><i class="fas fa-user-tie"></i></div>
+            <h3>Сертифицированные мастера</h3>
+            <p>Все специалисты прошли обучение у брендов Gyeon и CarPro. Знают нюансы, которые скрыты в инструкции.</p>
+            <div class="adv-card__tag">Certif. Pro</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         2. ПРОЦЕСС РАБОТЫ
+    ══════════════════════════════════════ -->
+    <section id="process" class="process">
+      <div class="ab-container">
+        <div class="ab-section-head" data-reveal>
+          <span class="ab-label">Как работаем</span>
+          <h2 class="ab-title">Процесс от А до Я</h2>
+          <p class="ab-sub">Чёткий алгоритм — залог идеального результата</p>
+        </div>
+        <div class="process__steps">
+          <div class="proc-step" data-reveal data-delay="0">
+            <div class="proc-step__num">01</div>
+            <div class="proc-step__body">
+              <div class="proc-step__icon"><i class="fas fa-car"></i></div>
+              <h3>Осмотр и диагностика</h3>
+              <p>Бесплатный детальный осмотр с замерами толщиномером, оценкой кузова и салона. Составляем дефектную ведомость с фотофиксацией.</p>
+              <ul>
+                <li><i class="fas fa-check"></i> Проверка толщиномером</li>
+                <li><i class="fas fa-check"></i> Фотофиксация состояния</li>
+                <li><i class="fas fa-check"></i> Консультация мастера</li>
+              </ul>
             </div>
+          </div>
+          <div class="proc-step" data-reveal data-delay="100">
+            <div class="proc-step__num">02</div>
+            <div class="proc-step__body">
+              <div class="proc-step__icon"><i class="fas fa-file-signature"></i></div>
+              <h3>Согласование и договор</h3>
+              <p>Подробная смета с фиксированной ценой. Заключаем договор с гарантией. Предоплата — только после полного согласования.</p>
+              <ul>
+                <li><i class="fas fa-check"></i> Прозрачная смета</li>
+                <li><i class="fas fa-check"></i> Фиксированная цена</li>
+                <li><i class="fas fa-check"></i> Гарантийный договор</li>
+              </ul>
+            </div>
+          </div>
+          <div class="proc-step" data-reveal data-delay="200">
+            <div class="proc-step__num">03</div>
+            <div class="proc-step__body">
+              <div class="proc-step__icon"><i class="fas fa-tools"></i></div>
+              <h3>Подготовка и работа</h3>
+              <p>Профессиональная мойка, обезжиривание, маскировка. Выполнение заказанных услуг с поэтапным фотоотчётом в Telegram.</p>
+              <ul>
+                <li><i class="fas fa-check"></i> Поэтапный фотоотчёт</li>
+                <li><i class="fas fa-check"></i> Контроль качества</li>
+                <li><i class="fas fa-check"></i> Онлайн-наблюдение</li>
+              </ul>
+            </div>
+          </div>
+          <div class="proc-step" data-reveal data-delay="300">
+            <div class="proc-step__num">04</div>
+            <div class="proc-step__body">
+              <div class="proc-step__icon"><i class="fas fa-search"></i></div>
+              <h3>Контроль качества</h3>
+              <p>Проверка под разными углами и освещением. Тест на гидрофобность. Финальная полировка и детальная инспекция.</p>
+              <ul>
+                <li><i class="fas fa-check"></i> УФ-проверка</li>
+                <li><i class="fas fa-check"></i> Тест гидрофобности</li>
+                <li><i class="fas fa-check"></i> Финальная инспекция</li>
+              </ul>
+            </div>
+          </div>
+          <div class="proc-step" data-reveal data-delay="400">
+            <div class="proc-step__num">05</div>
+            <div class="proc-step__body">
+              <div class="proc-step__icon"><i class="fas fa-key"></i></div>
+              <h3>Передача автомобиля</h3>
+              <p>Демонстрация результата, инструктаж по уходу. Гарантийные документы и остатки материалов — в ваши руки.</p>
+              <ul>
+                <li><i class="fas fa-check"></i> Демонстрация результата</li>
+                <li><i class="fas fa-check"></i> Инструктаж по уходу</li>
+                <li><i class="fas fa-check"></i> Гарантийные документы</li>
+              </ul>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
- <div id="footer-placeholder"></div>
-<script src="./js/main.js"></script>
-    <!-- JS -->
-    <script>
-    // 1. Подгружаем header.html
-    fetch('/header.html')
-        .then(response => {
-            if (!response.ok) {
-                // Если файл не найден, выводим ошибку (для отладки)
-                throw new Error('Header file not found'); 
-            }
-            return response.text();
-        })
-        .then(data => {
-            const headerPlaceholder = document.getElementById('header');
-            
-            // Заменяем div#header на загруженное содержимое
-            headerPlaceholder.innerHTML = data;
+    <!-- ══════════════════════════════════════
+         3. ДО / ПОСЛЕ
+    ══════════════════════════════════════ -->
+    <section id="before-after" class="ba-section">
+      <div class="ab-container">
+        <div class="ab-section-head" data-reveal>
+          <span class="ab-label">Результаты</span>
+          <h2 class="ab-title">До и После</h2>
+          <p class="ab-sub">Потяните ползунок и убедитесь сами — фотошоп запрещён</p>
+        </div>
+        <div class="ba-grid">
 
-            // Находим реальный элемент <header> после его инъекции
-            const realHeader = headerPlaceholder.querySelector('header');
+          <div class="ba-card" data-reveal data-delay="0">
+            <div class="ba-card__slider">
+              <img class="ba-after"  src="https://www.vanswest.com.au/wp-content/uploads/2025/01/eTH56wne3Ee_x_oUJFs1WKjqjPBomrwGVAM7Ae13zIk9ccfs9vBZL0N10xEX-P1l7txoxBQS-A8PSCC9SCmAFU5VzulR9agShKj32rvkbLw-1024x768.jpg" alt="После">
+              <div class="ba-before">
+                <img src="https://i.pinimg.com/736x/f7/d3/a3/f7d3a3a45091fd5046228c039dc04d45.jpg" alt="До">
+              </div>
+              <input type="range" min="0" max="100" value="50" class="ba-range" aria-label="До/После">
+              <span class="ba-divider"></span>
+              <div class="ba-handle"><i class="fas fa-arrows-alt-h"></i></div>
+              <span class="ba-tag ba-tag--before">ДО</span>
+              <span class="ba-tag ba-tag--after">ПОСЛЕ</span>
+            </div>
+            <div class="ba-card__info">
+              <h3>Оклейка виниловой плёнкой</h3>
+              <p>Mercedes AMG GT · 4 дня работы</p>
+            </div>
+          </div>
 
-            if (realHeader) {
-                // 2. Логика скролла для смены фона
-                const handleScroll = () => {
-                    // Используем window.scrollY для более точного определения
-                    if (window.scrollY > 80) { // Высота хедера - 80px
-                        realHeader.classList.add('scrolled');
-                    } else {
-                        realHeader.classList.remove('scrolled');
-                    }
-                };
-                
-                // Инициализируем проверку сразу
-                handleScroll(); 
-                
-                // Прикрепляем слушателя события
-                window.addEventListener('scroll', handleScroll);
-            }
-        })
-        .catch(error => console.error('Error loading header:', error));
+          <div class="ba-card" data-reveal data-delay="150">
+            <div class="ba-card__slider">
+              <img class="ba-after" src="https://avatars.mds.yandex.net/i?id=41edcba30ec1ccf63bd6a24c0e84dcbf3be9e196-4283943-images-thumbs&n=13" alt="После">
+              <div class="ba-before">
+                <img src="https://avatars.mds.yandex.net/i?id=5d20005d7f1eca4725eed6e48216c23e726e9f50-5314608-images-thumbs&n=13" alt="До">
+              </div>
+              <input type="range" min="0" max="100" value="50" class="ba-range" aria-label="До/После">
+              <span class="ba-divider"></span>
+              <div class="ba-handle"><i class="fas fa-arrows-alt-h"></i></div>
+              <span class="ba-tag ba-tag--before">ДО</span>
+              <span class="ba-tag ba-tag--after">ПОСЛЕ</span>
+            </div>
+            <div class="ba-card__info">
+              <h3>Полировка кузова + керамика</h3>
+              <p>BMW X5 · 2 дня работы</p>
+            </div>
+          </div>
 
-    // 3. Подгружаем footer.html
-    fetch('/footer.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('footer').innerHTML = data;
-        });
-</script>
+          <div class="ba-card" data-reveal data-delay="300">
+            <div class="ba-card__slider">
+              <img class="ba-after" src="https://avatars.mds.yandex.net/i?id=ca2e637ce246e7bd7235f403bb29a5b2171495c3-5334387-images-thumbs&n=13" alt="После">
+              <div class="ba-before">
+                <img src="https://avatars.mds.yandex.net/i?id=8824d2d0f579c4648f0f395f24bbc2c4a32c1835-12884912-images-thumbs&n=13" alt="До">
+              </div>
+              <input type="range" min="0" max="100" value="50" class="ba-range" aria-label="До/После">
+              <span class="ba-divider"></span>
+              <div class="ba-handle"><i class="fas fa-arrows-alt-h"></i></div>
+              <span class="ba-tag ba-tag--before">ДО</span>
+              <span class="ba-tag ba-tag--after">ПОСЛЕ</span>
+            </div>
+            <div class="ba-card__info">
+              <h3>Химчистка и детейлинг салона</h3>
+              <p>Porsche 911 · 1–2 дня работы</p>
+            </div>
+          </div>
 
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         4. НАША КОМАНДА
+    ══════════════════════════════════════ -->
+    <section id="team" class="team-section">
+      <div class="ab-container">
+        <div class="ab-section-head" data-reveal>
+          <span class="ab-label">Люди</span>
+          <h2 class="ab-title">Наша команда</h2>
+          <p class="ab-sub">40 специалистов — каждый сертифицирован и влюблён в автомобили</p>
+        </div>
+        <div class="team-grid">
+          <div class="team-card" data-reveal data-delay="0">
+            <div class="team-card__img">
+              <img src="https://avatars.mds.yandex.net/i?id=7b055dea8413521aedeff3346eae69402575ac64-3708990-images-thumbs&n=13" alt="Иван Иванов">
+              <div class="team-card__cert"><i class="fas fa-certificate"></i> Gyeon Pro</div>
+            </div>
+            <div class="team-card__body">
+              <h3>Иван Иванов</h3>
+              <p>Специалист по полировке и кузовному ремонту</p>
+              <div class="team-card__exp"><span>8 лет</span> опыта</div>
+            </div>
+          </div>
+          <div class="team-card" data-reveal data-delay="100">
+            <div class="team-card__img">
+              <img src="https://avatars.mds.yandex.net/i?id=4cdd68978c19f17366c8571057713f5756c3f4e3-4012861-images-thumbs&n=13" alt="Алексей Петров">
+              <div class="team-card__cert"><i class="fas fa-certificate"></i> CarPro Cert</div>
+            </div>
+            <div class="team-card__body">
+              <h3>Алексей Петров</h3>
+              <p>Мастер по интерьеру и перетяжке салона</p>
+              <div class="team-card__exp"><span>6 лет</span> опыта</div>
+            </div>
+          </div>
+          <div class="team-card" data-reveal data-delay="200">
+            <div class="team-card__img">
+              <img src="https://avatars.mds.yandex.net/i?id=60de4a63fe810a8a8a69e745d340032949c56141-12209413-images-thumbs&n=13" alt="Максим Огородник">
+              <div class="team-card__cert"><i class="fas fa-star"></i> Top Manager</div>
+            </div>
+            <div class="team-card__body">
+              <h3>Максим Огородник</h3>
+              <p>Менеджер по работе с клиентами</p>
+              <div class="team-card__exp"><span>5 лет</span> опыта</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         5. ОТЗЫВЫ
+    ══════════════════════════════════════ -->
+    <section id="reviews-about" class="reviews-about">
+      <div class="ab-container">
+        <div class="ab-section-head" data-reveal>
+          <span class="ab-label">Доверие</span>
+          <h2 class="ab-title">Что говорят клиенты</h2>
+          <p class="ab-sub">Реальные отзывы — без редактирования и заказных слов</p>
+        </div>
+        <div class="rev-grid">
+
+          <div class="rev-card" data-reveal data-delay="0">
+            <div class="rev-card__top">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt="Александр">
+              <div>
+                <h4>Александр Петров</h4>
+                <span>Mercedes GLE 2023</span>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+              </div>
+              <div class="rev-card__src"><i class="fab fa-google"></i> Google</div>
+            </div>
+            <p class="rev-card__text">«Делал керамику на новый GLE. Ребята работали 3 дня, я следил за процессом в телеграме — фото каждого этапа. Прошло 3 месяца, мою водой и машина как с салона.»</p>
+            <div class="rev-card__highlight">Соседи думают, что я натираю каждый день 😄</div>
+            <div class="rev-card__img"><img src="https://top-tuning.ru/upload/images/news/110640/keramika_kuzova_okleika_far_merceds_gle_coupe_w167_5_03.jpg" alt="Результат"></div>
+          </div>
+
+          <div class="rev-card" data-reveal data-delay="150">
+            <div class="rev-card__top">
+              <img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=80&h=80&fit=crop&crop=face" alt="Игорь">
+              <div>
+                <h4>Игорь Сафронов</h4>
+                <span>Audi RS6</span>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+              </div>
+              <div class="rev-card__src"><i class="fab fa-yandex"></i> Яндекс</div>
+            </div>
+            <p class="rev-card__text">«Был притёрт задний бампер и крыло — попали в цвет идеально, переходов не видно вообще. Мастер сказал "найдёшь место — не плати". Я искал долго. Не нашёл.»</p>
+            <div class="rev-card__highlight">Мастер сказал «найдёшь место — не плати» 😄</div>
+            <div class="rev-card__img"><img src="https://kolesa-photos.kcdn.online/kolesa-newautomodels/61e638f909d2360027243db2/1/full.jpg" alt="Результат"></div>
+          </div>
+
+          <div class="rev-card" data-reveal data-delay="300">
+            <div class="rev-card__top">
+              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face" alt="Дмитрий">
+              <div>
+                <h4>Дмитрий Волков</h4>
+                <span>BMW X5 xDrive40i</span>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+              </div>
+              <div class="rev-card__src"><i class="fas fa-map-marker-alt"></i> 2GIS</div>
+            </div>
+            <p class="rev-card__text">«Поклеили полную защиту Xpel на весь кузов. Через месяц по работе поехал в область — камешки летели. Дома с фонариком смотрел — ни одного скола!»</p>
+            <div class="rev-card__highlight">Плёнка вся в вмятинах, но краска цела. Заменили по гарантии.</div>
+            <div class="rev-card__img"><img src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=700&q=80" alt="Результат"></div>
+          </div>
+
+        </div>
+
+        <!-- Рейтинг -->
+        <div class="rev-rating" data-reveal>
+          <div class="rev-rating__item">
+            <span class="rev-rating__num">4.9</span>
+            <span class="rev-rating__label">Рейтинг Google</span>
+            <span class="rev-rating__sub">127 оценок</span>
+          </div>
+          <div class="rev-rating__item">
+            <span class="rev-rating__num">96%</span>
+            <span class="rev-rating__label">Рекомендуют нас</span>
+            <span class="rev-rating__sub">опрос клиентов</span>
+          </div>
+          <div class="rev-rating__item">
+            <span class="rev-rating__num">89</span>
+            <span class="rev-rating__label">Отзывов с фото</span>
+            <span class="rev-rating__sub">без ретуши</span>
+          </div>
+          <div class="rev-rating__item">
+            <span class="rev-rating__num">42</span>
+            <span class="rev-rating__label">Видео-отзывов</span>
+            <span class="rev-rating__sub">снято клиентами</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         ЦЕННОСТИ
+    ══════════════════════════════════════ -->
+    <section id="values" class="values-section">
+      <div class="ab-container">
+        <div class="ab-section-head" data-reveal>
+          <span class="ab-label">Принципы</span>
+          <h2 class="ab-title">Наши ценности</h2>
+        </div>
+        <div class="values-grid">
+          <div class="val-card" data-reveal data-delay="0">
+            <div class="val-card__icon"><i class="fas fa-medal"></i></div>
+            <h3>Качество</h3>
+            <p>Гарантируем высокий уровень всех услуг, что подтверждается тысячами довольных клиентов за 15 лет работы.</p>
+          </div>
+          <div class="val-card" data-reveal data-delay="100">
+            <div class="val-card__icon"><i class="fas fa-handshake"></i></div>
+            <h3>Ответственность</h3>
+            <p>Выполняем работу в срок с максимальной внимательностью к деталям. Договор — наш главный инструмент.</p>
+          </div>
+          <div class="val-card" data-reveal data-delay="200">
+            <div class="val-card__icon"><i class="fas fa-lightbulb"></i></div>
+            <h3>Инновации</h3>
+            <p>Постоянно внедряем новые технологии и используем только современные материалы мирового уровня.</p>
+          </div>
+          <div class="val-card" data-reveal data-delay="300">
+            <div class="val-card__icon"><i class="fas fa-heart"></i></div>
+            <h3>Забота</h3>
+            <p>Работаем с каждой машиной так, как сделали бы для своей. Это наш главный принцип, а не строчка в рекламе.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         ГАЛЕРЕЯ
+    ══════════════════════════════════════ -->
+    <section id="gallery" class="gallery-section">
+      <div class="ab-container">
+        <div class="ab-section-head" data-reveal>
+          <span class="ab-label">Портфолио</span>
+          <h2 class="ab-title">Наши работы</h2>
+          <p class="ab-sub">Реальные автомобили. Реальный результат. Без фотошопа.</p>
+        </div>
+        <div class="gallery-masonry" data-reveal>
+          <div class="gal-item gal-item--tall">
+            <img src="https://avatars.mds.yandex.net/i?id=b95a05029dcc8007733ec5de983b2da01fe1c7a3-5368846-images-thumbs&n=13" alt="Работа 1">
+            <div class="gal-item__overlay"><span>Оклейка плёнкой</span></div>
+          </div>
+          <div class="gal-item">
+            <img src="https://avatars.mds.yandex.net/i?id=cbbec1425d57c7cd6d0434498dde9ab881b492de-12482641-images-thumbs&n=13" alt="Работа 2">
+            <div class="gal-item__overlay"><span>Полировка кузова</span></div>
+          </div>
+          <div class="gal-item">
+            <img src="https://avatars.mds.yandex.net/i?id=ea579f44185e508739edc83f5a169d9d706bfb15-9657618-images-thumbs&n=13" alt="Работа 3">
+            <div class="gal-item__overlay"><span>Керамическое покрытие</span></div>
+          </div>
+          <div class="gal-item gal-item--wide">
+            <img src="https://avatars.mds.yandex.net/i?id=41edcba30ec1ccf63bd6a24c0e84dcbf3be9e196-4283943-images-thumbs&n=13" alt="Работа 4">
+            <div class="gal-item__overlay"><span>Детейлинг</span></div>
+          </div>
+          <div class="gal-item">
+            <img src="https://avatars.mds.yandex.net/i?id=ca2e637ce246e7bd7235f403bb29a5b2171495c3-5334387-images-thumbs&n=13" alt="Работа 5">
+            <div class="gal-item__overlay"><span>Малярные работы</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         6. ПРИЗЫВ К ДЕЙСТВИЮ (CTA)
+    ══════════════════════════════════════ -->
+    <section id="cta" class="cta-section">
+      <div class="cta-section__bg"></div>
+      <div class="ab-container">
+        <div class="cta-inner" data-reveal>
+          <span class="ab-label">Действуйте</span>
+          <h2>Готовы преобразить ваш автомобиль?</h2>
+          <p>Запишитесь на бесплатную диагностику. Ответим за 10 минут, подберём оптимальное решение, зафиксируем цену в договоре.</p>
+
+          <div class="cta-messengers">
+            <a href="https://wa.me/996555123456" class="cta-wa" target="_blank">
+              <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+            <a href="https://t.me/studio_wrap" class="cta-tg" target="_blank">
+              <i class="fab fa-telegram"></i> Telegram
+            </a>
+          </div>
+
+          <div class="cta-form">
+            <input type="text"  placeholder="Ваше имя" class="cta-input">
+            <input type="tel"   placeholder="+996 (___) ___-___" class="cta-input">
+            <select class="cta-input">
+              <option value="" disabled selected>Выберите услугу</option>
+              <option>Оклейка плёнкой</option>
+              <option>Полировка</option>
+              <option>Керамическое покрытие</option>
+              <option>Детейлинг уход</option>
+              <option>Малярные работы</option>
+              <option>Перетяжка салона</option>
+            </select>
+            <button class="cta-submit">
+              <i class="fas fa-calendar-check"></i> Записаться бесплатно
+            </button>
+          </div>
+
+          <div class="cta-trust">
+            <span><i class="fas fa-check-circle"></i> Бесплатная консультация</span>
+            <span><i class="fas fa-check-circle"></i> Ответ за 10 минут</span>
+            <span><i class="fas fa-check-circle"></i> Цена фиксируется в договоре</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="js/header.js" defer></script>
+  <script src="js/main.js"></script>
+  <script>
+    // ── Scroll reveal ─────────────────────────
+    const revealEls = document.querySelectorAll('[data-reveal]');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const delay = e.target.dataset.delay || 0;
+          setTimeout(() => e.target.classList.add('revealed'), +delay);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+
+    // ── Before/After sliders ──────────────────
+    document.querySelectorAll('.ba-card__slider').forEach(slider => {
+      const range   = slider.querySelector('.ba-range');
+      const before  = slider.querySelector('.ba-before');
+      const divider = slider.querySelector('.ba-divider');
+      const handle  = slider.querySelector('.ba-handle');
+
+      function update(val) {
+        const pct = val + '%';
+        before.style.width   = pct;
+        divider.style.left   = pct;
+        handle.style.left    = pct;
+      }
+
+      range.addEventListener('input', () => update(range.value));
+      update(50);
+    });
+  </script>
 </body>
-
 </html>
