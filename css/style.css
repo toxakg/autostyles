@@ -696,7 +696,7 @@ main { background: var(--bg); }
 /* Before/After slider */
 .before-after {
   position: relative;
-  height: 260px;
+  height: 600px;
   overflow: hidden;
   user-select: none;
   background: var(--bg-4);

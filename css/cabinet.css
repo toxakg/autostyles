@@ -1237,6 +1237,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     overflow: hidden;
     transition: all 0.3s ease;
     z-index: 1000;
+    margin-top:20px ;
 }
 
 .chat-widget.expanded {

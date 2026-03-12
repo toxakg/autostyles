@@ -1,102 +1,179 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/footer.css">
-  <title>
-    <footer></footer>
-  </title>
-</head>
+  <title>AutoStyle Detailing — Футер</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Mulish:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+  
+</head>
 <body>
 
-
-
-
-
-  <section>
-    <footer>
-      <div class="footer-container">
-        <!-- Контактная информация -->
-        <div id="contacts" class="footer-contact">
-          <h4>Контакты</h4>
-
-          <p>
-            <i class="fa-solid fa-phone"></i>&nbsp;&nbsp;
-            <a href="tel:+996555070707">Телефон: +996 (555) 07-07-07</a>
-          </p>
-
-          <p>
-            <i class="fa-solid fa-envelope"></i>&nbsp;&nbsp;
-            <a href="mailto:info@Autosyles.kg">Email: info@Autosyles.kg</a>
-          </p>
-
-          <p>
-            <i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;
-            <a href="https://www.google.com/maps/search/?api=1&query=Бишкек, ул. Юлиуса Фучика 1, ул. Исакеева 4/3"
-              target="_blank" rel="noopener noreferrer">
-              Адрес: Бишкек, ул. Юлиуса Фучика 1 / ул. Исакеева 4/3
-            </a>
-          </p>
-
-          <p><i class="fa-solid fa-clock-rotate-left"></i>&nbsp;&nbsp;Часы работы: Пн-Пт с 9:00 до 18:00</p>
-        </div>
-
-        <!-- Социальные сети -->
-        <div class="footer-social">
-          <h4>Следите за нами</h4>
-          <div class="socials_icons">
-            <!-- WhatsApp -->
-            <a href="https://wa.me/996996555730615" class="social-icon" aria-label="WhatsApp" target="_blank">
-              <i class="fab fa-whatsapp"></i>
-            </a>
-
-            <!-- Instagram -->
-            <a href="https://www.instagram.com/t.m.a_kg/" class="social-icon" aria-label="Instagram" target="_blank">
-              <i class="fab fa-instagram"></i>
-            </a>
-
-            <!-- Telegram -->
-            <a href="https://t.me/996996555730615" class="social-icon" aria-label="Telegram" target="_blank">
-              <i class="fab fa-telegram"></i>
-            </a>
+<footer class="footer">
+  <div class="footer-container">
+    <!-- Основная сетка -->
+    <div class="footer-grid">
+      
+      <!-- КОНТАКТЫ И БРЕНД -->
+      <div class="footer-card">
+        <div class="brand-logo">Auto<span>Style</span></div>
+        <div class="brand-tagline">Detailing Center · Bishkek</div>
+        <p class="brand-description">Профессиональный детейлинг, полировка, керамика и защита для премиальных автомобилей.</p>
+        
+        <div class="contact-list" style="margin-top: 2rem;">
+          <!-- Телефон -->
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
+            <div class="contact-content">
+              <div class="contact-label">Телефон</div>
+              <a href="tel:+996555070707" class="contact-value">+996 (555) 07-07-07</a>
+            </div>
+          </div>
+          
+          <!-- Email -->
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+            <div class="contact-content">
+              <div class="contact-label">Email</div>
+              <a href="mailto:info@Autostyles.kg" class="contact-value">info@Autostyles.kg</a>
+            </div>
+          </div>
+          
+          <!-- Адрес -->
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="contact-content">
+              <div class="contact-label">Адрес</div>
+              <a href="https://maps.google.com/?q=Бишкек+ул.+Юлиуса+Фучика+1" 
+                 target="_blank" class="contact-value">
+                ул. Юлиуса Фучика 1 / Исакеева 4/3
+              </a>
+            </div>
+          </div>
+          
+          <!-- Часы работы -->
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fa-solid fa-clock"></i></div>
+            <div class="contact-content">
+              <div class="contact-label">Режим работы</div>
+              <div class="hours-wrapper">
+                <span class="contact-value">Пн–Пт, 09:00–18:00</span>
+                <span class="status-badge" id="status">
+                  <span class="status-dot" id="statusDot"></span>
+                  <span id="statusText">Проверка...</span>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-
-        <!-- Навигация по сайту -->
-        <div class="footer-nav">
-          <h4>Навигация</h4>
-          <ul>
-
-            <li><a href="/about.html">О нас</a></li>
-
-            <li><a href="/faq.html">FAQ</a></li>
-          </ul>
+      <!-- СОЦИАЛЬНЫЕ СЕТИ -->
+      <div class="footer-card">
+        <h3 class="card-title">Соцсети</h3>
+        <div class="social-grid">
+          <a href="https://wa.me/996555070707" class="social-btn whatsapp" target="_blank">
+            <i class="fab fa-whatsapp"></i>
+            <span class="social-label">WhatsApp</span>
+            <span class="social-sub">Написать</span>
+          </a>
+          
+          <a href="https://www.instagram.com/t.m.a_kg/" class="social-btn instagram" target="_blank">
+            <i class="fab fa-instagram"></i>
+            <span class="social-label">Instagram</span>
+            <span class="social-sub">Подписаться</span>
+          </a>
+          
+          <a href="https://t.me/996555070707" class="social-btn telegram" target="_blank">
+            <i class="fab fa-telegram"></i>
+            <span class="social-label">Telegram</span>
+            <span class="social-sub">Канал</span>
+          </a>
         </div>
+      </div>
 
+      <!-- НАВИГАЦИЯ -->
+      <div class="footer-card">
+        <h3 class="card-title">Навигация</h3>
+        <nav class="nav-links">
+          <a href="/index.html" class="nav-link"><i class="fa-solid fa-chevron-right"></i> Главная</a>
+          <a href="/about.html" class="nav-link"><i class="fa-solid fa-chevron-right"></i> О нас</a>
+          <a href="index.html#productContainer" class="nav-link"><i class="fa-solid fa-chevron-right"></i> Услуги</a>
+          <a href="about.html#gallery" class="nav-link"><i class="fa-solid fa-chevron-right"></i> Галерея</a>
+          <a href="/faq.html" class="nav-link"><i class="fa-solid fa-chevron-right"></i> FAQ</a>
+          <a href="/about.html" class="nav-link"><i class="fa-solid fa-chevron-right"></i> Контакты</a>
+        </nav>
+      </div>
 
-        <div class="footer-map">
-          <h4>Наше местоположение</h4>
+      <!-- КАРТА -->
+      <div class="footer-card">
+        <h3 class="card-title">Мы на карте</h3>
+        <div class="map-wrapper">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1325.0000000000002!2d74.66539099646822!3d42.85857324655534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2s!4v1695647380000!5m2!1sru!2s"
-            width="600" height="400" style="border:0;" allowfullscreen="" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade">
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Расположение AutoStyle">
           </iframe>
-
         </div>
-
+        <div class="map-address">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>Бишкек, ул. Юлиуса Фучика 1 / ул. Исакеева 4/3</span>
+        </div>
       </div>
+    </div>
 
-      <div class="footer-bottom">
-        <p>&copy; 2025 Detailing Center. Все права защищены.</p>
+    <!-- Нижняя часть -->
+    <div class="footer-bottom">
+      <div class="copyright">
+        © <span id="year"></span> AutoStyle Detailing Center. Все права защищены.
       </div>
-    </footer>
+      <div class="made-with">
+        <i class="fa-solid fa-bolt"></i>
+        <span>Профессиональный детейлинг в Бишкеке</span>
+      </div>
+    </div>
+  </div>
+</footer>
 
-  </section>
+<script>
+  // Текущий год
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Статус "Открыто/Закрыто"
+  (function updateWorkStatus() {
+    const now = new Date();
+    const day = now.getDay(); // 0 = вс, 1 = пн, ..., 6 = сб
+    const hours = now.getHours();
+    
+    // Пн-Пт с 9 до 18
+    const isOpen = day >= 1 && day <= 5 && hours >= 9 && hours < 18;
+    
+    const statusText = document.getElementById('statusText');
+    const statusDot = document.getElementById('statusDot');
+    const statusBadge = document.getElementById('status');
+    
+    statusText.textContent = isOpen ? 'Открыто сейчас' : 'Закрыто';
+    statusDot.style.background = isOpen ? '#25D366' : '#ef4444';
+    statusBadge.style.borderColor = isOpen ? 'rgba(37, 211, 102, 0.4)' : 'rgba(239, 68, 68, 0.4)';
+  })();
+
+  // Плавное появление при скролле (если элементы не видны сразу)
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animation = 'none';
+        entry.target.offsetHeight; // reflow
+        entry.target.style.animation = 'fadeUp 0.8s ease forwards';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.footer-card').forEach(card => observer.observe(card));
+</script>
 
 </body>
-
 </html>
