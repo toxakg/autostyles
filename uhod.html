@@ -158,7 +158,7 @@
                         <div class="card-content">
                             <h3>Восстановление кожи</h3>
                             <p>Очистка, питание, восстановление цвета и защита кожаных элементов салона.</p>
-                            <a href="#" class="card-button">Подробнее</a>
+                            <a href="uhod.html#wrapform-section" class="card-button">Записаться</a>
                         </div>
                     </div>
 
@@ -174,7 +174,7 @@
                         <div class="card-content">
                             <h3>Защита текстиля</h3>
                             <p>Нанесение водо- и грязеотталкивающих составов на ковры и тканевые сиденья.</p>
-                            <a href="#" class="card-button">Подробнее</a>
+                           <a href="uhod.html#wrapform-section" class="card-button">Записаться</a>
                         </div>
                     </div>
                 </div>
@@ -313,70 +313,120 @@
             </section>
 
             <!-- Галерея с до/после -->
-            <section class="service-gallery">
-                <div class="gl_h">
-                    <h2>Примеры наших работ</h2>
-                    <p class="gallery-subtitle">Результаты до и после профессионального детейлинга</p>
-                </div>
-                <div class="gallery">
-                    <div class="gallery-item">
-                        <div class="before-after">
-                            <div class="before">
-                                <img src="https://i.pinimg.com/736x/58/aa/47/58aa4760777d033c9da6f5c5c7857ae7.jpg"
-                                    alt="До детейлинга">
-                                <span class="ba-label">ДО</span>
-                            </div>
-                            <div class="after">
-                                <img src="https://i.pinimg.com/736x/58/aa/47/58aa4760777d033c9da6f5c5c7857ae7.jpg"
-                                    alt="После детейлинга">
-                                <span class="ba-label">ПОСЛЕ</span>
-                            </div>
-                        </div>
-                        <div class="gallery-overlay">
-                            <h3>Mercedes-Benz GLE</h3>
-                            <p>Комплексный детейлинг кузова + керамическая защита</p>
-                        </div>
-                    </div>
+           <section class="service-gallery" aria-labelledby="gallery-title">
+    <div class="gl_h">
+        <h2 id="gallery-title">Примеры наших работ</h2>
+        <p class="gallery-subtitle">Результаты до и после профессионального детейлинга</p>
+    </div>
+    <span id="slider-instructions" class="visually-hidden">
+        Используйте ползунок для сравнения фотографий до и после. Перетащите влево или вправо.
+    </span>
+    <div class="gallery">
 
-                    <div class="gallery-item">
-                        <div class="before-after">
-                            <div class="before">
-                                <img src="https://avatars.mds.yandex.net/i?id=49594fcb5e1836569578b5ba9a44152b4dd64396-5306514-images-thumbs&n=13"
-                                    alt="До чистки салона">
-                                <span class="ba-label">ДО</span>
-                            </div>
-                            <div class="after">
-                                <img src="https://avatars.mds.yandex.net/i?id=49594fcb5e1836569578b5ba9a44152b4dd64396-5306514-images-thumbs&n=13"
-                                    alt="После чистки салона">
-                                <span class="ba-label">ПОСЛЕ</span>
-                            </div>
-                        </div>
-                        <div class="gallery-overlay">
-                            <h3>Глубокая чистка салона</h3>
-                            <p>Экстракторная чистка + дезинфекция озоном</p>
-                        </div>
-                    </div>
-
-                    <div class="gallery-item">
-                        <div class="before-after">
-                            <div class="before">
-                                <img src="https://i.pinimg.com/1200x/5b/01/b8/5b01b8d313db8d53cbadc056dcc22c8f.jpg"
-                                    alt="До обработки кожи">
-                                <span class="ba-label">ДО</span>
-                            </div>
-                            <div class="after">
-                                <img src="https://i.pinimg.com/1200x/5b/01/b8/5b01b8d313db8d53cbadc056dcc22c8f.jpg"
-                                    alt="После обработки кожи">
-                                <span class="ba-label">ПОСЛЕ</span>
-                            </div>
-                        </div>
-                        <div class="gallery-overlay">
-                            <h3>Восстановление кожи</h3>
-                            <p>Очистка, питание и защита кожаного салона</p>
+        <!-- Галерея элемент 1 -->
+        <div class="gallery-item">
+            <div class="before-after-container">
+                <div class="image-wrapper">
+                    <img src="https://i.pinimg.com/736x/4f/a4/62/4fa4623fde0b1dc5be3351cddd53c035.jpg"
+                        alt="Mercedes-Benz GLE до детейлинга" class="before-img" loading="lazy">
+                    <img src="https://i.pinimg.com/736x/58/aa/47/58aa4760777d033c9da6f5c5c7857ae7.jpg"
+                        alt="Mercedes-Benz GLE после детейлинга" class="after-img" loading="lazy">
+                    <div class="slider-control" role="region"
+                        aria-label="Сравнение фотографий до и после детейлинга Mercedes-Benz GLE">
+                        <input type="range" min="0" max="100" value="50" class="slider"
+                            aria-label="Сравнение до и после детейлинга Mercedes-Benz GLE"
+                            aria-describedby="slider-instructions">
+                        <div class="slider-line"></div>
+                        <div class="slider-button" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M15 18l-6-6 6-6" />
+                                <path d="M9 18l6-6-6-6" />
+                            </svg>
                         </div>
                     </div>
+                    <span class="ba-label ba-label-before">ДО</span>
+                    <span class="ba-label ba-label-after">ПОСЛЕ</span>
                 </div>
-            </section>
+            </div>
+            <div class="gallery-overlay">
+                <h3>Mercedes-Benz GLE</h3>
+                <p>Комплексный детейлинг кузова + керамическая защита</p>
+                <span class="view-details" tabindex="0" role="button"
+                    aria-label="Подробнее о работе с Mercedes-Benz GLE">Подробнее →</span>
+            </div>
+        </div>
+
+        <!-- Галерея элемент 2 -->
+        <div class="gallery-item">
+            <div class="before-after-container">
+                <div class="image-wrapper">
+                    <img src="https://i.pinimg.com/736x/36/2c/c2/362cc2c5e12cb3f6cd730c339fbb3e38.jpg"
+                        alt="До глубокой чистки салона" class="before-img" loading="lazy">
+                    <img src="https://i.pinimg.com/736x/f7/50/a9/f750a9ee9e8ed1d0c0571e209a5ee572.jpg"
+                        alt="После глубокой чистки салона" class="after-img" loading="lazy">
+                    <div class="slider-control" role="region"
+                        aria-label="Сравнение фотографий до и после чистки салона">
+                        <input type="range" min="0" max="100" value="50" class="slider"
+                            aria-label="Сравнение до и после чистки салона"
+                            aria-describedby="slider-instructions">
+                        <div class="slider-line"></div>
+                        <div class="slider-button" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M15 18l-6-6 6-6" />
+                                <path d="M9 18l6-6-6-6" />
+                            </svg>
+                        </div>
+                    </div>
+                    <span class="ba-label ba-label-before">ДО</span>
+                    <span class="ba-label ba-label-after">ПОСЛЕ</span>
+                </div>
+            </div>
+            <div class="gallery-overlay">
+                <h3>Глубокая чистка салона</h3>
+                <p>Экстракторная чистка + дезинфекция озоном</p>
+                <span class="view-details" tabindex="0" role="button"
+                    aria-label="Подробнее о работе с чисткой салона">Подробнее →</span>
+            </div>
+        </div>
+
+        <!-- Галерея элемент 3 -->
+        <div class="gallery-item">
+            <div class="before-after-container">
+                <div class="image-wrapper">
+                    <img src="https://i.pinimg.com/1200x/fa/f4/e0/faf4e0b7a1b77009fcdcc1107a1a3279.jpg"
+                        alt="До восстановления кожи" class="before-img" loading="lazy">
+                    <img src="https://i.pinimg.com/736x/5a/4e/a9/5a4ea9ff4e26bcc7aa4f545135c23c3c.jpg"
+                        alt="После восстановления кожи" class="after-img" loading="lazy">
+                    <div class="slider-control" role="region"
+                        aria-label="Сравнение фотографий до и после восстановления кожи">
+                        <input type="range" min="0" max="100" value="50" class="slider"
+                            aria-label="Сравнение до и после восстановления кожи"
+                            aria-describedby="slider-instructions">
+                        <div class="slider-line"></div>
+                        <div class="slider-button" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M15 18l-6-6 6-6" />
+                                <path d="M9 18l6-6-6-6" />
+                            </svg>
+                        </div>
+                    </div>
+                    <span class="ba-label ba-label-before">ДО</span>
+                    <span class="ba-label ba-label-after">ПОСЛЕ</span>
+                </div>
+            </div>
+            <div class="gallery-overlay">
+                <h3>Восстановление кожи</h3>
+                <p>Очистка, питание и защита кожаного салона</p>
+                <span class="view-details" tabindex="0" role="button"
+                    aria-label="Подробнее о работе с восстановлением кожи">Подробнее →</span>
+            </div>
+        </div>
+
+    </div>
+</section>
 
             <!-- Отзывы с улучшениями -->
             <section class="service-reviews">
@@ -663,7 +713,7 @@
         </div>
     </div>
 
-    <div id="footer-placeholder"></div>
+   <div id="footer-placeholder"></div>
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
@@ -675,6 +725,180 @@
     <script src="./js/mm.js"></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Предзагрузка изображений
+            function preloadImages() {
+                const galleryItems = document.querySelectorAll('.gallery-item');
+
+                galleryItems.forEach(item => {
+                    const beforeImg = item.querySelector('.before-img');
+                    const afterImg = item.querySelector('.after-img');
+
+                    if (beforeImg) {
+                        const img = new Image();
+                        img.src = beforeImg.src;
+                    }
+                    if (afterImg) {
+                        const img = new Image();
+                        img.src = afterImg.src;
+                    }
+                });
+            }
+
+            // Загрузка изображений с индикатором
+            function loadImageWithLoader(img) {
+                const wrapper = img.closest('.image-wrapper');
+                if (wrapper) {
+                    wrapper.classList.add('loading');
+
+                    if (img.complete) {
+                        wrapper.classList.remove('loading');
+                    } else {
+                        img.addEventListener('load', () => {
+                            wrapper.classList.remove('loading');
+                        });
+                        img.addEventListener('error', () => {
+                            wrapper.classList.remove('loading');
+                            console.warn('Не удалось загрузить изображение:', img.src);
+                        });
+                    }
+                }
+            }
+
+            // Инициализация слайдеров "до/после"
+            function initSliders() {
+                const galleryItems = document.querySelectorAll('.gallery-item');
+
+                galleryItems.forEach(item => {
+                    const slider = item.querySelector('.slider');
+                    const afterImg = item.querySelector('.after-img');
+                    const sliderLine = item.querySelector('.slider-line');
+                    const sliderButton = item.querySelector('.slider-button');
+
+                    if (slider && afterImg && sliderLine && sliderButton) {
+                        let animationId = null;
+
+                        // Обработчик изменения ползунка
+                        function updateSlider(value) {
+                            const clipValue = 100 - value;
+
+                            afterImg.style.clipPath = `inset(0 ${clipValue}% 0 0)`;
+                            afterImg.style.webkitClipPath = `inset(0 ${clipValue}% 0 0)`;
+                            sliderLine.style.left = `${value}%`;
+                            sliderButton.style.left = `${value}%`;
+                        }
+
+                        slider.addEventListener('input', function () {
+                            updateSlider(this.value);
+                        });
+
+                        // Touch события для мобильных устройств
+                        slider.addEventListener('touchstart', function (e) {
+                            e.preventDefault();
+                            const rect = this.getBoundingClientRect();
+                            const touch = e.touches[0];
+
+                            function handleTouchMove(e) {
+                                const touch = e.touches[0];
+                                const x = touch.clientX - rect.left;
+                                const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+
+                                slider.value = percentage;
+                                updateSlider(percentage);
+                            }
+
+                            function handleTouchEnd() {
+                                document.removeEventListener('touchmove', handleTouchMove);
+                                document.removeEventListener('touchend', handleTouchEnd);
+                            }
+
+                            document.addEventListener('touchmove', handleTouchMove);
+                            document.addEventListener('touchend', handleTouchEnd);
+                        });
+
+                        // Клик по области слайдера
+                        slider.addEventListener('click', function (e) {
+                            const rect = this.getBoundingClientRect();
+                            const x = e.clientX - rect.left;
+                            const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+
+                            slider.value = percentage;
+                            updateSlider(percentage);
+                        });
+
+                        // Анимация при наведении
+                        item.addEventListener('mouseenter', function () {
+                            if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+                                let startTime = null;
+                                const duration = 1000;
+
+                                function animate(timestamp) {
+                                    if (!startTime) startTime = timestamp;
+                                    const progress = timestamp - startTime;
+
+                                    if (progress < duration) {
+                                        const position = 50 + 5 * Math.sin(progress * 0.01);
+                                        updateSlider(position);
+                                        animationId = requestAnimationFrame(animate);
+                                    }
+                                }
+
+                                animationId = requestAnimationFrame(animate);
+                            }
+                        });
+
+                        item.addEventListener('mouseleave', function () {
+                            if (animationId) {
+                                cancelAnimationFrame(animationId);
+                                animationId = null;
+                            }
+
+                            // Возврат к начальному положению
+                            slider.value = 50;
+                            updateSlider(50);
+                        });
+                    }
+                });
+            }
+
+            // Обработка кликов по кнопкам "Подробнее"
+            function initDetailsButtons() {
+                const detailsButtons = document.querySelectorAll('.view-details');
+
+                detailsButtons.forEach(button => {
+                    button.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const carModel = this.closest('.gallery-item').querySelector('h3').textContent;
+                        alert(`Открывается подробная информация о работе с автомобилем ${carModel}`);
+                    });
+
+                    button.addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.click();
+                        }
+                    });
+                });
+            }
+
+            // Инициализация всего
+            preloadImages();
+            document.querySelectorAll('img.before-img, img.after-img').forEach(loadImageWithLoader);
+            initSliders();
+            initDetailsButtons();
+
+            // Оптимизация для медленных соединений
+            if ('connection' in navigator && navigator.connection.saveData === true) {
+                console.log('Режим экономии данных: отключены некоторые анимации');
+                document.querySelectorAll('.gallery-item').forEach(item => {
+                    item.style.animation = 'none';
+                    item.style.opacity = '1';
+                });
+            }
+        });
+
+
+
         // FAQ toggle
         document.querySelectorAll('.faq-question').forEach(question => {
             question.addEventListener('click', () => {
@@ -704,36 +928,6 @@
         document.querySelectorAll('.service-card, .process-step').forEach(el => {
             observer.observe(el);
         });
-
-        // Стилизация select
-        const select = document.getElementById('service');
-        if (select) {
-            select.style.cssText = `
-                width: 100%;
-                padding: 15px 20px;
-                border: 1px solid #ddd;
-                border-radius: 10px;
-                font-size: 1rem;
-                background: #fcfcfc;
-                color: #333;
-                appearance: none;
-                background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-                background-repeat: no-repeat;
-                background-position: right 20px center;
-                background-size: 16px;
-            `;
-
-            select.addEventListener('focus', function () {
-                this.style.outline = 'none';
-                this.style.borderColor = '#ff6b35';
-                this.style.background = 'white';
-                this.style.boxShadow = '0 0 0 4px rgba(255, 107, 53, 0.2)';
-            });
-
-            select.addEventListener('blur', function () {
-                this.style.boxShadow = 'none';
-            });
-        }
     </script>
 </body>
 
